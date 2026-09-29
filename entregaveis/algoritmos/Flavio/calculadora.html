@@ -109,8 +109,9 @@ button {
 <script>
   /* ============================================================
    PARÂMETROS DO PRODUTO (definidos pela Anzen, não pelo cliente)
-   >>> AJUSTAR conforme a documentação / regra de negócio <<<
+   quando a documentação estiver 100% deve retornar para essa parte e ajustar conforme as necessidades 
    Os valores abaixo são PLACEHOLDERS.
+   
    ============================================================ */
   let reducaoGLP = 0.1; // % de redução no gasto de GLP
   let reducaoManutencao = 0.2; // % de redução no custo de manutenção
@@ -151,7 +152,7 @@ button {
       let economiaPeriodo = atualPeriodo - anzenPeriodo;
       let pct = (economiaPeriodo / atualPeriodo) * 100;
 
-      // Valor positivo da economia (sem Math.abs)
+      // Valor positivo da economia 
       let economiaValor = economiaPeriodo;
       if (economiaValor < 0) {
         economiaValor = economiaValor * -1;
