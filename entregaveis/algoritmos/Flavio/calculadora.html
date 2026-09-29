@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador Financeiro Anzen</title>
+<style>
+body {
+  background-color: #f2f2f2;
+  color: #222222;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  margin: 20px;
+}
+h1 {
+  font-size: 28px;
+  color: #0a7d5a;
+}
+h2 {
+  font-size: 20px;
+  margin-top: 20px;
+}
+.caixa {
+  background-color: white;
+  border: 1px solid #cccccc;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+input, select {
+  width: 200px;
+  padding: 6px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+button {
+  background-color: #0a7d5a;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+.erro {
+  color: red;
+  margin: 10px 0px;
+}
+.linha {
+  border-bottom: 1px solid #dddddd;
+  padding: 6px 0px;
+}
+.destaque {
+  background-color: #e8f5f0;
+  padding: 15px;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 18px;
+}
+.destaque b {
+  font-size: 30px;
+  color: #0a7d5a;
+}
+.nota {
+  font-size: 12px;
+  color: gray;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+  <h1>Simulador Financeiro Anzen</h1>
+  <p>Descubra quanto você economiza ao usar o sistema Anzen no seu consumo de GLP.</p>
+
+  <div class="caixa">
+    <h2>Seu gasto atual com GLP</h2>
+
+    Quantas trocas de botijão/cilindro você faz por mês?<br />
+    <input type="number" id="ipt_trocas" min="0" placeholder="Ex: 10" /><br />
+
+    Quanto você paga em cada troca? (R$)<br />
+    <input type="number" id="ipt_preco" min="0" placeholder="Ex: 450" /><br />
+
+    <h2>Manutenção da instalação de gás</h2>
+
+    Quantas manutenções/inspeções por ano?<br />
+    <input type="number" id="ipt_qtd_manutencao" min="0" placeholder="Ex: 2" /><br />
+
+    Custo médio de cada manutenção (R$)<br />
+    <input type="number" id="ipt_manutencao" min="0" placeholder="Ex: 800" /><br />
+
+    <h2>Período da simulação</h2>
+
+    <select id="ipt_periodo">
+      <option value="6">6 meses</option>
+      <option value="12" selected>12 meses</option>
+      <option value="24">24 meses</option>
+      <option value="36">36 meses</option>
+      <option value="60">60 meses</option>
+    </select>
+
+    <div class="erro" id="div_erro"></div>
+
+    <button onclick="simular()">Simular economia</button>
+  </div>
+
+  <div id="div_exibir"></div>
+</body>
+
+<script>
+  /* ============================================================
+   PARÂMETROS DO PRODUTO (definidos pela Anzen, não pelo cliente)
+   >>> AJUSTAR conforme a documentação / regra de negócio <<<
+   Os valores abaixo são PLACEHOLDERS.
+   ============================================================ */
+  let reducaoGLP = 0.1; // % de redução no gasto de GLP
+  let reducaoManutencao = 0.2; // % de redução no custo de manutenção
+  let potenciaW = 50; // potência do sistema Anzen [W]
+  let tarifaKWh = 0.9; // tarifa de energia padrão [R$/kWh]
+  let investimentoInicial = 3000; // aquisição + instalação [R$]
+  let mensalidade = 0; // assinatura/monitoramento mensal [R$]
+
+  function simular() {
+    let trocas = Number(ipt_trocas.value);
+    let preco = Number(ipt_preco.value);
+    let manutAno = Number(ipt_qtd_manutencao.value);
+    let manutCusto = Number(ipt_manutencao.value);
+    let periodo = Number(ipt_periodo.value);
+
+    if (!(trocas > 0) || !(preco > 0)) {
+      div_erro.innerHTML =
+        "Informe ao menos a quantidade de trocas e o preço de cada troca.";
+      div_exibir.innerHTML = "";
+    } else {
+      div_erro.innerHTML = "";
+
+      // Cenário atual (sem Anzen)
+      let glpMes = trocas * preco;
+      let manutMes = (manutAno * manutCusto) / 12;
+      let atualMes = glpMes + manutMes;
+      let atualPeriodo = atualMes * periodo;
+
+      // Cenário com Anzen
+      let glpAnzenMes = glpMes * (1 - reducaoGLP);
+      let manutAnzenMes = manutMes * (1 - reducaoManutencao);
+      let energiaMes = (potenciaW / 1000) * 24 * 30 * tarifaKWh;
+      let anzenMes = glpAnzenMes + manutAnzenMes + energiaMes + mensalidade;
+      let anzenPeriodo = anzenMes * periodo + investimentoInicial;
+
+      // Economia
+      let economiaMes = atualMes - anzenMes;
+      let economiaPeriodo = atualPeriodo - anzenPeriodo;
+      let pct = (economiaPeriodo / atualPeriodo) * 100;
+
+      // Valor positivo da economia (sem Math.abs)
+      let economiaValor = economiaPeriodo;
+      if (economiaValor < 0) {
+        economiaValor = economiaValor * -1;
+      }
+
+      let paybackTxt = "";
+      if (economiaMes <= 0) {
+        paybackTxt = "Sem retorno com os dados informados";
+      } else {
+        let payback = investimentoInicial / economiaMes;
+        if (payback <= 1) {
+          paybackTxt = "Menos de 1 mês";
+        } else {
+          paybackTxt = payback.toFixed(1).replace(".", ",") + " meses";
+        }
+      }
+
+      let tituloEconomia = "Diferença no período";
+      let textoPct = "Neste período o investimento ainda não se paga";
+      if (economiaPeriodo >= 0) {
+        tituloEconomia = "Você economiza";
+        textoPct = pct.toFixed(1).replace(".", ",") + "% a menos que hoje";
+      }
+
+      // Textos formatados em R$
+      let fAtualPeriodo = "R$ " + atualPeriodo.toFixed(2).replace(".", ",");
+      let fAnzenPeriodo = "R$ " + anzenPeriodo.toFixed(2).replace(".", ",");
+      let fEconomiaValor = "R$ " + economiaValor.toFixed(2).replace(".", ",");
+      let fEconomiaMes = "R$ " + economiaMes.toFixed(2).replace(".", ",");
+      let fGlpMes = "R$ " + glpMes.toFixed(2).replace(".", ",");
+      let fGlpAnzenMes = "R$ " + glpAnzenMes.toFixed(2).replace(".", ",");
+      let fManutMes = "R$ " + manutMes.toFixed(2).replace(".", ",");
+      let fManutAnzenMes = "R$ " + manutAnzenMes.toFixed(2).replace(".", ",");
+      let fEnergiaMes = "R$ " + energiaMes.toFixed(2).replace(".", ",");
+
+      div_exibir.innerHTML = `
+        <div class="caixa">
+          <h2>Resultado em ${periodo} meses</h2>
+          <div class="linha">Gasto atual (sem Anzen): <b>${fAtualPeriodo}</b></div>
+          <div class="linha">Gasto com Anzen (já inclui investimento e energia): <b>${fAnzenPeriodo}</b></div>
+          <div class="destaque">
+            ${tituloEconomia}<br />
+            <b>${fEconomiaValor}</b><br />
+            ${textoPct}
+          </div>
+        </div>
+        <div class="caixa">
+          <h2>Detalhes</h2>
+          <div class="linha">Economia média por mês: <b>${fEconomiaMes}</b></div>
+          <div class="linha">Tempo para o investimento se pagar: <b>${paybackTxt}</b></div>
+          <div class="linha">GLP por mês (hoje → com Anzen): <b>${fGlpMes} → ${fGlpAnzenMes}</b></div>
+          <div class="linha">Manutenção por mês (hoje → com Anzen): <b>${fManutMes} → ${fManutAnzenMes}</b></div>
+          <div class="linha">Custo mensal de energia do sistema: <b>${fEnergiaMes}</b></div>
+          <div class="nota">Simulação estimativa, baseada nos dados informados e em médias de desempenho do produto. Os resultados reais podem variar.</div>
+        </div>`;
+    }
+  }
+</script>
+</html>
