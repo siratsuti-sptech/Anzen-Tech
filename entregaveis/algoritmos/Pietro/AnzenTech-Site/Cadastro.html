@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AnzenTech - Cadastro</title>
+	<!-- CSS externo: o mesmo style.css usado nas outras páginas -->
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<div class="pagina-dividida">
+
+		<!-- ================= LADO ESQUERDO ================= -->
+		<div class="painel-azul">
+
+			<!-- Logo: coloque o caminho da sua imagem dentro do src (ex: src="img/logo.png") -->
+			<div class="logo">
+				<img class="logo-img" src="" alt="Logo AnzenTech">
+				<a href="index.html" class="logo-texto">Anzen<span>Tech</span></a>
+			</div>
+
+			<h1 style="margin-top: 80px;">Comece a proteger <br><span class="destaque">sua cozinha hoje.</span></h1>
+
+			<ul class="vantagens">
+				<li><span>✔</span>Configuração em menos de 5 minutos</li>
+				<li><span>✔</span>Sem taxa de instalação</li>
+				<li><span>✔</span>Suporte técnico incluso</li>
+				<li><span>✔</span>Teste gratuito por 30 dias</li>
+			</ul>
+
+			<!-- Depoimento de exemplo (texto provisório do protótipo) -->
+			<div class="depoimento">
+				<p>"Depois da AnzenTech, reduzimos 40% dos custos com manutenções emergenciais. Vale cada centavo."</p>
+				<p style="font-style: normal;"><b>Ricardo Costa</b><br>Chef Executivo, Restaurante Sabor &amp; Arte</p>
+			</div>
+		</div>
+
+
+		<!-- ================= LADO DIREITO (formulário em 3 passos) ================= -->
+		<div class="painel-form">
+			<div class="caixa-form">
+
+				<!-- Indicador dos passos: o JavaScript troca a classe e o texto das bolinhas -->
+				<div class="passos">
+					<div class="passo"><span class="bolinha ativa" id="bolinha1">1</span> Conta</div>
+					<div class="passo"><span class="bolinha" id="bolinha2">2</span> Empresa</div>
+					<div class="passo"><span class="bolinha" id="bolinha3">3</span> Configuração</div>
+				</div>
+
+
+				<!-- ---------- PASSO 1: CONTA ---------- -->
+				<div id="passo1">
+					<h2>Crie sua conta</h2>
+					<p style="color: #6b7280;">Comece seu período gratuito de 30 dias.</p>
+
+					<label>Nome completo</label>
+					<input class="campo" type="text" id="ipt_nome" placeholder="João Silva">
+
+					<label>E-mail</label>
+					<input class="campo" type="text" id="ipt_email" placeholder="joao@empresa.com">
+
+					<label>Senha</label>
+					<!-- oninput = roda a função toda vez que o usuário digita uma letra -->
+					<input class="campo" type="password" id="ipt_senha" placeholder="Mínimo 8 caracteres" oninput="mostrarForca()">
+
+					<!-- barra e texto da força da senha (o JavaScript muda a largura e a cor) -->
+					<div class="barra-fundo">
+						<div class="barra-forca" id="barra_forca"></div>
+					</div>
+					<p id="texto_forca" style="font-size: 14px; margin: 8px 0 0 0;"></p>
+
+					<p id="msg1"></p>
+
+					<button class="botao-escuro" onclick="continuarPasso1()">Continuar</button>
+				</div>
+
+
+				<!-- ---------- PASSO 2: EMPRESA (começa escondido) ---------- -->
+				<div id="passo2" style="display: none;">
+					<h2>Sobre sua empresa</h2>
+					<p style="color: #6b7280;">Vamos personalizar sua experiência.</p>
+
+					<label>Nome da empresa</label>
+					<input class="campo" type="text" id="ipt_empresa" placeholder="Restaurante Exemplo Ltda">
+
+					<label>Segmento</label>
+					<select class="campo" id="slt_segmento">
+						<option value="">Selecione...</option>
+						<option value="Restaurante">Restaurante</option>
+						<option value="Hotel">Hotel</option>
+						<option value="Hospital">Hospital</option>
+						<option value="Indústria de alimentos">Indústria de alimentos</option>
+						<option value="Outro">Outro</option>
+					</select>
+
+					<label>Número de funcionários</label>
+					<select class="campo" id="slt_funcionarios">
+						<option value="">Selecione...</option>
+						<option value="1 a 10">1 a 10</option>
+						<option value="11 a 50">11 a 50</option>
+						<option value="51 a 200">51 a 200</option>
+						<option value="Mais de 200">Mais de 200</option>
+					</select>
+
+					<p id="msg2"></p>
+
+					<div class="botoes-linha">
+						<button class="botao-claro" onclick="mostrarPasso(1)">Voltar</button>
+						<button class="botao-escuro" onclick="continuarPasso2()">Continuar</button>
+					</div>
+				</div>
+
+
+				<!-- ---------- PASSO 3: CONFIGURAÇÃO (começa escondido) ---------- -->
+				<div id="passo3" style="display: none;">
+					<h2>Configuração inicial</h2>
+					<p style="color: #6b7280;">Últimas informações para ativar o monitoramento.</p>
+
+					<label>Quantas cozinhas deseja monitorar?</label>
+					<input class="campo" type="text" id="ipt_cozinhas" placeholder="Ex: 2">
+
+					<label>E-mail para receber alertas</label>
+					<input class="campo" type="text" id="ipt_email_alertas" placeholder="alertas@empresa.com">
+
+					<div class="aviso-verde">
+						<b>Pronto para começar!</b>
+						<p>Após o cadastro você terá acesso ao painel de monitoramento e ao simulador de economia.</p>
+					</div>
+
+					<p id="msg3"></p>
+
+					<div class="botoes-linha">
+						<button class="botao-claro" onclick="mostrarPasso(2)">Voltar</button>
+						<button class="botao-escuro" onclick="criarConta()">Criar conta</button>
+					</div>
+				</div>
+
+
+				<p class="rodape-form">Já tem conta? <a href="Login.html">Entrar</a></p>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<script>
+		// ==========================================================
+		// "Banco de dados temporário": vetores paralelos.
+		// A posição 0 de cada vetor pertence ao mesmo usuário.
+		// Os dados somem quando a página é recarregada (ainda não tem banco de dados).
+		// Já começamos com o usuário de teste para poder testar e-mail repetido.
+		// ==========================================================
+		var listaNomes = ["Usuário Teste"];
+		var listaEmails = ["teste@anzentech.com"];
+		var listaSenhas = ["Teste@123"];
+		var listaEmpresas = ["Empresa Teste"];
+		var listaSegmentos = ["Restaurante"];
+		var listaFuncionarios = ["1 a 10"];
+		var listaCozinhas = [1];
+		var listaEmailsAlertas = ["teste@anzentech.com"];
+
+
+		// ---------- MOSTRAR UM PASSO POR VEZ ----------
+		// Esconde os 3 passos e mostra só o passo escolhido (display none / block)
+		function mostrarPasso(numero) {
+			passo1.style.display = "none";
+			passo2.style.display = "none";
+			passo3.style.display = "none";
+
+			if (numero == 1) {
+				passo1.style.display = "block";
+			} else if (numero == 2) {
+				passo2.style.display = "block";
+			} else {
+				passo3.style.display = "block";
+			}
+
+			// atualiza as bolinhas do topo com um while
+			var i = 1;
+			while (i <= 3) {
+				var bolinha = document.getElementById("bolinha" + i);
+
+				if (i < numero) {
+					bolinha.className = "bolinha ativa";   // passo já feito
+					bolinha.innerHTML = "✔";
+				} else if (i == numero) {
+					bolinha.className = "bolinha ativa";   // passo atual
+					bolinha.innerHTML = i;
+				} else {
+					bolinha.className = "bolinha";         // passo que ainda vem
+					bolinha.innerHTML = i;
+				}
+				i++;
+			}
+		}
+
+
+		// ---------- VALIDAÇÃO DE E-MAIL ----------
+		// Retorna um texto com o erro, ou "" se estiver tudo certo.
+		function validarEmail(email) {
+
+			// não pode ter espaço
+			if (email.includes(" ")) {
+				return "O e-mail não pode ter espaços.";
+			}
+
+			// precisa ter @
+			if (!email.includes("@")) {
+				return "O e-mail precisa ter o símbolo @.";
+			}
+
+			// split separa o texto usando o @ como divisor
+			// ex: "ana@site.com" vira ["ana", "site.com"]
+			var partes = email.split("@");
+
+			// só pode ter um @ (então tem que dar 2 partes)
+			if (partes.length != 2) {
+				return "O e-mail deve ter apenas um @.";
+			}
+
+			var usuario = partes[0];   // antes do @
+			var dominio = partes[1];   // depois do @
+
+			// precisa ter algo antes do @
+			if (usuario.length == 0) {
+				return "Digite algo antes do @.";
+			}
+
+			// depois do @ precisa ter um ponto (ex: site.com)
+			if (!dominio.includes(".")) {
+				return "O e-mail precisa ter um ponto depois do @ (ex: .com).";
+			}
+
+			// precisa terminar com .com ou .com.br (AND + negação)
+			if (!email.endsWith(".com") && !email.endsWith(".com.br")) {
+				return "O e-mail precisa terminar com .com ou .com.br.";
+			}
+
+			return "";   // vazio = sem erro
+		}
+
+
+		// ---------- FORÇA DA SENHA ----------
+		// Retorna "fraca", "média" ou "forte"
+		function avaliarSenha(senha) {
+
+			var maiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			var minusculas = "abcdefghijklmnopqrstuvwxyz";
+			var numeros = "0123456789";
+			var especiais = "!@#$%&*()-_+=.,;:?/";
+
+			var temMaiuscula = false;
+			var temMinuscula = false;
+			var temNumero = false;
+			var temEspecial = false;
+
+			// percorre a senha letra por letra
+			var i = 0;
+			while (i < senha.length) {
+				var letra = senha.charAt(i);
+
+				if (maiusculas.includes(letra)) {
+					temMaiuscula = true;
+				}
+				if (minusculas.includes(letra)) {
+					temMinuscula = true;
+				}
+				if (numeros.includes(letra)) {
+					temNumero = true;
+				}
+				if (especiais.includes(letra)) {
+					temEspecial = true;
+				}
+				i++;
+			}
+
+			// conta pontos: cada critério cumprido vale 1 ponto
+			var pontos = 0;
+
+			if (senha.length >= 8) {
+				pontos++;
+			}
+			if (temMaiuscula && temMinuscula) {   // AND: precisa ter as duas
+				pontos++;
+			}
+			if (temNumero) {
+				pontos++;
+			}
+			if (temEspecial) {
+				pontos++;
+			}
+
+			// senha com menos de 8 caracteres é sempre fraca
+			if (senha.length < 8 || pontos <= 2) {
+				return "fraca";
+			} else if (pontos == 3) {
+				return "média";
+			} else {
+				return "forte";
+			}
+		}
+
+
+		// Atualiza a barra de força toda vez que digita na senha (oninput)
+		function mostrarForca() {
+			var senha = ipt_senha.value;
+
+			if (senha.length == 0) {
+				barra_forca.style.width = "0%";
+				texto_forca.innerHTML = "";
+			} else {
+				var nivel = avaliarSenha(senha);
+
+				if (nivel == "fraca") {
+					barra_forca.style.width = "33%";
+					barra_forca.style.backgroundColor = "#ef4444";     // vermelho
+					texto_forca.style.color = "#ef4444";
+					texto_forca.innerHTML = "Senha fraca: use 8+ caracteres, maiúsculas, minúsculas, números e símbolos.";
+				} else if (nivel == "média") {
+					barra_forca.style.width = "66%";
+					barra_forca.style.backgroundColor = "#f59e0b";     // laranja
+					texto_forca.style.color = "#f59e0b";
+					texto_forca.innerHTML = "Senha média: falta pouco! Adicione mais variedade.";
+				} else {
+					barra_forca.style.width = "100%";
+					barra_forca.style.backgroundColor = "#22d66b";     // verde
+					texto_forca.style.color = "#16a34a";
+					texto_forca.innerHTML = "Senha forte!";
+				}
+			}
+		}
+
+
+		// ---------- BOTÃO CONTINUAR DO PASSO 1 ----------
+		function continuarPasso1() {
+			var nome = ipt_nome.value.trim();
+			var email = ipt_email.value.trim().toLowerCase();
+			var senha = ipt_senha.value;
+
+			var erroEmail = validarEmail(email);
+			var nivelSenha = avaliarSenha(senha);
+
+			// verifica se o e-mail já existe no vetor
+			var emailJaExiste = false;
+			var i = 0;
+			while (i < listaEmails.length) {
+				if (listaEmails[i] == email) {
+					emailJaExiste = true;
+				}
+				i++;
+			}
+
+			// nome completo = mínimo 3 letras E um espaço (nome e sobrenome)
+			if (nome.length < 3 || !nome.includes(" ")) {
+				msg1.className = "erro";
+				msg1.innerHTML = "Digite seu nome completo (nome e sobrenome).";
+			} else if (email.length == 0) {
+				msg1.className = "erro";
+				msg1.innerHTML = "Digite seu e-mail.";
+			} else if (erroEmail != "") {
+				msg1.className = "erro";
+				msg1.innerHTML = erroEmail;
+			} else if (emailJaExiste) {
+				msg1.className = "erro";
+				msg1.innerHTML = "Este e-mail já está cadastrado.";
+			} else if (nivelSenha == "fraca") {
+				msg1.className = "erro";
+				msg1.innerHTML = "Senha fraca demais. Crie uma senha média ou forte.";
+			} else {
+				msg1.innerHTML = "";     // limpa a mensagem
+				mostrarPasso(2);
+			}
+		}
+
+
+		// ---------- BOTÃO CONTINUAR DO PASSO 2 ----------
+		function continuarPasso2() {
+			var empresa = ipt_empresa.value.trim();
+			var segmento = slt_segmento.value;
+			var funcionarios = slt_funcionarios.value;
+
+			if (empresa.length < 2) {
+				msg2.className = "erro";
+				msg2.innerHTML = "Digite o nome da empresa.";
+			} else if (segmento == "" || funcionarios == "") {   // OR: falta um dos dois
+				msg2.className = "erro";
+				msg2.innerHTML = "Selecione o segmento e o número de funcionários.";
+			} else {
+				msg2.innerHTML = "";
+				mostrarPasso(3);
+			}
+		}
+
+
+		// ---------- BOTÃO CRIAR CONTA (PASSO 3) ----------
+		function criarConta() {
+			var textoCozinhas = ipt_cozinhas.value.trim();
+			var cozinhas = Number(textoCozinhas);            // transforma o texto em número
+			var emailAlertas = ipt_email_alertas.value.trim().toLowerCase();
+
+			var erroEmail = validarEmail(emailAlertas);
+
+			// isNaN = "não é um número". parseInt corta a parte decimal (ex: 2.5 vira 2)
+			if (textoCozinhas == "" || isNaN(cozinhas) || cozinhas < 1 || cozinhas != parseInt(cozinhas)) {
+				msg3.className = "erro";
+				msg3.innerHTML = "Digite um número inteiro de cozinhas (mínimo 1).";
+			} else if (emailAlertas.length == 0) {
+				msg3.className = "erro";
+				msg3.innerHTML = "Digite o e-mail para receber alertas.";
+			} else if (erroEmail != "") {
+				msg3.className = "erro";
+				msg3.innerHTML = erroEmail;
+			} else {
+
+				// tudo certo: guarda os dados nos vetores (push adiciona no final)
+				listaNomes.push(ipt_nome.value.trim());
+				listaEmails.push(ipt_email.value.trim().toLowerCase());
+				listaSenhas.push(ipt_senha.value);
+				listaEmpresas.push(ipt_empresa.value.trim());
+				listaSegmentos.push(slt_segmento.value);
+				listaFuncionarios.push(slt_funcionarios.value);
+				listaCozinhas.push(cozinhas);
+				listaEmailsAlertas.push(emailAlertas);
+
+				// mostra os vetores no console do navegador (F12) para conferir
+				console.log(listaNomes);
+				console.log(listaEmails);
+
+				msg3.className = "sucesso";
+				msg3.innerHTML = "Conta criada com sucesso! <a href='Login.html'>Ir para o login</a>";
+			}
+		}
+	</script>
+
+</body>
+
+</html>
