@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | AnzenTech</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="tela">
+
+    <!-- PAINEL ESQUERDO -->
+    <div class="painel-esquerdo">
+        <a href="../site_institucional/index.html" class="logo">
+            <div class="logo-kanji">安</div>
+            <div class="logo-texto">Anzen<span>Tech</span></div>
+        </a>
+
+        <div>
+            <h2>Comece a proteger <br><span>sua cozinha hoje.</span></h2>
+            <ul class="beneficios">
+                <li>Configuração em menos de 5 minutos</li>
+                <li>Sem taxa de instalação</li>
+                <li>Suporte técnico incluso</li>
+                <li>Teste gratuito por 30 dias</li>
+            </ul>
+        </div>
+
+        <div class="depoimento">
+            <p>"Depois da AnzenTech, reduzimos 40% dos custos com manutenções emergenciais. Vale cada centavo."</p>
+            <strong>Ricardo Costa</strong>
+            <small>Chef Executivo, Restaurante Sabor &amp; Arte</small>
+        </div>
+    </div>
+
+    <!-- PAINEL DIREITO -->
+    <div class="painel-direito">
+        <div class="card">
+
+            <!-- indicador de etapas -->
+            <div class="passos">
+                <div class="passo"><div class="bolinha" id="bolinha1">1</div><span class="rotulo">Conta</span></div>
+                <div class="linha" id="linha1"></div>
+                <div class="passo"><div class="bolinha" id="bolinha2">2</div><span class="rotulo">Empresa</span></div>
+                <div class="linha" id="linha2"></div>
+                <div class="passo"><div class="bolinha" id="bolinha3">3</div><span class="rotulo">Configuração</span></div>
+            </div>
+
+            <!-- mensagem de erro (aparece só quando der problema) -->
+            <div class="erro" id="erro"></div>
+
+            <!-- ETAPA 1 -->
+            <div class="etapa" id="etapa1">
+                <h1>Crie sua conta</h1>
+                <p class="subtitulo">Comece seu período gratuito de 30 dias.</p>
+
+                <label>Nome completo</label>
+                <input type="text" id="ipt_nome" placeholder="João Silva">
+
+                <label>E-mail</label>
+                <input type="text" id="ipt_email" placeholder="joao@empresa.com">
+
+                <label>Senha</label>
+                <input type="password" id="ipt_senha" placeholder="Mínimo 8 caracteres">
+
+                <button class="botao" onclick="continuar()">Continuar</button>
+            </div>
+
+            <!-- ETAPA 2 -->
+            <div class="etapa" id="etapa2">
+                <h1>Sobre sua empresa</h1>
+                <p class="subtitulo">Vamos personalizar sua experiência.</p>
+
+                <label>Nome da empresa</label>
+                <input type="text" id="ipt_empresa" placeholder="Restaurante Exemplo Ltda">
+
+                <label>Segmento</label>
+                <select id="sel_segmento">
+                    <option value="">Selecione...</option>
+                    <option>Restaurante</option>
+                    <option>Hotel</option>
+                    <option>Hospital</option>
+                    <option>Escola / Universidade</option>
+                    <option>Indústria alimentícia</option>
+                    <option>Outro</option>
+                </select>
+
+                <label>Número de funcionários</label>
+                <select id="sel_funcionarios">
+                    <option value="">Selecione...</option>
+                    <option>1–10</option>
+                    <option>11–50</option>
+                    <option>51–200</option>
+                    <option>200+</option>
+                </select>
+
+                <div class="botoes">
+                    <button class="botao botao-claro" onclick="voltar()">Voltar</button>
+                    <button class="botao" onclick="continuar()">Continuar</button>
+                </div>
+            </div>
+
+            <!-- ETAPA 3 -->
+            <div class="etapa" id="etapa3">
+                <h1>Configuração inicial</h1>
+                <p class="subtitulo">Últimas informações para ativar o monitoramento.</p>
+
+                <label>Quantas cozinhas deseja monitorar?</label>
+                <input type="number" id="ipt_cozinhas" placeholder="Ex: 2">
+
+                <label>E-mail para receber alertas</label>
+                <input type="text" id="ipt_email_alerta" placeholder="alertas@empresa.com">
+
+                <div class="aviso">
+                    <strong>Pronto para começar!</strong>
+                    Após o cadastro você terá acesso ao painel de monitoramento e ao simulador de economia.
+                </div>
+
+                <div class="botoes">
+                    <button class="botao botao-claro" onclick="voltar()">Voltar</button>
+                    <button class="botao" onclick="continuar()">Criar conta</button>
+                </div>
+            </div>
+
+            <p class="rodape-card">Já tem conta? <a href="login.html">Entrar</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="js/cadastro.js"></script>
+</body>
+</html>

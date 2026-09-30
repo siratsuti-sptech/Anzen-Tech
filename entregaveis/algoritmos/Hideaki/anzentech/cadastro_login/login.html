@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AnzenTech</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="tela">
+
+    <!-- PAINEL ESQUERDO -->
+    <div class="painel-esquerdo">
+        <a href="../site_institucional/index.html" class="logo">
+            <div class="logo-kanji">安</div>
+            <div class="logo-texto">Anzen<span>Tech</span></div>
+        </a>
+
+        <div>
+            <h2>安全 + 安<br><span>Segurança com custo-benefício.</span></h2>
+            <ul class="beneficios">
+                <li>Monitoramento contínuo, 24h por dia</li>
+                <li>Alertas em tempo real para sua equipe</li>
+                <li>Sensor MQ-2 de precisão industrial</li>
+            </ul>
+        </div>
+
+        <small style="color:#9fb0c8">© 2026 AnzenTech</small>
+    </div>
+
+    <!-- PAINEL DIREITO -->
+    <div class="painel-direito">
+        <div class="card">
+            <h1>Bem-vindo de volta</h1>
+            <p class="subtitulo">Entre na sua conta para acessar o painel.</p>
+
+            <div class="erro" id="erro"></div>
+
+            <label>E-mail</label>
+            <input type="text" id="ipt_email" placeholder="seu@email.com">
+
+            <label>Senha</label>
+            <div class="campo-senha">
+                <input type="password" id="ipt_senha" placeholder="••••••••">
+                <button onclick="mostrarSenha()" id="btn_olho">Mostrar</button>
+            </div>
+
+            <button class="botao" onclick="entrar()">Entrar</button>
+
+            <p class="rodape-card">Não tem uma conta? <a href="cadastro.html">Cadastre-se grátis</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="js/login.js"></script>
+</body>
+</html>

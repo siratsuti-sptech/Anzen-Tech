@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap');
+
+/* ===== CORES E FONTE (para mudar o visual, mude só aqui) ===== */
+:root {
+    --azul: #0B2A55;
+    --azul-claro: #16407a;
+    --verde: #1AA15B;
+    --verde-claro: #e8f6ee;
+    --fundo: #F5F7FA;
+    --cinza: #6b7280;
+    --borda: #e2e6ec;
+    --vermelho: #EF3B3B;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: var(--fundo);
+    color: var(--azul);
+}
+
+/* ===== LOGO ===== */
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-kanji {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 3px solid var(--verde); color: var(--verde);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+}
+.logo-texto { font-size: 24px; font-weight: 700; font-style: italic; color: white; }
+.logo-texto span { color: var(--verde); }
+
+/* ===== TELA DIVIDIDA (login e cadastro) ===== */
+.tela { display: flex; min-height: 100vh; }
+
+.painel-esquerdo {
+    width: 42%; padding: 48px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 100%);
+    color: white;
+}
+.painel-esquerdo h2 { font-size: 32px; line-height: 1.3; margin-bottom: 24px; }
+.painel-esquerdo h2 span { color: var(--verde); }
+
+.beneficios { list-style: none; }
+.beneficios li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 15px; color: #d5deea; }
+.beneficios li::before {
+    content: "✓"; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--verde); color: white; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.depoimento {
+    background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px; padding: 22px; font-size: 14px; line-height: 1.6;
+}
+.depoimento p { font-style: italic; margin-bottom: 14px; color: #d5deea; }
+.depoimento strong { display: block; font-size: 14px; }
+.depoimento small { color: #9fb0c8; }
+
+.painel-direito { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 20px; }
+
+/* ===== CARD DO FORMULÁRIO ===== */
+.card {
+    width: 100%; max-width: 480px; background: white;
+    border: 1px solid var(--borda); border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(11, 42, 85, 0.07); padding: 36px;
+}
+.card h1 { font-size: 26px; margin-bottom: 4px; }
+.subtitulo { color: var(--cinza); font-size: 14px; margin-bottom: 24px; }
+
+label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+
+input, select {
+    width: 100%; padding: 13px 16px; margin-bottom: 18px;
+    border: 1px solid var(--borda); border-radius: 8px;
+    font-family: inherit; font-size: 14px; background: white; color: var(--azul);
+}
+input:focus, select:focus { outline: none; border-color: var(--verde); box-shadow: 0 0 0 2px rgba(26, 161, 91, 0.2); }
+
+.campo-senha { position: relative; }
+.campo-senha button {
+    position: absolute; right: 8px; top: 8px; background: none; border: none;
+    color: var(--cinza); font-size: 12px; cursor: pointer; padding: 6px; font-family: inherit;
+}
+
+/* ===== BOTÕES ===== */
+.botao {
+    width: 100%; padding: 13px; border: none; border-radius: 8px; cursor: pointer;
+    background: var(--azul); color: white; font-family: inherit; font-size: 15px; font-weight: 600;
+    transition: background 0.2s;
+}
+.botao:hover { background: var(--verde); }
+.botao-claro { background: white; color: var(--azul); border: 1px solid var(--borda); }
+.botao-claro:hover { background: var(--fundo); border-color: var(--azul); }
+.botoes { display: flex; gap: 12px; }
+
+.rodape-card { text-align: center; font-size: 14px; color: var(--cinza); margin-top: 22px; }
+.rodape-card a { color: var(--verde); font-weight: 600; text-decoration: none; }
+
+/* ===== MENSAGENS ===== */
+.erro {
+    display: none; background: #fdecec; color: #b42323; border: 1px solid #f5c2c2;
+    border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px;
+}
+.aviso {
+    background: var(--verde-claro); border: 1px solid #bfe5cf; border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: var(--cinza);
+}
+.aviso strong { display: block; color: var(--azul); font-size: 14px; margin-bottom: 2px; }
+
+/* ===== INDICADOR DE ETAPAS (cadastro) ===== */
+.passos { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.passo { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; }
+.bolinha {
+    width: 28px; height: 28px; border-radius: 50%; background: #eef0f4; color: #9aa3b0;
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+}
+.bolinha.ativa { background: var(--verde); color: white; }
+.linha { flex: 1; height: 1px; background: var(--borda); }
+.linha.ativa { background: var(--verde); }
+
+.etapa { display: none; }
+
+/* ===== CELULAR ===== */
+@media (max-width: 900px) {
+    .painel-esquerdo { display: none; }
+    .card { padding: 26px; }
+    .passo .rotulo { display: none; }
+}

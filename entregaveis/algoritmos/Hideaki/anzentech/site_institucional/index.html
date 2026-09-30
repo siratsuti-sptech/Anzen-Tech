@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnzenTech | Monitoramento inteligente para cozinhas industriais</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+<!-- MENU -->
+<header class="menu">
+    <a href="index.html" class="logo">
+        <div class="logo-kanji">安</div>
+        <div class="logo-texto">Anzen<span>Tech</span></div>
+    </a>
+    <nav>
+        <a href="#inicio" class="atual">Início</a>
+        <a href="#sobre">Sobre nós</a>
+        <a href="#solucao">Nossa solução</a>
+        <a href="simulador.html">Simulador</a>
+        <a href="#contato">Contato</a>
+    </nav>
+    <div id="area_login">
+        <a href="../cadastro_login/login.html" class="btn-menu">Login</a>
+    </div>
+</header>
+
+<!-- TOPO -->
+<section class="hero" id="inicio">
+    <h1>Monitoramento inteligente para <span>cozinhas industriais.</span></h1>
+    <p>Detecte a presença de GLP e receba alertas para agir rapidamente em situações de risco.</p>
+    <a href="#solucao" class="btn-verde">Conheça nossa solução →</a>
+</section>
+
+<!-- BARRA DE CONTATO -->
+<section class="contato" id="contato">
+    <h3>Fale com a AnzenTech</h3>
+    <div class="linha-form">
+        <input type="text" id="ipt_nome" placeholder="Nome completo *">
+        <input type="text" id="ipt_whatsapp" placeholder="WhatsApp (com DDD) *">
+        <button class="botao" onclick="solicitarContato()">Solicitar contato</button>
+    </div>
+    <div class="msg-contato" id="msg_contato"></div>
+</section>
+
+<!-- SOBRE NÓS -->
+<section class="secao" id="sobre">
+    <h2>Sobre nós</h2>
+    <p>
+        O nome <strong>AnzenTech</strong> vem do japonês: <strong>安全</strong> (<em>anzen</em>) significa segurança
+        e <strong>安</strong> (<em>yasu</em>) significa acessível. Nossa missão é entregar proteção de verdade
+        para cozinhas industriais, com uma tecnologia que cabe no bolso.
+    </p>
+</section>
+
+<!-- NOSSA SOLUÇÃO (os 3 cards são criados pelo JavaScript) -->
+<section class="secao" id="solucao">
+    <h2>Segurança para sua cozinha industrial</h2>
+    <p>
+        Nossa solução monitora continuamente a presença de GLP no ambiente e identifica alterações nos níveis
+        detectados pelo sensor, permitindo a emissão de alertas quando o limite definido pelo sistema é ultrapassado.
+    </p>
+    <div class="lista-cards" id="lista_cards"></div>
+</section>
+
+<!-- FAIXA FINAL (a lista de benefícios é criada pelo JavaScript) -->
+<section class="faixa">
+    <div>
+        <h2>Por que escolher a AnzenTech?</h2>
+        <ul class="beneficios" id="lista_beneficios"></ul>
+    </div>
+    <div class="faixa-direita">
+        Prevenir é mais<br><span>seguro do que remediar.</span>
+    </div>
+</section>
+
+<footer>© 2026 AnzenTech. Todos os direitos reservados.</footer>
+
+<script src="js/home.js"></script>
+</body>
+</html>

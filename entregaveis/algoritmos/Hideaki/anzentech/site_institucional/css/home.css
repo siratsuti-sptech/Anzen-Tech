@@ -1,0 +1,89 @@
+/* CSS só da página inicial (usa as cores do style.css) */
+
+/* ===== MENU ===== */
+.menu {
+    position: sticky; top: 0; z-index: 10; background: white;
+    border-bottom: 1px solid var(--borda); height: 70px;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 8%;
+}
+.menu .logo-texto { color: var(--azul); }
+.menu nav { display: flex; gap: 32px; }
+.menu nav a { color: var(--azul); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 0; border-bottom: 2px solid transparent; }
+.menu nav a:hover, .menu nav a.atual { color: var(--verde); border-bottom-color: var(--verde); }
+.btn-menu {
+    background: var(--azul); color: white; text-decoration: none; border: none; cursor: pointer;
+    padding: 11px 24px; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 600;
+}
+.btn-menu:hover { background: var(--verde); }
+
+/* ===== TOPO (HERO) =====
+   Para colocar a foto: salve em img/cozinha.jpg. Se não existir, aparece só o azul. */
+.hero {
+    min-height: 460px; padding: 90px 8% 130px; color: white;
+    background: linear-gradient(90deg, rgba(11,42,85,0.95) 35%, rgba(11,42,85,0.55) 100%),
+                url("../img/cozinha.jpg") center / cover no-repeat, var(--azul);
+}
+.hero h1 { font-size: 46px; line-height: 1.2; max-width: 600px; margin-bottom: 16px; }
+.hero h1 span { color: #3ddc84; }
+.hero p { font-size: 17px; max-width: 460px; line-height: 1.6; margin-bottom: 28px; color: #e3eaf4; }
+.btn-verde {
+    display: inline-block; background: var(--verde); color: white; text-decoration: none;
+    padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px;
+}
+.btn-verde:hover { background: #148a4c; }
+
+/* ===== BARRA DE CONTATO (sobe em cima do topo) ===== */
+.contato {
+    background: white; border-radius: 12px; border: 1px solid var(--borda);
+    box-shadow: 0 6px 20px rgba(11, 42, 85, 0.1);
+    max-width: 1100px; margin: -70px auto 0; padding: 22px 32px; position: relative;
+}
+.contato h3 { text-align: center; margin-bottom: 16px; font-size: 18px; }
+.contato .linha-form { display: flex; gap: 14px; }
+.contato input { margin-bottom: 0; flex: 1; background: var(--fundo); }
+.contato .botao { width: auto; padding: 0 30px; white-space: nowrap; }
+.msg-contato { display: none; margin-top: 14px; padding: 10px 14px; border-radius: 8px; font-size: 13px; }
+.msg-erro { background: #fdecec; color: #b42323; }
+.msg-ok { background: var(--verde-claro); color: #12703f; }
+
+/* ===== SEÇÕES ===== */
+.secao { padding: 70px 8% 20px; text-align: center; }
+.secao h2 { font-size: 30px; margin-bottom: 12px; }
+.secao > p { max-width: 720px; margin: 0 auto 36px; color: var(--cinza); line-height: 1.7; font-size: 15px; }
+
+.lista-cards { display: flex; gap: 20px; max-width: 1100px; margin: 0 auto; }
+.card-func {
+    flex: 1; display: flex; gap: 16px; text-align: left; background: white;
+    border: 1px solid var(--borda); border-radius: 12px; padding: 24px;
+}
+.card-func h3 { font-size: 17px; margin-bottom: 8px; }
+.card-func p { font-size: 13px; color: var(--cinza); line-height: 1.6; }
+.icone {
+    width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+
+/* ===== FAIXA FINAL ===== */
+.faixa {
+    margin-top: 70px; padding: 44px 8%; color: white; overflow: hidden;
+    display: flex; justify-content: space-between; align-items: center; gap: 30px;
+    background: linear-gradient(90deg, var(--azul) 60%, rgba(11,42,85,0.75) 100%),
+                url("../img/chama.jpg") right / cover no-repeat, var(--azul);
+    border-left: 10px solid var(--verde);
+}
+.faixa h2 { font-size: 22px; margin-bottom: 20px; }
+.faixa .beneficios { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 30px; }
+.faixa-direita { text-align: right; font-size: 22px; font-weight: 600; }
+.faixa-direita span { color: #3ddc84; }
+
+footer { background: #061a38; color: #9fb0c8; text-align: center; font-size: 13px; padding: 18px; }
+
+/* ===== CELULAR ===== */
+@media (max-width: 900px) {
+    .menu nav { display: none; }
+    .hero h1 { font-size: 32px; }
+    .contato .linha-form, .lista-cards, .faixa { flex-direction: column; }
+    .contato .botao { padding: 13px; }
+    .faixa .beneficios { grid-template-columns: 1fr; }
+    .faixa-direita { text-align: left; }
+}
