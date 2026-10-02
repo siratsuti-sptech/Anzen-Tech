@@ -107,18 +107,17 @@ button {
 </body>
 
 <script>
-  /* ============================================================
+  /*
    PARÂMETROS DO PRODUTO (definidos pela Anzen, não pelo cliente)
    quando a documentação estiver 100% deve retornar para essa parte e ajustar conforme as necessidades 
    Os valores abaixo são PLACEHOLDERS.
-   
-   ============================================================ */
+   */
   let reducaoGLP = 0.1; // % de redução no gasto de GLP
   let reducaoManutencao = 0.2; // % de redução no custo de manutenção
-  let potenciaW = 50; // potência do sistema Anzen [W]
-  let tarifaKWh = 0.9; // tarifa de energia padrão [R$/kWh]
-  let investimentoInicial = 3000; // aquisição + instalação [R$]
-  let mensalidade = 0; // assinatura/monitoramento mensal [R$]
+  let potenciaW = 50; // potência do sistema Anzen W
+  let tarifaKWh = 0.9; // tarifa de energia padrão R$/kWh
+  let investimentoInicial = 3000; // aquisição + instalação R$
+  let mensalidade = 0; // assinatura/monitoramento mensal R$
 
   function simular() {
     let trocas = Number(ipt_trocas.value);
