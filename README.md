@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="Logo Anzen Tech" width="220">
+  <img src="<img width="1881" height="836" alt="B1180BBA-6400-46E5-BFD5-C1F4336F3301" src="https://github.com/user-attachments/assets/462c042e-f3b5-4deb-b5e4-6a025aff42e4" />
+" alt="Logo Anzen Tech" width="220">
 </p>
 
 <h1 align="center">Anzen Tech 安全テク</h1>
