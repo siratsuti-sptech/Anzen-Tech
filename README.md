@@ -18,9 +18,6 @@
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" alt="Status">
 </p>
 
-<p align="center">
-  <img src="docs/images/prototipo.jpg" alt="Protótipo Anzen Tech" width="600">
-</p>
 
 ---
 
