@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AnzenTech - Entrar</title>
+	<!-- CSS externo: o mesmo style.css usado nas outras páginas -->
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<!-- A tela é dividida em duas partes: painel azul (esquerda) e formulário (direita) -->
+	<div class="pagina-dividida">
+
+		<!-- ================= LADO ESQUERDO ================= -->
+		<div class="painel-azul">
+
+			<!-- Logo: coloque o caminho da sua imagem dentro do src (ex: src="img/logo.png") -->
+			<div class="logo">
+				<img class="logo-img" src="" alt="Logo AnzenTech">
+				<a href="index.html" class="logo-texto">Anzen<span>Tech</span></a>
+			</div>
+
+			<p class="etiqueta" style="margin-top: 40px;">NOSSA PROMESSA</p>
+			<h1>安全 + 安 <br><span class="destaque">Segurança com custo-benefício.</span></h1>
+			<p>Monitoramento industrial inteligente que protege sua equipe e reduz custos operacionais com tecnologia de sensores de gás MQ-2.</p>
+
+			<div class="item-painel" style="margin-top: 40px;">
+				<span class="icone">🛡️</span>
+				<p><b class="destaque">安全</b><br>Segurança total para sua equipe</p>
+			</div>
+
+			<div class="item-painel">
+				<span class="icone">💰</span>
+				<p><b class="destaque">安</b><br>Custo-benefício imbatível</p>
+			</div>
+
+			<div class="item-painel">
+				<span class="icone">📡</span>
+				<p><b class="destaque">MQ-2</b><br>Tecnologia de precisão industrial</p>
+			</div>
+
+			<p style="font-size: 14px;">© 2026 AnzenTech</p>
+		</div>
+
+
+		<!-- ================= LADO DIREITO (formulário) ================= -->
+		<div class="painel-form">
+			<div class="caixa-form">
+
+				<h2>Bem-vindo de volta</h2>
+				<p style="color: #6b7280;">Entre na sua conta para acessar o painel.</p>
+
+				<label>E-mail</label>
+				<!-- o id serve para o JavaScript pegar o que foi digitado -->
+				<input class="campo" type="text" id="ipt_email" placeholder="seu@email.com">
+
+				<label>Senha <a href="" class="link-esqueci">Esqueci minha senha</a></label>
+				<div class="linha-senha">
+					<input class="campo" type="password" id="ipt_senha" placeholder="Digite sua senha">
+					<!-- botão do olho: mostra/esconde a senha -->
+					<button class="botao-olho" onclick="mostrarSenha()">👁️</button>
+				</div>
+
+				<!-- aqui o JavaScript escreve a mensagem de erro ou sucesso (innerHTML) -->
+				<p id="mensagem_login"></p>
+
+				<button class="botao-escuro" onclick="entrar()">Entrar</button>
+
+				<p class="rodape-form">Não tem uma conta? <a href="Cadastro.html">Cadastre-se grátis</a></p>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script>
+		// ==========================================================
+		// "Banco de dados temporário": vetores paralelos.
+		// A posição 0 de cada vetor pertence ao mesmo usuário.
+		// Como ainda não temos banco de dados, existe um usuário de teste:
+		//   e-mail: teste@anzentech.com   senha: Teste@123
+		// Os usuários criados na página Cadastro.html ainda NÃO chegam aqui,
+		// porque cada página tem seus próprios vetores (isso será resolvido
+		// quando conectarmos o banco de dados).
+		// ==========================================================
+		var listaNomes = ["Usuário Teste"];
+		var listaEmails = ["teste@anzentech.com"];
+		var listaSenhas = ["Teste@123"];
+
+
+		// Mostra ou esconde a senha trocando o type do input
+		function mostrarSenha() {
+			if (ipt_senha.type == "password") {
+				ipt_senha.type = "text";
+			} else {
+				ipt_senha.type = "password";
+			}
+		}
+
+
+		// Valida o e-mail. Retorna um texto com o erro, ou "" se estiver tudo certo.
+		function validarEmail(email) {
+
+			// não pode ter espaço
+			if (email.includes(" ")) {
+				return "O e-mail não pode ter espaços.";
+			}
+
+			// precisa ter @
+			if (!email.includes("@")) {
+				return "O e-mail precisa ter o símbolo @.";
+			}
+
+			// split separa o texto em partes usando o @ como divisor
+			// ex: "ana@site.com" vira ["ana", "site.com"]
+			var partes = email.split("@");
+
+			// só pode ter um @ (então tem que dar 2 partes)
+			if (partes.length != 2) {
+				return "O e-mail deve ter apenas um @.";
+			}
+
+			var usuario = partes[0];   // antes do @
+			var dominio = partes[1];   // depois do @
+
+			// precisa ter algo antes do @
+			if (usuario.length == 0) {
+				return "Digite algo antes do @.";
+			}
+
+			// depois do @ precisa ter um ponto (ex: site.com)
+			if (!dominio.includes(".")) {
+				return "O e-mail precisa ter um ponto depois do @ (ex: .com).";
+			}
+
+			// precisa terminar com .com ou .com.br (OR = ||)
+			if (!email.endsWith(".com") && !email.endsWith(".com.br")) {
+				return "O e-mail precisa terminar com .com ou .com.br.";
+			}
+
+			return "";   // vazio = sem erro
+		}
+
+
+		// Função chamada quando clica em "Entrar"
+		function entrar() {
+
+			// 1) pegar o que foi digitado (email em minúsculo para não dar erro por letra maiúscula)
+			var email = ipt_email.value.trim().toLowerCase();
+			var senha = ipt_senha.value;
+
+			// 2) validar o e-mail
+			var erroEmail = validarEmail(email);
+
+			if (email.length == 0) {
+				mensagem_login.className = "erro";
+				mensagem_login.innerHTML = "Digite seu e-mail.";
+			} else if (erroEmail != "") {
+				mensagem_login.className = "erro";
+				mensagem_login.innerHTML = erroEmail;
+			} else if (senha.length == 0) {
+				mensagem_login.className = "erro";
+				mensagem_login.innerHTML = "Digite sua senha.";
+			} else {
+
+				// 3) procurar o usuário nos vetores usando while
+				var achou = false;
+				var i = 0;
+
+				while (i < listaEmails.length) {
+
+					// AND (&&): e-mail E senha precisam estar na mesma posição
+					if (listaEmails[i] == email && listaSenhas[i] == senha) {
+						achou = true;
+						mensagem_login.className = "sucesso";
+						mensagem_login.innerHTML = "Login realizado! Bem-vindo(a), " + listaNomes[i] + ".";
+					}
+					i++;
+				}
+
+				if (achou == false) {
+					mensagem_login.className = "erro";
+					mensagem_login.innerHTML = "E-mail ou senha incorretos.";
+				}
+			}
+		}
+	</script>
+
+</body>
+
+</html>

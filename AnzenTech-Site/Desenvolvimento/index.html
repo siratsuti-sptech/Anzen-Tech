@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AnzenTech - Início</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<!-- Cabeçalho do site -->
+	<div class="header">
+ <!-- ADICIONAR SLOGAN DA MARCA-->
+		<!-- aqui no src a gente colocar o caminho do png da nossa logo -->
+		<div class="logo">
+			<img class="logo-img" src="logo.png" alt="Logo AnzenTech">
+			<span class="logo-texto">Anzen<span>Tech</span></span>
+		</div>
+
+		<!-- a classe ativo serve pra ficar colorido onde ta selecionado -->
+		<div class="menu">
+			<a href="index.html" class="ativo">Início</a>
+			<!-- aqui colocaremos o link pra html da dashboard e do simulador que estamos finalizando -->
+			<a href="">Dashboard</a>
+			<a href="Calculadora.html">Simulador</a>
+		</div>
+
+		<div class="acoes">
+			<a href="Login.html" class="link-entrar">Entrar</a>
+			<a href="Cadastro.html" class="botao-verde">Começar grátis</a>
+		</div>
+	</div>
+
+
+	<!-- Banner do site -->
+	<!-- a imagem de fundo da cozinha tem que ser definida na classe .hero no style.css -->
+	<div class="hero">
+		<div class="hero-camada">
+			<h1 class="etiqueta">Anzen<span style="color: #22d66b;">Tech</span></h1>
+			<p class="etiqueta">Vamos com tudo!</p>
+			<h1>Monitoramento inteligente para <span class="destaque">cozinhas industriais.</span></h1>
+			<p>Detecte a presença de GLP e receba alertas para agir rapidamente em situações de risco.</p>
+
+			<a href="Cadastro.html" class="botao-verde">Começar grátis →</a>
+			<!-- o href abaixo devera ter o link da nossa calculadora-->
+			<a href="Calculadora.html" class="botao-borda">Ver simulador de economia</a>
+		</div>
+	</div>
+
+
+	<!-- Caixa pra entrar em contato (meramente ilustrativa, nenhuma conexão com o 
+	 nosso banco de dados ou algo assim)-->
+	<div class="contato">
+		<h3>Fale com a AnzenTech</h3>
+
+		<div class="linha-contato">
+			<!-- abaixo estao os inputs com id pra serem chamados la embaixo na function "solicitarContato" -->
+			<input class="campo" type="text" id="ipt_nome" placeholder="Nome completo *">
+			<input class="campo" type="text" id="ipt_whatsapp" placeholder="WhatsApp * (com DDD)">
+			<button class="botao-escuro" onclick="solicitarContato()">Solicitar contato</button>
+		</div>
+
+		<!-- aqui o -->
+		<p id="mensagem_contato"></p>
+	</div>
+
+
+	<!-- Sessão falando sobre a identidade da marca, definida e discutida pelo antigo grupo na sprint1-->
+	
+	<div class="secao secao-branca">
+		<p class="etiqueta">NOSSA FILOSOFIA</p>
+		<h2>安全 + 安 = AnzenTech</h2>
+		<p class="subtitulo">
+			Em japonês, 安全 significa <i>segurança</i> e 安 significa <i>barato, acessível</i>.
+			Nossa missão é entregar proteção real sem pesar no bolso.
+		</p>
+
+		<div class="cards">
+			<div class="card">
+				<p class="kanji verde">安全</p>
+				<p class="romaji">Anzen</p>
+				<h3>Segurança</h3>
+				<p>Monitoramento contínuo 24h/dia com alertas em tempo real para sua equipe.</p>
+			</div>
+
+			<div class="card">
+				<p class="kanji azul">安</p>
+				<p class="romaji">Yasu</p>
+				<h3>Custo-benefício</h3>
+				<p>Tecnologia acessível que se paga em meses com a redução de incidentes e manutenções.</p>
+			</div>
+
+			<div class="card">
+				<p class="kanji laranja">技術</p>
+				<p class="romaji">Gijutsu</p>
+				<h3>Tecnologia</h3>
+				<p>Sensor MQ-2 de precisão industrial integrado a um sistema de gestão inteligente.</p>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ================= SEGURANÇA PARA SUA COZINHA ================= -->
+	<div class="secao">
+		<h2>Segurança para sua cozinha industrial</h2>
+		<p class="subtitulo">
+			Nossa solução monitora continuamente a presença de GLP e identifica alterações
+			nos níveis detectados pelo sensor, emitindo alertas quando o limite é ultrapassado.
+		</p>
+
+		<div class="cards">
+			<div class="card card-branco">
+				<!--Colocar imagem representativa-->
+				<h3> Monitoramento</h3>
+				<p>Acompanhe continuamente as informações coletadas pelos sensores MQ-2 instalados na cozinha.</p>
+			</div>
+
+			<div class="card card-branco">
+				<!--Colocar imagem representativa-->
+				<h3> Detecção</h3>
+				<p>O sensor realiza leituras e identifica alterações na presença de GLP no ambiente com precisão.</p>
+			</div>
+
+			<div class="card card-branco">
+				<!--Colocar imagem representativa-->
+				<h3> Alertas</h3>
+				<p>Quando o limite é ultrapassado, um alerta imediato é emitido para que o responsável possa agir.</p>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Bloco falando sobre o sensor mq2 -->
+	<div class="secao secao-branca">
+		<div class="duas-colunas">
+
+			<!-- coluna da esquerda: texto -->
+			<div class="coluna">
+				<p class="etiqueta">TECNOLOGIA MQ-2</p>
+				<h2>Sensor de gás de alta precisão para ambientes críticos</h2>
+				<p>
+					O sensor MQ-2 detecta GLP, metano, butano, fumaça e hidrogênio — ideal para
+					cozinhas industriais onde o risco de vazamento é uma preocupação constante.
+				</p>
+
+				<ul class="lista">
+					<li>✅ Resposta rápida a variações de concentração</li>
+					<li>✅ Alta sensibilidade para gases inflamáveis</li>
+					<li>✅ Longa vida útil em ambientes industriais</li>
+					<li>✅ Integração com sistemas de alerta em tempo real</li>
+				</ul>
+
+				<a href="#" class="botao-escuro">Calcular minha economia →</a>
+			</div>
+
+			<!-- direita - simula os sensores ativos -->
+			<div class="coluna">
+				<div class="caixa-sensor">
+					<div class="painel-sensor">
+						<div>
+							<b>🟢 Monitoramento ativo</b>
+							<p>Sensor MQ-2 · Nível normal</p>
+						</div>
+						<span class="valor-sensor">0.3%</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- ================= POR QUE ESCOLHER ================= -->
+	<div class="escolher">
+
+		<div class="escolher-texto">
+			<h2>🛡️ Por que escolher a AnzenTech?</h2>
+			<ul class="lista">
+				<li>✅ Mais segurança para sua equipe</li>
+				<li>✅ Redução de custos com imprevistos</li>
+				<li>✅ Tecnologia de fácil implementação</li>
+				<li>✅ Suporte especializado em todo o processo</li>
+			</ul>
+			<a href="Cadastro.html" class="botao-verde">Começar agora — é grátis</a>
+		</div>
+
+		<div class="escolher-imagem">
+			<p>Prevenir é mais<br><span class="destaque">seguro do que remediar.</span></p>
+			<p class="logo-texto" style="color: #ffffff;">Anzen<span>Tech</span></p>
+		</div>
+	</div>
+
+
+	<!-- ================= RODAPÉ ================= -->
+	<div class="footer">
+		<div class="logo">
+			<img class="logo-img" src="logo.png" alt="Logo AnzenTech">
+			<span class="logo-texto">Anzen<span>Tech</span></span>
+		</div>
+
+		<div class="footer-centro">
+			<p>© 2026 AnzenTech. Todos os direitos reservados.</p>
+			<p>安全 = Segurança · 安 = Custo-benefício</p>
+		</div>
+
+		<div>
+			<a href="index.html">Início</a>
+			<a href="#">Dashboard</a>
+			<a href="#">Simulador</a>
+		</div>
+	</div>
+
+
+	<script>
+		// ==========================================================
+		// "Banco de dados temporário": vetores que guardam os contatos.
+		// Os dados somem quando a página é recarregada (ainda não tem banco de dados).
+		// ==========================================================
+		var listaNomes = [];
+		var listaWhatsapps = [];
+
+		// Função chamada quando clica em "Solicitar contato"
+		function solicitarContato() {
+
+			// 1) pegar os valores digitados nos inputs
+			var nome = ipt_nome.value.trim();          // trim() tira espaços do começo e do fim
+			var whatsapp = ipt_whatsapp.value;
+
+			// 2) deixar só os números do WhatsApp (tirando parênteses, traço e espaços)
+			var numeros = "0123456789";
+			var apenasNumeros = "";
+			var i = 0;
+
+			while (i < whatsapp.length) {
+				var letra = whatsapp.charAt(i);         // pega uma letra por vez
+
+				// se a letra está dentro da string "0123456789", é um número
+				if (numeros.includes(letra)) {
+					apenasNumeros = apenasNumeros + letra;
+				}
+				i++;
+			}
+
+			// 3) validações (OR = || ) - o WhatsApp com DDD tem 10 ou 11 números
+			if (nome.length < 3) {
+				mensagem_contato.className = "erro";
+				mensagem_contato.innerHTML = "Digite seu nome completo (mínimo 3 letras).";
+			} else if (apenasNumeros.length != 10 && apenasNumeros.length != 11) {
+				mensagem_contato.className = "erro";
+				mensagem_contato.innerHTML = "Digite o WhatsApp com DDD (10 ou 11 números).";
+			} else {
+				// deu tudo certo: guarda nos vetores
+				listaNomes.push(nome);
+				listaWhatsapps.push(apenasNumeros);
+
+				mensagem_contato.className = "sucesso";
+				mensagem_contato.innerHTML = "Obrigado, " + nome + "! Entraremos em contato em breve.";
+
+				// limpa os campos
+				ipt_nome.value = "";
+				ipt_whatsapp.value = "";
+			}
+		}
+	</script>
+
+</body>
+
+</html>

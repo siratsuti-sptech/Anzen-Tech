@@ -1,0 +1,671 @@
+/* =====================================================
+   style.css - AnzenTech (esqueleto do site)
+   Este arquivo é usado pelas 3 páginas:
+   index.html, Login.html e Cadastro.html
+   Cores usadas:
+   azul escuro: #0f2341   verde: #22d66b   cinza claro: #f3f5f9
+   cinza do texto: #6b7280   branco: #ffffff
+   ===================================================== */
+
+
+/* ---------- CONFIGURAÇÕES GERAIS ---------- */
+
+/* seletor * = vale para todos os elementos */
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	/* box-sizing faz o padding NÃO aumentar o tamanho da caixa (facilita as contas) */
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;                 /* tira a margem branca padrão do navegador */
+	background-color: #f3f5f9;
+	color: #0f2341;
+}
+
+a {
+	text-decoration: none;     /* tira o sublinhado dos links */
+}
+
+h1, h2, h3, p {
+	margin-top: 0;
+}
+
+
+/* ---------- CABEÇALHO (header) ---------- */
+
+.header {
+	background-color: #ffffff;
+	display: flex;                     /* flexbox: coloca os itens lado a lado */
+	justify-content: space-between;    /* logo na esquerda, botões na direita */
+	align-items: center;               /* centraliza na vertical */
+	padding: 15px 80px;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+/* imagem da logo (o caminho do src fica no HTML) */
+.logo-img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;                /* deixa a imagem redonda */
+	/* border: 2px solid #0f2341;*/
+	margin-right: 10px;
+}
+
+.logo-texto {
+	font-size: 26px;
+	font-weight: bold;
+	color: #0f2341;
+}
+
+/* a palavra "Tech" fica verde */
+.logo-texto span {
+	color: #22d66b;
+}
+
+.menu {
+	display: flex;
+}
+
+.menu a {
+	color: #0f2341;
+	margin: 0 20px;
+	padding-bottom: 5px;
+}
+
+/* link da página atual */
+.menu a.ativo {
+	color: #22d66b;
+	border-bottom: 2px solid #22d66b;
+}
+
+.acoes {
+	display: flex;
+	align-items: center;
+}
+
+.acoes .link-entrar {
+	color: #0f2341;
+	margin-right: 20px;
+}
+
+
+/* ---------- BOTÕES ---------- */
+
+.botao-verde {
+	background-color: #22d66b;
+	color: #0f2341;
+	font-weight: bold;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;                   /* mãozinha ao passar o mouse */
+	display: inline-block;
+}
+
+.botao-escuro {
+	background-color: #0f2341;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.botao-borda {
+	background-color: transparent;
+	color: #ffffff;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: 1px solid #ffffff;
+	font-size: 16px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+.botao-claro {
+	background-color: #ffffff;
+	color: #0f2341;
+	font-weight: bold;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+
+/* ---------- BANNER (hero) DA PÁGINA INICIAL ---------- */
+
+.hero {
+	/* imagem de fundo: coloque a foto de cozinha industrial na pasta img */
+	background-image: url("img/cozinha-industrial.jpg");
+	background-size: cover;            /* a imagem cobre toda a área */
+	background-position: center;
+	background-color: #0f2341;         /* cor de reserva caso a imagem não exista */
+}
+
+/* camada azul transparente por cima da imagem (rgba = cor + transparência) */
+.hero-camada {
+	background-color: rgba(15, 35, 65, 0.85);
+	padding: 100px 80px 120px 80px;
+}
+
+.etiqueta {
+	color: #22d66b;
+	font-weight: bold;
+	font-size: 14px;
+	letter-spacing: 2px;               /* espaço entre as letras */
+	margin-bottom: 15px;
+}
+
+.hero h1 {
+	color: #ffffff;
+	font-size: 52px;
+	width: 700px;
+	margin-bottom: 20px;
+}
+
+/* palavras verdes dentro do título */
+.destaque {
+	color: #22d66b;
+}
+
+.hero p {
+	color: #d1d5db;
+	font-size: 20px;
+	width: 650px;
+	margin-bottom: 35px;
+}
+
+
+/* ---------- FORMULÁRIO DE CONTATO (card branco) ---------- */
+
+.contato {
+	background-color: #ffffff;
+	width: 90%;
+	max-width: 1100px;
+	margin: 30px auto;                 /* auto nas laterais = centraliza */
+	padding: 30px;
+	border-radius: 20px;
+	border: 1px solid #e5e7eb;
+	text-align: center;
+}
+
+.contato h3 {
+	font-size: 20px;
+}
+
+.linha-contato {
+	display: flex;
+}
+
+.linha-contato input {
+	flex: 1;                           /* cada input ocupa o mesmo espaço */
+	margin-right: 15px;
+}
+
+
+/* ---------- SEÇÕES DA PÁGINA INICIAL ---------- */
+
+.secao {
+	padding: 60px 80px;
+	text-align: center;
+}
+
+.secao-branca {
+	background-color: #ffffff;
+}
+
+.secao h2 {
+	font-size: 36px;
+	margin-bottom: 15px;
+}
+
+.subtitulo {
+	color: #6b7280;
+	font-size: 18px;
+	width: 700px;
+	margin: 0 auto 40px auto;
+}
+
+/* linha com 3 cards lado a lado */
+.cards {
+	display: flex;
+}
+
+.card {
+	flex: 1;
+	background-color: #f3f5f9;
+	border-radius: 20px;
+	padding: 30px;
+	margin: 0 15px;
+	text-align: left;
+}
+
+/* card branco (usado na seção "Segurança para sua cozinha") */
+.card-branco {
+	background-color: #ffffff;
+	border: 1px solid #e5e7eb;
+}
+
+.card h3 {
+	margin-bottom: 10px;
+}
+
+.card p {
+	color: #6b7280;
+	line-height: 1.6;                  /* espaço entre as linhas do texto */
+}
+
+/* símbolos japoneses grandes dentro dos cards */
+.kanji {
+	font-size: 48px;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+.verde  { color: #22d66b; }
+.azul   { color: #3b82f6; }
+.laranja { color: #f59e0b; }
+
+.romaji {
+	font-size: 13px;
+	color: #9ca3af;
+}
+
+
+/* ---------- SEÇÃO TECNOLOGIA MQ-2 (2 colunas) ---------- */
+
+.duas-colunas {
+	display: flex;
+	align-items: center;
+	text-align: left;
+}
+
+.coluna {
+	flex: 1;
+	padding: 0 30px;
+}
+
+.coluna h2 {
+	font-size: 34px;
+}
+
+.coluna p {
+	color: #6b7280;
+	font-size: 17px;
+	line-height: 1.6;
+}
+
+.lista {
+	list-style: none;                  /* tira as bolinhas da lista */
+	padding: 0;
+	margin-bottom: 30px;
+}
+
+.lista li {
+	margin-bottom: 15px;
+	color: #374151;
+}
+
+/* caixa que simula a imagem do sensor */
+.caixa-sensor {
+	background-image: url("img/cozinha-industrial.jpg");
+	background-size: cover;
+	background-color: #1e3a8a;
+	border-radius: 20px;
+	height: 400px;
+	padding: 20px;
+	display: flex;
+	align-items: flex-end;             /* joga o painel para o fim (embaixo) */
+}
+
+.painel-sensor {
+	background-color: rgba(15, 35, 65, 0.85);
+	color: #ffffff;
+	width: 100%;
+	padding: 20px;
+	border-radius: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: left;
+}
+
+.painel-sensor p {
+	margin: 0;
+	color: #d1d5db;
+	font-size: 14px;
+}
+
+.valor-sensor {
+	color: #22d66b;
+	font-weight: bold;
+	font-size: 22px;
+}
+
+
+/* ---------- SEÇÃO "POR QUE ESCOLHER" ---------- */
+
+.escolher {
+	background-color: #0f2341;
+	color: #ffffff;
+	display: flex;
+}
+
+.escolher-texto {
+	flex: 1;
+	padding: 60px 80px;
+}
+
+.escolher-texto h2 {
+	font-size: 34px;
+}
+
+.escolher-texto li {
+	color: #e5e7eb;
+	margin-bottom: 15px;
+}
+
+.escolher-imagem {
+	flex: 1;
+	background-image: url("img/cozinha-industrial.png");
+	background-size: cover;
+	background-color: #1e3a8a;
+	padding: 60px;
+	text-align: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+
+/* ---------- RODAPÉ (footer) ---------- */
+
+.footer {
+	background-color: #0b1a30;
+	color: #9ca3af;
+	padding: 30px 80px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.footer .logo-texto {
+	color: #ffffff;
+}
+
+.footer a {
+	color: #9ca3af;
+	margin-left: 20px;
+}
+
+.footer-centro {
+	text-align: center;
+	font-size: 14px;
+}
+
+
+/* ---------- CAMPOS DE FORMULÁRIO (input, select) ---------- */
+
+.campo {
+	width: 100%;
+	padding: 15px;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	font-size: 16px;
+	background-color: #ffffff;
+}
+
+label {
+	display: block;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 8px;
+}
+
+/* mensagem de erro (vermelha) e de sucesso (verde) */
+.erro {
+	color: #ef4444;
+	font-size: 14px;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+.sucesso {
+	color: #16a34a;
+	font-size: 14px;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+
+/* ---------- PÁGINAS DE LOGIN E CADASTRO ---------- */
+
+/* a tela é dividida em dois lados: painel azul + formulário */
+.pagina-dividida {
+	display: flex;
+	min-height: 100vh;                 /* vh = altura da tela */
+}
+
+.painel-azul {
+	width: 45%;
+	background-color: #0f2341;
+	color: #ffffff;
+	padding: 50px 70px;
+}
+
+.painel-azul h1 {
+	font-size: 34px;
+}
+
+.painel-azul p {
+	color: #d1d5db;
+	line-height: 1.6;
+}
+
+.painel-azul .logo-texto {
+	color: #ffffff;
+}
+
+.painel-form {
+	width: 55%;
+	display: flex;
+	justify-content: center;           /* centraliza a caixa na horizontal */
+	align-items: center;               /* e na vertical */
+	padding: 30px;
+}
+
+.caixa-form {
+	background-color: #ffffff;
+	width: 100%;
+	max-width: 560px;
+	padding: 40px;
+	border-radius: 20px;
+	border: 1px solid #e5e7eb;
+}
+
+.caixa-form h2 {
+	font-size: 30px;
+	margin-bottom: 5px;
+}
+
+.caixa-form .botao-escuro {
+	width: 100%;
+	margin-top: 25px;
+}
+
+.rodape-form {
+	text-align: center;
+	color: #6b7280;
+	margin-top: 25px;
+	margin-bottom: 0;
+}
+
+.rodape-form a {
+	color: #22d66b;
+	font-weight: bold;
+}
+
+/* caixinhas com ícone e texto do painel azul (Login) */
+.item-painel {
+	background-color: #1a3357;
+	border-radius: 15px;
+	padding: 20px;
+	margin-bottom: 15px;
+	display: flex;
+	align-items: center;
+}
+
+.item-painel .icone {
+	font-size: 28px;
+	margin-right: 20px;
+}
+
+.item-painel p {
+	margin: 0;
+}
+
+/* lista de vantagens com ✓ verde (Cadastro) */
+.vantagens {
+	list-style: none;
+	padding: 0;
+}
+
+.vantagens li {
+	margin-bottom: 15px;
+}
+
+.vantagens li span {
+	color: #22d66b;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+/* caixa de depoimento */
+.depoimento {
+	background-color: #1a3357;
+	border-radius: 15px;
+	padding: 25px;
+	margin-top: 60px;
+	font-style: italic;
+}
+
+/* campo de senha com botão de olho ao lado */
+.linha-senha {
+	display: flex;
+}
+
+.linha-senha .campo {
+	flex: 1;
+}
+
+.botao-olho {
+	background-color: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	margin-left: 10px;
+	padding: 0 15px;
+	cursor: pointer;
+	font-size: 18px;
+}
+
+.link-esqueci {
+	color: #22d66b;
+	float: right;                      /* joga o link para a direita */
+	font-size: 14px;
+}
+
+
+/* ---------- CADASTRO: INDICADOR DE PASSOS ---------- */
+
+.passos {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.passo {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	color: #6b7280;
+}
+
+/* bolinha com o número do passo */
+.bolinha {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: #e5e7eb;
+	color: #6b7280;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 8px;
+	font-weight: bold;
+}
+
+/* o JavaScript troca a classe para "bolinha ativa" no passo atual */
+.bolinha.ativa {
+	background-color: #22d66b;
+	color: #ffffff;
+}
+
+/* dois botões lado a lado (Voltar e Continuar) */
+.botoes-linha {
+	display: flex;
+	margin-top: 25px;
+}
+
+.botoes-linha button {
+	flex: 1;
+}
+
+.botoes-linha .botao-claro {
+	margin-right: 15px;
+}
+
+/* o .botao-escuro dentro de .botoes-linha não precisa de margem extra */
+.caixa-form .botoes-linha .botao-escuro {
+	margin-top: 0;
+}
+
+/* caixa verde clara de aviso */
+.aviso-verde {
+	background-color: #e8f8ef;
+	border: 1px solid #b7ebcd;
+	border-radius: 12px;
+	padding: 20px;
+	margin-top: 20px;
+}
+
+.aviso-verde p {
+	margin: 0;
+	color: #6b7280;
+	font-size: 14px;
+}
+
+/* barra que mostra a força da senha */
+.barra-fundo {
+	background-color: #e5e7eb;
+	height: 8px;
+	border-radius: 5px;
+	margin-top: 10px;
+}
+
+.barra-forca {
+	height: 8px;
+	width: 0%;                         /* o JavaScript muda a largura */
+	border-radius: 5px;
+	background-color: #ef4444;
+}
