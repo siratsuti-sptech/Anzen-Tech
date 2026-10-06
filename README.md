@@ -2,7 +2,6 @@
   <img src="https://github.com/user-attachments/assets/242b49ca-d94a-47b0-9b45-35c416802563" alt="Logo Anzen Tech" width="450">
 </p>
 
-<h1 align="center">Anzen Tech 安全テク</h1>
 
 <p align="center">
   Sistema de Monitoramento e Detecção de Vazamento de Gás GLP
