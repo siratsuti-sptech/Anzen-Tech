@@ -246,12 +246,12 @@ anzen-tech/
 
 | Nome | GitHub |
 |---|---|
-| Pedro Nunes Pereira | [@usuario](https://github.com/usuario) |
-| Zanee Lopes Pereira | [@usuario](https://github.com/usuario) |
-| Flávio Sandri Caputo | [@usuario](https://github.com/usuario) |
-| Kauã Hideaki Siratsuti | [@usuario](https://github.com/usuario) |
-| Nicollas Martins Candido | [@usuario](https://github.com/usuario) |
-| Pietro Giuliani da Silva | [@usuario](https://github.com/usuario) |
+| Pedro Nunes Pereira | [@pedronunessptech](https://github.com/usuario) |
+| Zanee Lopes Pereira | [@zanee-07](https://github.com/usuario) |
+| Flávio Sandri Caputo | [@FlavioCaputo85](https://github.com/usuario) |
+| Kauã Hideaki Siratsuti | [@siratsuti-sptech](https://github.com/usuario) |
+| Nicollas Martins Candido | [@nicandido](https://github.com/usuario) |
+| Pietro Giuliani da Silva | [@pietrogds](https://github.com/usuario) |
 
 ---
 
