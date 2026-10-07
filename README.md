@@ -1,5 +1,6 @@
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f56ee87d-158c-4c71-b16d-a68f6b51008a" alt="Logo Anzen Tech" width="450">
+  <img width="1280" height="300" alt="Vamos com Tudo!(2)" src="https://github.com/user-attachments/assets/529106f6-48f6-4144-b581-234ee30f9213" />
 </p>
 
 
