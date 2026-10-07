@@ -65,15 +65,15 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 
 ```
 ┌──────────┐    ┌──────────┐    ┌────────────┐    ┌──────────────┐    ┌──────────┐
-│  MQ-2    │───▶│ Arduino  │───▶│   Porta    │───▶│ API Node.js  │───▶│  MySQL   │
-│ (sensor) │    │   UNO    │    │   Serial   │    │              │    │(histórico)│
+│  MQ-2    │──▶│ Arduino  │───▶│   Porta    │──▶│ API Node.js  │───▶│  MySQL   │
+│ (sensor) │    │   UNO    │    │   Serial   │    │              │    │histórico │
 └──────────┘    └──────────┘    └────────────┘    └──────┬───────┘    └──────────┘
-                                                          │ HTTP (JSON)
-                                                          ▼
-                                                   ┌──────────────┐
-                                                   │ Interface Web│
-                                                   │ HTML/CSS/JS  │
-                                                   └──────────────┘
+                                                         │ HTTP (JSON)
+                                                         ▼
+                                                  ┌──────────────┐
+                                                  │ Interface Web│
+                                                  │ HTML/CSS/JS  │
+                                                  └──────────────┘
 ```
 
 O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados, grava no MySQL e os expõe para a interface web, que consome a API via requisições HTTP.
