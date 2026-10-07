@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="[https://github.com/user-attachments/assets/242b49ca-d94a-47b0-9b45-35c416802563](https://github.com/user-attachments/assets/f56ee87d-158c-4c71-b16d-a68f6b51008a)" alt="Logo Anzen Tech" width="450">
+  <img src="https://github.com/user-attachments/assets/f56ee87d-158c-4c71-b16d-a68f6b51008a" alt="Logo Anzen Tech" width="450">
 </p>
 
 
