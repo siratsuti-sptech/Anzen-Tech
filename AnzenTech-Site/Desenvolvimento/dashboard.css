@@ -27,6 +27,120 @@ body {
 
 /* Área principal */
 
+
+/* Organização horizontal dos cards */
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* Aparência geral das KPI's */
+
+.kpi-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid #22c55e;
+    border-radius: 15px;
+    padding: 22px;
+}
+
+/* Título de cada KPI */
+
+.kpi-titulo {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* Valor principal */
+
+.kpi-valor {
+    color: #0f2341;
+    font-size: 32px;
+    margin: 0 0 10px;
+}
+
+/* Unidade PPM */
+
+.kpi-valor span {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+/* Status abaixo do valor */
+
+.kpi-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Texto complementar */
+
+.kpi-descricao {
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+/* Concentração crítica de GLP: vermelho */
+
+.kpi-critico {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    border-left: 5px solid #dc2626;
+}
+
+.kpi-critico .kpi-valor,
+.kpi-critico .kpi-status {
+    color: #dc2626;
+}
+
+/* Sistema online: verde */
+
+.kpi-online {
+    border-left-color: #22c55e;
+}
+
+.kpi-online .kpi-valor,
+.kpi-online .kpi-status {
+    color: #166534;
+}
+
+/* Alertas: vermelho */
+
+.kpi-alertas {
+    border-left-color: #dc2626;
+}
+
+.kpi-alertas .kpi-valor,
+.kpi-alertas .kpi-status {
+    color: #dc2626;
+}
+
+/* Ajustes para telas menores */
+
+@media (max-width: 900px) {
+    .kpis {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .kpi-card {
+        padding: 18px;
+    }
+
+    .kpi-valor {
+        font-size: 28px;
+    }
+}
+
+
 .dashboard-conteudo {
     padding: 35px 80px;
 }
@@ -50,9 +164,10 @@ body {
 /* Cards dos gráficos */
 
 .graficos {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 25px;
+    align-items: start;
 }
 
 .card-grafico {
@@ -60,6 +175,7 @@ body {
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     padding: 25px;
+    min-width: 0;
 }
 
 /* Cabeçalho de cada gráfico */
@@ -140,5 +256,10 @@ body {
     .area-pizza {
         height: 250px;
         max-width: 300px;
+    }
+
+    .graficos {
+    grid-template-columns: 1fr;
+    gap: 20px;
     }
 }
