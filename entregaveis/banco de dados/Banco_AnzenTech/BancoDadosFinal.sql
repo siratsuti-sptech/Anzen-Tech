@@ -20,8 +20,8 @@ Zanee Lopes
 -- SPRINT 1
 
 -- Criando e selecionando o banco de dados
-CREATE DATABASE tabelasGLP;
-USE tabelasGLP;
+CREATE DATABASE AnzenTech;
+USE AnzenTech;
 
 -- TABELA 1
 -- Criação da tabela cadastro
