@@ -1,0 +1,199 @@
+/* Visual exclusivo do mural de avisos. */
+body.mural-page {
+  --navy: #0f2341;
+  --navy-dark: #0b1a30;
+  --green: #22d66b;
+  --green-dark: #167a45;
+  --ink: #17263e;
+  --muted: #687386;
+  --line: #e2e7ef;
+  --paper: #f3f5f9;
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Arial, Helvetica, sans-serif;
+}
+body.mural-page *,
+body.mural-page *::before,
+body.mural-page *::after { box-sizing: border-box; }
+body.mural-page .janela { min-height: 100vh; }
+body.mural-page .header-left { position: fixed; inset: 0 auto 0 0; z-index: 5; display: flex; width: 250px; min-height: 100vh; flex-direction: column; align-items: stretch; gap: 15px; padding: 30px 20px; border-right: 1px solid rgba(255,255,255,.1); background: linear-gradient(165deg, var(--navy), var(--navy-dark)); }
+body.mural-page .header-left h1 { margin: 2px 0 24px; color: #fff; font-size: 25px; letter-spacing: -.5px; text-align: center; }
+body.mural-page .hello { display: flex; justify-content: flex-start; margin: 0 4px 13px; }
+body.mural-page .hello h3 { margin: 0; color: #dce5f0; font-size: 14px; font-weight: 500; }
+body.mural-page .hello h3 span { color: #fff; font-weight: 700; }
+body.mural-page .btn-nav,
+body.mural-page .btn-nav-white { width: 100%; padding: 0; border: 0; border-radius: 10px; background: transparent; text-align: left; }
+body.mural-page .btn-nav h3,
+body.mural-page .btn-nav-white h3 { margin: 0; padding: 13px 14px; border-radius: 10px; color: #c5d0df; font-size: 14px; font-weight: 600; }
+body.mural-page .btn-nav { background: rgba(34,214,107,.16); }
+body.mural-page .btn-nav h3 { color: #baf4d0; }
+body.mural-page .btn-nav-white a { display: block; text-decoration: none; }
+body.mural-page .btn-nav-white h3:hover { background: rgba(255,255,255,.08); color: #fff; }
+body.mural-page .btn-logout { margin: auto 0 0; padding: 12px 14px; border: 1px solid rgba(255,255,255,.18); border-radius: 10px; background: transparent; color: #eef4fb; cursor: pointer; text-align: center; }
+body.mural-page .btn-logout h3 { margin: 0; font-size: 14px; font-weight: 600; }
+body.mural-page .btn-logout:hover { border-color: rgba(255,255,255,.45); background: rgba(255,255,255,.08); }
+
+body.mural-page .dash-right { display: block; width: auto; min-height: 100vh; height: auto; margin-left: 250px; padding: 42px clamp(20px, 4vw, 58px); background: var(--paper); }
+body.mural-page .avisos { width: 100%; color: var(--ink); }
+body.mural-page .avisos .container { display: block; width: min(100%, 980px); margin: 0 auto; }
+body.mural-page .avisos h1 { margin: 0 0 18px; color: var(--navy); font-size: 24px; letter-spacing: -.5px; }
+body.mural-page .div-form { width: 100%; margin: 0 0 35px; padding: 25px; border: 1px solid var(--line); border-radius: 17px; background: #fff; box-shadow: 0 12px 35px rgba(15,35,65,.05); }
+body.mural-page .div-form #form_postagem { width: 100%; }
+body.mural-page .div-form label { display: block; width: 100%; color: #33445d; font-size: 14px; font-weight: 700; line-height: 1.7; }
+body.mural-page .div-form input,
+body.mural-page .div-form textarea { display: block; width: 100%; margin-top: 7px; padding: 12px 14px; border: 1px solid #d5dce6; border-radius: 9px; background: #fff; color: var(--ink); font: inherit; }
+body.mural-page .div-form input:focus,
+body.mural-page .div-form textarea:focus { outline: 3px solid rgba(34,214,107,.18); border-color: var(--green-dark); }
+body.mural-page .div-form textarea { min-height: 128px; resize: vertical; }
+body.mural-page .div-form button,
+body.mural-page .publicacao-btn-editar { min-height: 42px; padding: 0 17px; border: 0; border-radius: 9px; background: var(--green); color: var(--navy); font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+body.mural-page .div-form button:hover,
+body.mural-page .publicacao-btn-editar:hover { background: #35e57b; }
+body.mural-page .div-results { width: 100%; }
+body.mural-page .feed-container { display: flex; width: 100%; flex-direction: column; gap: 14px; margin-bottom: 32px; padding: 0; border-radius: 0; background: transparent; }
+body.mural-page .publicacao { display: flex; flex-direction: column; align-items: stretch; justify-content: center; padding: 21px 23px; border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: 14px; background: #fff; box-shadow: 0 8px 24px rgba(15,35,65,.04); }
+body.mural-page .publicacao > *:not(:last-child) { padding: 0 0 9px; }
+body.mural-page .publicacao-nome { color: var(--green-dark); font-size: 12px; font-weight: 800; }
+body.mural-page .publicacao-titulo { color: var(--navy); font-size: 18px; font-weight: 750; }
+body.mural-page .publicacao-descricao { color: #526174; font-size: 14px; line-height: 1.65; white-space: pre-line; }
+body.mural-page .div-buttons { display: flex; justify-content: flex-end; gap: 9px; }
+body.mural-page .publicacao-btn-editar { min-height: 34px; padding: 0 12px; font-size: 12px; }
+body.mural-page #alerta { position: fixed; z-index: 10; right: 12px; bottom: 12px; }
+body.mural-page .mensagem-alarme { display: flex; width: min(330px, calc(100vw - 24px)); min-height: 82px; align-items: center; justify-content: space-evenly; margin: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 13px; background: #fff; box-shadow: 0 16px 36px rgba(15,35,65,.2); }
+body.mural-page .mensagem-alarme h3 { margin: 0; color: var(--navy); font-size: 14px; }
+body.mural-page .mensagem-alarme .informacao { width: 72%; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 800px) {
+  body.mural-page .janela { display: flex; flex-direction: column; }
+  body.mural-page .header-left { position: relative; width: 100%; min-height: 0; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 7px; padding: 15px 18px; }
+  body.mural-page .header-left h1 { width: 100%; margin: 0 0 6px; text-align: left; }
+  body.mural-page .hello { width: 100%; margin: 0 0 7px; }
+  body.mural-page .btn-nav,
+  body.mural-page .btn-nav-white { width: auto; flex: 1 1 155px; }
+  body.mural-page .btn-nav h3,
+  body.mural-page .btn-nav-white h3 { height: 100%; padding: 10px; font-size: 12px; }
+  body.mural-page .btn-logout { width: 100%; margin: 8px 0 0; }
+  body.mural-page .dash-right { min-height: 60vh; margin: 0; padding: 25px 16px; }
+  body.mural-page .div-form { padding: 19px; }
+}
+
+
+ /* Cabeçalho comum do painel, com navegação local preservada em faixa própria. */
+body.mural-page .janela { display: flex; flex-direction: column; }
+body.mural-page .header-left {
+  position: relative;
+  inset: auto;
+  z-index: 5;
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  padding: 9px 4%;
+  border-top: 3px solid #303b4b;
+  border-bottom: 1px solid #dce2eb;
+  background: #f5f6f7;
+}
+body.mural-page .brand {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  color: #0f2341;
+  font-size: 21px;
+  font-weight: bold;
+  text-decoration: none;
+}
+body.mural-page .brand img { width: 40px; height: 40px; margin-right: 9px; }
+body.mural-page .brand span span { color: #22d66b; }
+body.mural-page .navbar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body.mural-page .navbar li { margin: 0 14px; }
+body.mural-page .navbar a {
+  display: block;
+  padding: 8px 0;
+  color: #0f2341;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+body.mural-page .navbar a:hover { color: #167a45; }
+body.mural-page .navbar li.agora a {
+  border-bottom: 2px solid #22d66b;
+  color: #167a45;
+}
+body.mural-page .nav-actions { display: flex; flex: 0 0 auto; align-items: center; }
+body.mural-page .hello { display: flex; margin: 0 14px 0 0; }
+body.mural-page .hello h3 { margin: 0; color: #33445d; font-size: 14px; font-weight: normal; }
+body.mural-page .hello h3 span { color: #0f2341; font-weight: bold; }
+body.mural-page .btn-logout {
+  margin: 0;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #22d66b;
+  color: #0f2341;
+  text-align: center;
+}
+body.mural-page .btn-logout h3 { margin: 0; font-size: 14px; font-weight: bold; }
+body.mural-page .btn-logout:hover { background: #35e57b; }
+body.mural-page .panel-subnav {
+  display: flex;
+  min-height: 45px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-bottom: 1px solid #e2e7ef;
+  background: #fff;
+}
+body.mural-page .panel-subnav a,
+body.mural-page .panel-subnav span {
+  margin: 0 13px;
+  padding: 13px 0 11px;
+  color: #33445d;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+}
+body.mural-page .panel-subnav a:hover { color: #167a45; }
+body.mural-page .panel-subnav .agora {
+  border-bottom: 2px solid #22d66b;
+  color: #167a45;
+}
+body.mural-page .dash { margin-left: 0; }
+body.mural-page .dash-right { margin-left: 0; }
+
+@media (max-width: 760px) {
+  body.mural-page .header-left { padding: 10px 4%; }
+  body.mural-page .brand { font-size: 19px; }
+  body.mural-page .brand img { width: 36px; height: 36px; }
+  body.mural-page .navbar {
+    order: 3;
+    flex: 0 0 100%;
+    margin-top: 8px;
+  }
+  body.mural-page .navbar li { margin: 0 10px; }
+  body.mural-page .navbar a { font-size: 13px; }
+  body.mural-page .nav-actions { margin-left: auto; }
+  body.mural-page .hello { margin-right: 9px; }
+  body.mural-page .hello h3 { font-size: 13px; }
+  body.mural-page .btn-logout { padding: 8px 12px; }
+  body.mural-page .btn-logout h3 { font-size: 13px; }
+  body.mural-page .panel-subnav { flex-wrap: wrap; padding: 0 8px; }
+  body.mural-page .panel-subnav a,
+  body.mural-page .panel-subnav span { margin: 0 8px; font-size: 12px; }
+}
+@media (max-width: 420px) {
+  body.mural-page .nav-actions { flex: 0 0 100%; justify-content: flex-end; margin-top: 8px; }
+  body.mural-page .panel-subnav a,
+  body.mural-page .panel-subnav span { margin: 0 6px; }
+}

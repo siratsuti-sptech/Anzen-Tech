@@ -6,11 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaTech | Dashboards</title>
+    <title>AnzenTech | Dashboards</title>
 
     
-    <link rel="stylesheet" href="./../css/dashboards.css">
-    <link rel="stylesheet" href="./../css/estilo.css" />
+    <link rel="stylesheet" href="./../css/dashboard-style.css">
     <script src="../js/sessao.js"></script>
     <script src="./../js/alerta.js"></script>
 
@@ -28,41 +27,30 @@
 
 <!-- <body onload=" atualizarFeed()"> -->
 
-<body>
+<body class="dashboard-page">
 
     <div class="janela">
-        <div class="header-left">
-            <h1>AquaTech</h1>
-
-            <div class="hello">
-                <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
-            </div>
-
-            <div class="btn-nav-white">
-                <a href="./cards.html">
-                    <h3>Aquários e Terrários</h3>
-                </a>
-            </div>
-
-            <div class="btn-nav">
-
-                <h3>Gráficos</h3>
-
-            </div>
-
-            <div class="btn-nav-white">
-                <a href="./mural.html">
-                    <h3>Mural de Avisos</h3>
-                </a>
-            </div>
-
-            <div class="btn-logout" onclick="limparSessao()">
-                <h3>Sair</h3>
-            </div>
-
-        </div>
-
-        <div class="dash">
+        <div class="header-left dash-header">
+  <a class="brand" href="../index.html" aria-label="AnzenTech - Início">
+    <img src="../assets/icon/安.png" alt="">
+    <span>Anzen<span>Tech</span></span>
+  </a>
+  <ul class="navbar" aria-label="Navegação principal">
+    <li><a href="../index.html">Início</a></li>
+    <li class="agora"><a href="./cards.html">Dashboard</a></li>
+    <li><a href="../simulador.html">Simulador</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="hello"><h3>Olá, <span id="b_usuario">usuário</span>!</h3></div>
+    <div class="btn-logout" onclick="limparSessao()"><h3>Sair</h3></div>
+  </div>
+</div>
+<nav class="panel-subnav" aria-label="Seções do dashboard">
+  <a href="./cards.html">Aquários e Terrários</a>
+  <span class="agora">Gráficos</span>
+  <a href="./mural.html">Mural de Avisos</a>
+</nav>
+    <div class="dash">
             <div id="alerta">
             </div>
 

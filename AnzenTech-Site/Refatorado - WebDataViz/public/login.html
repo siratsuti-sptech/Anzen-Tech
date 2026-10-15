@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AnzenTech | Login</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/login-style.css">
+    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body class="login-page">
+
+    <!--Header-->
+
+    <div class="header">
+  <div class="container">
+    <a class="logo" href="index.html" aria-label="AnzenTech - Início">
+      <img class="logo-img" src="./assets/icon/安.png" alt="">
+      <span class="logo-texto">Anzen<span>Tech</span></span>
+    </a>
+    <ul class="navbar" aria-label="Navegação principal">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="dashboard/cards.html">Dashboard</a></li>
+      <li><a href="simulador.html">Simulador</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="nav-login agora" href="login.html">Entrar</a>
+      <a class="nav-cta" href="cadastro.html">Começar grátis</a>
+    </div>
+  </div>
+</div>
+    <div class="login">
+        <div class="alerta_erro">
+            <div class="card_erro" id="cardErro">
+                <span id="mensagem_erro"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card card-login">
+                <h2>Olá de volta!</h2>
+                <div class="formulario">
+                    <div class="campo">
+                        <span>E-mail:</span>
+                        <input id="email_input" type="email" placeholder="meuemail@provedor.com" autocomplete="username">
+                    </div>
+                    <div class="campo">
+                        <span>Senha:</span>
+                        <input id="senha_input" type="password" placeholder="******" autocomplete="current-password">
+                    </div>
+                    <button class="botao" onclick="entrar()">Entrar</button>
+                </div>
+
+                <div id="div_aguardar" class="loading-div">
+                    <img src="./assets/circle-loading.gif" id="loading-gif">
+                </div>
+
+                <div id="div_erros_login"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--footer inicio-->
+    <div class="footer">
+        <div class="container">
+        </div>
+    </div>
+    <!--footer fim-->
+
+</body>
+
+</html>
+
+<script>
+    async function entrar() {
+        aguardar();
+
+        var emailVar = document.getElementById("email_input").value.trim();
+        var senhaVar = document.getElementById("senha_input").value;
+
+        if (emailVar === "" || senhaVar === "") {
+            mostrarErroLogin("Preencha o e-mail e a senha.");
+            finalizarAguardar();
+            return false;
+        }
+
+        try {
+            var resposta = await fetch("/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailServer: emailVar,
+                    senhaServer: senhaVar
+                })
+            });
+
+            if (resposta.status === 403) {
+                mostrarErroLogin("E-mail ou senha inválidos.");
+                return false;
+            }
+
+            if (!resposta.ok) {
+                mostrarErroLogin("Não foi possível validar o login. Confira a conexão com o servidor e o banco de dados.");
+                return false;
+            }
+
+            var usuario = await resposta.json();
+            sessionStorage.setItem("EMAIL_USUARIO", usuario.email);
+            sessionStorage.setItem("NOME_USUARIO", usuario.nome);
+            sessionStorage.setItem("ID_USUARIO", usuario.id);
+            sessionStorage.setItem("AQUARIOS", JSON.stringify(Array.isArray(usuario.aquarios) ? usuario.aquarios : []));
+
+            window.location = "./dashboard/cards.html";
+        } catch (erro) {
+            mostrarErroLogin("Não foi possível conectar ao servidor. Tente novamente.");
+        } finally {
+            finalizarAguardar();
+        }
+
+        return false;
+    }
+
+    function mostrarErroLogin(mensagem) {
+        document.getElementById("mensagem_erro").textContent = mensagem;
+        document.getElementById("cardErro").style.display = "block";
+        setTimeout(sumirMensagem, 5000);
+    }
+
+    function sumirMensagem() {
+        document.getElementById("cardErro").style.display = "none";
+    }
+</script>

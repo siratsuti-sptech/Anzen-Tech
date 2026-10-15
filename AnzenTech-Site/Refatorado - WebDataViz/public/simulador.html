@@ -6,39 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Simulador</title>
+    <title>AnzenTech | Simulador</title>
 
     <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/simulador-style.css">
     <link rel="icon" href="./assets/icon/favicon2.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
-<body>
+<body class="simulador-page">
 
     <!--header inicio-->
     <div class="header">
-        <div class="container">
-           <div class="logo">
-      <img class="logo-img" src="assets/icon/安.png" alt="LogoAnzenTech">
+  <div class="container">
+    <a class="logo" href="./index.html" aria-label="AnzenTech - Início">
+      <img class="logo-img" src="./assets/icon/安.png" alt="">
       <span class="logo-texto">Anzen<span>Tech</span></span>
-      </div>
-            <ul class="navbar">
-                <li>
-                    <a href="./index.html">Inicial</a>
-                </li>
-                <li class="agora">Simulador</li>
-                    <a href="./login.html">Login</a>
-                </li>
-                <li>
-                    <a href="./login.html">Cadastro</a>
-                </li>
-            </ul>
-        </div>
+    </a>
+    <ul class="navbar" aria-label="Navegação principal">
+      <li><a href="./index.html">Início</a></li>
+      <li><a href="./dashboard/cards.html">Dashboard</a></li>
+      <li class="agora"><a href="./simulador.html">Simulador</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="nav-login" href="./login.html">Entrar</a>
+      <a class="nav-cta" href="./cadastro.html">Começar grátis</a>
     </div>
-
-
+  </div>
+</div>
     <!-- simulador inicio -->
     <div class="simulador">
         <div class="container">
@@ -71,7 +67,6 @@
     <!--footer inicio-->
     <div class="footer">
         <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023-2026</h4>
         </div>
     </div>
     <!--footer fim-->

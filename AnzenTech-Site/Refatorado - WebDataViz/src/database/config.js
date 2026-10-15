@@ -1,6 +1,6 @@
 var mysql = require("mysql2");
 
-// CONEXÃO DO BANCO MYSQL SERVER
+// CONEXÃO DO MYSQL SERVER
 var mySqlConfig = {
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
@@ -9,7 +9,7 @@ var mySqlConfig = {
     port: process.env.DB_PORT
 };
 
-function executar(instrucao) {
+function executar(instrucao, parametros) {
 
     if (process.env.AMBIENTE_PROCESSO !== "producao" && process.env.AMBIENTE_PROCESSO !== "desenvolvimento") {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM .env OU dev.env OU app.js\n");
@@ -19,7 +19,7 @@ function executar(instrucao) {
     return new Promise(function (resolve, reject) {
         var conexao = mysql.createConnection(mySqlConfig);
         conexao.connect();
-        conexao.query(instrucao, function (erro, resultados) {
+        conexao.query(instrucao, parametros || [], function (erro, resultados) {
             conexao.end();
             if (erro) {
                 reject(erro);
