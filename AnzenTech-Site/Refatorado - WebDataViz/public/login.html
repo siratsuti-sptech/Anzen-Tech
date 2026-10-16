@@ -27,7 +27,7 @@
     </a>
     <ul class="navbar" aria-label="Navegação principal">
       <li><a href="index.html">Início</a></li>
-      <li><a href="dashboard/cards.html">Dashboard</a></li>
+      <li><a href="dashboard/dashboard.html">Dashboard</a></li>
       <li><a href="simulador.html">Simulador</a></li>
     </ul>
     <div class="nav-actions">
@@ -118,7 +118,7 @@
             sessionStorage.setItem("ID_USUARIO", usuario.id);
             sessionStorage.setItem("AQUARIOS", JSON.stringify(Array.isArray(usuario.aquarios) ? usuario.aquarios : []));
 
-            window.location = "./dashboard/cards.html";
+            window.location = "./dashboard/dashboard.html";
         } catch (erro) {
             mostrarErroLogin("Não foi possível conectar ao servidor. Tente novamente.");
         } finally {

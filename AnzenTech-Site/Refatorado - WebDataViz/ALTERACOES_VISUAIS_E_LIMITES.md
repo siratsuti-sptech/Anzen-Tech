@@ -61,7 +61,7 @@ O arquivo src/database/script-tabelas.sql cria a tabela cadastro, enquanto a API
 ## Atualização da navbar em todas as telas
 
 - Os cabeçalhos de public/index.html, public/login.html, public/cadastro.html e public/simulador.html agora seguem a referência: marca à esquerda, Início/Dashboard/Simulador centralizados, e Entrar/Começar grátis à direita.
-- O link Dashboard aponta para a tela de aquários (public/dashboard/cards.html), que é a entrada disponível do painel após autenticação. O link de cadastro do simulador agora aponta para cadastro.html.
+- O link Dashboard aponta para public/dashboard/dashboard.html, com os gráficos e validação de sessão. O link de cadastro do simulador agora aponta para cadastro.html.
 - As telas autenticadas (cards.html, dashboard.html, mural.html e edicao-aviso.html) usam marca e navegação principal no topo, mostram o usuário e mantêm a ação Sair.
 - Os atalhos Aquários e Terrários, Gráficos e Mural de Avisos continuam acessíveis numa faixa secundária do painel; a edição do aviso continua vinculada ao Mural.
 - Os estilos foram acrescentados às folhas já específicas de cada tela, limitados pela classe do body, com adaptação simples para telas estreitas.
