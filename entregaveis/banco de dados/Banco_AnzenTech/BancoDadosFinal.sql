@@ -1,7 +1,6 @@
 -- CRIANDO O BANCO DE DADOS
 CREATE DATABASE anzen_glp;
 
-
 -- SELECIONANDO O BANCO DE DADOS PARA USO
 USE anzen_glp;
 
@@ -148,7 +147,7 @@ fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
 CREATE TABLE leituraSensor(
 	idLeitura INT NOT NULL,
     ppm DECIMAL(7,2),
-    dataHora DATETIME,
+    dataHora DATETIME default current_timestamp,
     situacao VARCHAR(20),
     CONSTRAINT chkSituacao CHECK(
 		(ppm <= 300 AND situacao = 'Normal')
