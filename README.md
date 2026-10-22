@@ -3,6 +3,8 @@
 </p>
 
 
+<h1 align="center">Anzen Tech 安全テク</h1>
+
 <p align="center">
   Sistema de Monitoramento e Detecção de Vazamento de Gás GLP
 </p>
@@ -18,14 +20,18 @@
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" alt="Status">
 </p>
 
+<p align="center">
+  <img src="docs/images/visao_negocio.png" alt="Visão de negócio do Anzen Tech: da instalação do sensor à ação do cliente" width="100%">
+</p>
 
 ---
 
 ## Sumário
 
 - [Sobre o projeto](#sobre-o-projeto)
+- [Visão de negócio](#visão-de-negócio)
 - [Funcionalidades](#funcionalidades)
-- [Arquitetura](#arquitetura)
+- [Arquitetura da solução](#arquitetura-da-solução)
 - [Tecnologias](#tecnologias)
 - [Hardware](#hardware)
 - [Instalação](#instalação)
@@ -48,6 +54,25 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 
 ---
 
+## Visão de negócio
+
+O diagrama abaixo mostra a jornada completa do sistema, do ponto de vista de quem usa: desde a instalação do sensor até a decisão do cliente diante de um alerta.
+
+<p align="center">
+  <img src="docs/images/visao_negocio.png" alt="Diagrama de visão de negócio com as 6 etapas do sistema" width="100%">
+</p>
+
+| # | Etapa | O que acontece |
+|:---:|---|---|
+| 1 | **Instalação do sensor** | O sensor é posicionado no ambiente, próximo à central de gás. |
+| 2 | **Vazamento de gás** | Ocorre um vazamento de gás. |
+| 3 | **Detecção do sensor** | O sensor captura a presença elevada de gás GLP no ambiente. |
+| 4 | **Emissão do alerta** | O sistema emite um alerta sobre o vazamento para o cliente. |
+| 5 | **Exibição na web** | O sistema exibe um gráfico de dados sobre o vazamento na web. |
+| 6 | **Ação do cliente** | O cliente toma uma ação, evitando riscos, diminuindo prejuízos e salvando vidas. |
+
+---
+
 ## Funcionalidades
 
 - Leitura contínua da concentração de gás pelo sensor MQ-2
@@ -57,15 +82,30 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 - API em Node.js que recebe os dados do Arduino e os disponibiliza para a interface web
 - Interface web responsiva (HTML, CSS e JavaScript)
 
-
-
 ---
 
-## Arquitetura
+## Arquitetura da solução
 
-O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados, grava no MySQL e os expõe para a interface web, que consome a API via requisições HTTP.
+O sistema roda em um computador físico (host) e é dividido em duas APIs em Node.js, com o banco de dados MySQL em uma máquina virtual:
 
-<img width="2560" height="1420" alt="diagrama" src="https://github.com/user-attachments/assets/6d697aa1-ddd2-4c54-992d-c160e12e8df7" />
+1. O **Arduino UNO**, com o sensor MQ-2, envia as leituras ao computador pela porta serial (cabo USB).
+2. A **API 1** (`data-aqc-ino`), em Node.js, lê a serial e grava as leituras no MySQL (*Insert*).
+3. O **MySQL** fica em uma **VM Lubuntu (VirtualBox)** e guarda os dados.
+4. A **API 2** (API web *data viz*), em Node.js, consulta o MySQL (*Select*) e serve os dados, além das páginas do site.
+5. O **navegador** do gestor (HTML, CSS e JavaScript) consome a API 2 via HTTP e exibe o painel. O **cliente final** usa o sistema por esse navegador.
+
+<p align="center">
+  <img src="docs/images/diagrama_solucao.png" alt="Diagrama da solução: Arduino UNO, API 1, MySQL na VM Lubuntu, API 2 e navegador" width="100%">
+</p>
+
+### Fluxo de dados
+
+| Origem | Destino | Meio | Descrição |
+|---|---|---|---|
+| Arduino UNO + MQ-2 | API 1 (`data-aqc-ino`) | USB (serial) | Envio das leituras do sensor |
+| API 1 | MySQL (VM Lubuntu) | `INSERT` | Gravação do histórico de leituras |
+| MySQL | API 2 (API web data viz) | `SELECT` | Consulta dos dados armazenados |
+| API 2 | Navegador | HTTP | Entrega do site e dos dados para o painel |
 
 ---
 
@@ -74,10 +114,11 @@ O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados,
 | Área | Tecnologias |
 |---|---|
 | Hardware e embarcados | Arduino UNO, Sensor MQ-2, C/C++ (Arduino) |
-| Back-end | Node.js (API) |
+| Back-end | Node.js (API 1 de aquisição e API 2 de visualização) |
 | Aplicação web | HTML, CSS, JavaScript |
 | Banco de dados | MySQL |
-| Ferramentas | Git, Git Bash, VS Code, Arduino IDE, Máquina Virtual (VM) |
+| Infraestrutura | VM Lubuntu no VirtualBox |
+| Ferramentas | Git, Git Bash, VS Code, Arduino IDE |
 
 ---
 
@@ -101,7 +142,6 @@ O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados,
 | GND | GND |
 | A0 (saída analógica) | A0 |
 
-
 ---
 
 ## Instalação
@@ -113,7 +153,7 @@ O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados,
 - [Arduino IDE](https://www.arduino.cc/en/software)
 - [MySQL](https://www.mysql.com/) 8.0 ou superior
 - [Visual Studio Code](https://code.visualstudio.com/)
-- Máquina virtual (VM), caso o ambiente do projeto seja executado nela
+- [VirtualBox](https://www.virtualbox.org/) com a VM Lubuntu, caso o MySQL seja executado nela, como na arquitetura do projeto
 
 ### Passo a passo
 
@@ -159,6 +199,7 @@ SERIAL_PORT=COM3        # Linux/macOS: /dev/ttyUSB0 ou /dev/ttyACM0
 SERIAL_BAUD_RATE=9600
 ```
 
+> Se o MySQL estiver na VM, use o IP da VM em `DB_HOST`.
 
 **6. Iniciar a API**
 
@@ -171,7 +212,6 @@ A API ficará disponível em `http://localhost:3000`.
 **7. Abrir a interface web**
 
 Abra o arquivo `web/index.html` no navegador (ou use a extensão *Live Server* do VS Code).
-
 
 ---
 
@@ -196,11 +236,11 @@ anzen-tech/
 ├── web/              # Interface web (HTML, CSS, JS)
 ├── database/         # Scripts SQL
 ├── docs/
-│   └── images/       # Imagens usadas no README
+│   └── images/       # Imagens usadas no README (diagramas e telas)
 └── README.md
 ```
 
-> Ajuste conforme a organização real do repositório.
+
 
 ---
 
@@ -228,12 +268,12 @@ anzen-tech/
 
 | Nome | GitHub |
 |---|---|
-| Pedro Nunes Pereira | [@pedronunessptech](https://github.com/usuario) |
-| Zanee Lopes Pereira | [@zanee-07](https://github.com/usuario) |
-| Flávio Sandri Caputo | [@FlavioCaputo85](https://github.com/usuario) |
-| Kauã Hideaki Siratsuti | [@siratsuti-sptech](https://github.com/usuario) |
-| Nicollas Martins Candido | [@nicandido](https://github.com/usuario) |
-| Pietro Giuliani da Silva | [@pietrogds](https://github.com/usuario) |
+| Pedro Nunes Pereira | [@pedronunessptech](https://github.com/pedronunessptech) |
+| Zanee Lopes Pereira | [@zanee-07](https://github.com/zanee-07) |
+| Flávio Sandri Caputo | [@FlavioCaputo85](https://github.com/FlavioCaputo85) |
+| Kauã Hideaki Siratsuti | [@siratsuti-sptech](https://github.com/siratsuti-sptech) |
+| Nicollas Martins Candido | [@nicandido](https://github.com/nicandido) |
+| Pietro Giuliani da Silva | [@pietrogds](https://github.com/pietrogds) |
 
 ---
 
@@ -244,5 +284,6 @@ Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) par
 ---
 
 <p align="center">
-  <strong>Anzen Tech 安全テク</strong> · Tecnologia a serviço da segurança
+  <strong>Anzen Tech 安全テク</strong> · Preservando hoje para existirem amanhã.
+</p> Tecnologia a serviço da segurança
 </p>
