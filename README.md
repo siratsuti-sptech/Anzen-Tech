@@ -58,7 +58,7 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 - API em Node.js que recebe os dados do Arduino e os disponibiliza para a interface web
 - Interface web responsiva (HTML, CSS e JavaScript)
 
-> Ajuste esta lista conforme o que o projeto realmente faz (por exemplo: buzzer, LED, notificações).
+
 
 ---
 
@@ -79,7 +79,7 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 
 O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados, grava no MySQL e os expõe para a interface web, que consome a API via requisições HTTP.
 
-![Diagrama de arquitetura](docs/images/arquitetura.png)
+![Diagrama de arquitetura]()
 
 ---
 
