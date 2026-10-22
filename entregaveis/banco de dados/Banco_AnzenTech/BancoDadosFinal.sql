@@ -1,6 +1,6 @@
 -- CRIANDO O BANCO DE DADOS
 CREATE DATABASE anzen_glp;
-
+drop database anzen_glp;
 -- SELECIONANDO O BANCO DE DADOS PARA USO
 USE anzen_glp;
 
@@ -103,7 +103,7 @@ CREATE TABLE usuario(
     senha VARCHAR(45),
     fkEstabelecimento INT,
 	FOREIGN KEY (fkEstabelecimento) 
-		REFERENCES estabelecimento (idUsuario)
+		REFERENCES estabelecimento (idEstabelecimento)
 );
 
 
@@ -145,14 +145,14 @@ situacao -> Estado em que o ambiente se encontra (Normal, Risco ou Crítico)
 fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
 */
 CREATE TABLE leituraSensor(
-	idLeitura INT NOT NULL,
+	idLeitura INT NOT NULL auto_increment,
     ppm DECIMAL(7,2),
     dataHora DATETIME default current_timestamp,
     situacao VARCHAR(20),
     CONSTRAINT chkSituacao CHECK(
-		(ppm <= 300 AND situacao = 'Normal')
-        OR (ppm > 300 AND ppm < 1000 AND situacao = 'Risco')
-        OR (ppm >= 1000 AND situacao = 'Crítico')),
+		(ppm <= 300 AND situacao = 'NORMAL')
+        OR (ppm > 300 AND ppm < 1000 AND situacao = 'RISCO')
+        OR (ppm >= 1000 AND situacao = 'CRITICO')),
     fkSensor INT NOT NULL,
     FOREIGN KEY (fkSensor)
 		REFERENCES sensor (idSensor),
