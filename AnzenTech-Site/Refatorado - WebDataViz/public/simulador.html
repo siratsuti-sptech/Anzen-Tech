@@ -1,77 +1,437 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AnzenTech | Simulador</title>
-
+    <title>AnzenTech | Simulador Financeiro</title>
     <script src="./js/sessao.js"></script>
-
-    <link rel="stylesheet" href="./css/simulador-style.css">
+    <link rel="stylesheet" href="./css/index-style.css">
     <link rel="icon" href="./assets/icon/favicon2.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <style>
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        /* ---------- TÍTULO DA PÁGINA ---------- */
+        h1 {
+            font-size: 34px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .menu .intro {
+            color: #6b7280;
+            font-size: 18px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* ---------- CARDS (mesmo visual da .caixa-form do site) ---------- */
+        .caixa-form {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto 20px auto;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .caixa-form h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+
+        /* o primeiro título do card não precisa de espaço em cima */
+        .caixa-form h2:first-child {
+            margin-top: 0;
+        }
+
+        /* ---------- CAMPOS DE FORMULÁRIO ---------- */
+        /* .rotulo faz o papel do label do site (sem criar tag nova) */
+        .rotulo {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .campo {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #ffffff;
+            color: #0f2341;
+        }
+
+        .campo:focus {
+            outline: none;
+            border-color: #22d66b;
+        }
+
+        .erro {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        /* ---------- BOTÃO ---------- */
+        .botao-verde {
+            background-color: #22d66b;
+            color: #0f2341;
+            font-weight: bold;
+            padding: 14px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        /* ---------- RESULTADOS ---------- */
+        .linh .linha b {
+            color: #0f2341;
+        }
+
+        /* caixa verde clara (mesmas cores do .aviso-verde do site) */
+        .destaque-resultado {
+            background-color: #e8f8ef;
+            border: 1px solid #b7ebcd;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .destaque-resultado b {
+            font-size: 36px;
+            color: #0f2341;
+        }
+
+        .texto-cinz .not .simulador-conteudo {
+            padding: 40px 0;
+        }
+
+        .simulador-conteudo>.container>h1 {
+            font-size: 34px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            color: #6b7280;
+            font-size: 18px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .caixa-form {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto 20px;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .caixa-form h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 5px;
+        }
+
+        .caixa-form h2:first-child {
+            margin-top: 0;
+        }
+
+        .rotulo {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        .campo {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #ffffff;
+            color: #0f2341;
+        }
+
+        .campo:focus {
+            outline: none;
+            border-color: #22d66b;
+        }
+
+        .erro {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        .botao-verde {
+            background-color: #22d66b;
+            color: #0f2341;
+            font-weight: bold;
+            padding: 14px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .linha {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            color: #6b7280;
+        }
+
+        .linha b {
+            color: #0f2341;
+        }
+
+        .destaque-resultado {
+            background-color: #e8f8ef;
+            border: 1px solid #b7ebcd;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .destaque-resultado b {
+            font-size: 36px;
+            color: #0f2341;
+        }
+
+        .texto-cinza {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .nota {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 700px) {
+            .caixa-form {
+                padding: 24px;
+            }
+
+            .simulador-conteudo>.container>h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
 
-<body class="simulador-page">
-
-    <!--header inicio-->
+<body class="home-page">
     <div class="header">
-  <div class="container">
-    <a class="logo" href="./index.html" aria-label="AnzenTech - Início">
-      <img class="logo-img" src="./assets/icon/安.png" alt="">
-      <span class="logo-texto">Anzen<span>Tech</span></span>
-    </a>
-    <ul class="navbar" aria-label="Navegação principal">
-      <li><a href="./index.html">Início</a></li>
-      <li><a href="./dashboard/dashboard.html">Dashboard</a></li>
-      <li class="agora"><a href="./simulador.html">Simulador</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a class="nav-login" href="./login.html">Entrar</a>
-      <a class="nav-cta" href="./cadastro.html">Começar grátis</a>
-    </div>
-  </div>
-</div>
-    <!-- simulador inicio -->
-    <div class="simulador">
         <div class="container">
-            <h2>Simulador</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium tempora architecto sint fugit
-                dolorum? Ipsum laborum magnam similique labore, voluptate amet reprehenderit rem ab blanditiis quisquam
-                laboriosam eaque alias. Reiciendis. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Accusantium tempora architecto sint fugit dolorum? Ipsum laborum magnam similique labore, voluptate amet
-                reprehenderit rem ab blanditiis quisquam laboriosam eaque alias. Reiciendis.</p>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium tempora architecto sint fugit
-                dolorum? Ipsum laborum magnam similique labore, voluptate amet reprehenderit rem ab blanditiis quisquam
-                laboriosam eaque alias. Reiciendis. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Accusantium tempora architecto sint fugit dolorum? Ipsum laborum magnam similique labore, voluptate amet
-                reprehenderit rem ab blanditiis quisquam laboriosam eaque alias. Reiciendis.</p>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium tempora architecto sint fugit
-                dolorum? Ipsum laborum magnam similique labore, voluptate amet reprehenderit rem ab blanditiis quisquam
-                laboriosam eaque alias. Reiciendis. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Accusantium tempora architecto sint fugit dolorum? Ipsum laborum magnam similique labore, voluptate amet
-                reprehenderit rem ab blanditiis quisquam laboriosam eaque alias. Reiciendis.</p>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium tempora architecto sint fugit
-                dolorum? Ipsum laborum magnam similique labore, voluptate amet reprehenderit rem ab blanditiis quisquam
-                laboriosam eaque alias. Reiciendis. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Accusantium tempora architecto sint fugit dolorum? Ipsum laborum magnam similique labore, voluptate amet
-                reprehenderit rem ab blanditiis quisquam laboriosam eaque alias. Reiciendis.</p>
-
+            <a class="logo" href="index.html" aria-label="AnzenTech - Início">
+                <img class="logo-img" src="./assets/icon/安.png" alt="">
+                <span class="logo-texto">Anzen<span>Tech</span></span>
+            </a>
+            <ul class="navbar" aria-label="Navegação principal">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="dashboard/dashboard.html">Dashboard</a></li>
+                <li class="agora"><a href="simulador.html">Simulador</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a class="nav-login" href="login.html">Entrar</a>
+                <a class="nav-cta" href="cadastro.html">Começar grátis</a>
+            </div>
         </div>
     </div>
-    <!-- simulador fim -->
 
-    <!--footer inicio-->
+    <div class="banner">
+        <div class="container">
+            <p>Simulador Financeiro <span>Anzen</span></p>
+        </div>
+        
+    </div>
+    <h1>Simulador Financeiro Anzen</h1>
+            <p class="intro">Descubra quanto você economiza ao usar o sistema Anzen no seu consumo de GLP.</p>
+
+    <div class="social simulador-conteudo">
+        <div class="container">
+            <div class="caixa-form">
+                <h2>Seu gasto atual com GLP</h2>
+                <div class="rotulo">Quantas trocas de botijão/cilindro você faz por mês?</div>
+                <input class="campo" type="number" id="ipt_trocas" min="0" placeholder="Ex: 10">
+
+                <div class="rotulo">Quanto você paga em cada troca? (R$)</div>
+                <input class="campo" type="number" id="ipt_preco" min="0" placeholder="Ex: 450">
+
+                <h2>Manutenção da instalação de gás</h2>
+                <div class="rotulo">Quanto custa uma manutenção/inspeção? (R$)</div>
+                <input class="campo" type="number" id="ipt_manutencao" min="0" placeholder="Ex: 800">
+
+                <div class="rotulo">De quanto em quanto tempo ela é feita?</div>
+                <select class="campo" id="ipt_intervalo">
+                    <option value="1">A cada 1 ano</option>
+                    <option value="2">A cada 2 anos</option>
+                    <option value="3">A cada 3 anos</option>
+                    <option value="5" selected>A cada 5 anos (comum)</option>
+                    <option value="10">A cada 10 anos</option>
+                </select>
+
+                <h2>Período da simulação</h2>
+                <select class="campo" id="ipt_periodo">
+                    <option value="6">6 meses</option>
+                    <option value="12" selected>12 meses</option>
+                    <option value="24">24 meses</option>
+                    <option value="36">36 meses</option>
+                    <option value="60">60 meses</option>
+                </select>
+
+                <div class="erro" id="div_erro"></div>
+                <button class="botao-verde" onclick="simular()">Simular economia</button>
+            </div>
+
+            <div id="div_exibir"></div>
+        </div>
+    </div>
+
     <div class="footer">
-        <div class="container">
-        </div>
+        <div class="container"></div>
     </div>
-    <!--footer fim-->
 
+    <script>
+        /* ============================================================
+         PARÂMETROS DO PRODUTO (definidos pela Anzen, não pelo cliente)
+         Os valores abaixo são PLACEHOLDERS: ajustar quando a documentação
+         estiver 100%.
+         ============================================================ */
+        let perdaVazamento = 0.05; // % do gás perdido em micro vazamentos (até 5%); o sensor evita essa perda
+        let reducaoManutencao = 0.2; // % de redução no custo de manutenção
+        let potenciaW = 50; // potência do sistema Anzen [W]
+        let tarifaKWh = 0.9; // tarifa de energia padrão [R$/kWh]
+        let investimentoInicial = 3000; // valor do sensor + instalação [R$]
+        let mensalidade = 0; // assinatura/monitoramento mensal [R$]
 
-</body>
+        function moeda(valor) {
+            return "R$ " + valor.toFixed(2).replace(".", ",");
+        }
 
-</html>
+        function simular() {
+            let trocas = Number(ipt_trocas.value);
+            let preco = Number(ipt_preco.value);
+            let manutCusto = Number(ipt_manutencao.value);
+            let intervaloAnos = Number(ipt_intervalo.value);
+            let periodo = Number(ipt_periodo.value);
+
+            if (!(trocas > 0) || !(preco > 0)) {
+                div_erro.innerHTML =
+                    "Informe ao menos a quantidade de trocas e o preço de cada troca.";
+                div_exibir.innerHTML = "";
+            } else {
+                div_erro.innerHTML = "";
+
+                // Cenário atual (sem Anzen)
+                let glpMes = trocas * preco;
+                let manutMes = manutCusto / (intervaloAnos * 12);
+                let atualMes = glpMes + manutMes;
+                let atualPeriodo = atualMes * periodo;
+
+                // Dinheiro perdido por micro vazamento (sem Anzen)
+                let vazamentoMes = glpMes * perdaVazamento;
+                let vazamentoAno = vazamentoMes * 12;
+
+                // Cenário com Anzen (o sensor evita a perda por vazamento)
+                let glpAnzenMes = glpMes - vazamentoMes;
+                let manutAnzenMes = manutMes * (1 - reducaoManutencao);
+                let energiaMes = (potenciaW / 1000) * 24 * 30 * tarifaKWh;
+                let anzenMes = glpAnzenMes + manutAnzenMes + energiaMes + mensalidade;
+                let anzenPeriodo = anzenMes * periodo + investimentoInicial;
+
+                // Economia
+                let economiaMes = atualMes - anzenMes;
+                let economiaPeriodo = atualPeriodo - anzenPeriodo;
+                let pct = (economiaPeriodo / atualPeriodo) * 100;
+
+                // Valor positivo da economia
+                let economiaValor = economiaPeriodo;
+                if (economiaValor < 0) {
+                    economiaValor = economiaValor * -1;
+                }
+
+                // Retorno sobre o investimento (payback do sensor)
+                let paybackTxt = "";
+                if (economiaMes <= 0) {
+                    paybackTxt = "Sem retorno com os dados informados";
+                } else {
+                    let payback = investimentoInicial / economiaMes;
+                    if (payback <= 1) {
+                        paybackTxt = "Menos de 1 mês";
+                    } else if (payback < 24) {
+                        paybackTxt = payback.toFixed(1).replace(".", ",") + " meses";
+                    } else {
+                        paybackTxt = (payback / 12).toFixed(1).replace(".", ",") + " anos";
+                    }
+                }
+
+                let tituloEconomia = "Diferença no período";
+                let textoPct = "Neste período o investimento ainda não se paga";
+                if (economiaPeriodo >= 0) {
+                    tituloEconomia = "Você economiza";
+                    textoPct = pct.toFixed(1).replace(".", ",") + "% a menos que hoje";
+                }
+
+                div_exibir.innerHTML = `
+        <div class="caixa-form">
+          <h2>Quanto gás você pode estar perdendo</h2>
+          <p class="texto-cinza">Micro vazamentos podem desperdiçar até ${(perdaVazamento * 100).toFixed(0)}% do seu gás sem que você perceba.</p>
+          <div class="linha">Desperdício por mês: <b>${moeda(vazamentoMes)}</b></div>
+          <div class="linha">Desperdício por ano: <b>${moeda(vazamentoAno)}</b></div>
+        </div>
+        <div class="caixa-form">
+          <h2>Resultado em ${periodo} meses</h2>
+          <div class="linha">Gasto atual (sem Anzen): <b>${moeda(atualPeriodo)}</b></div>
+          <div class="linha">Gasto com Anzen (já inclui investimento e energia): <b>${moeda(anzenPeriodo)}</b></div>
+          <div class="destaque-resultado">
+            ${tituloEconomia}<br />
+            <b>${moeda(economiaValor)}</b><br />
+            ${textoPct}
+          </div>
+        </div>
+        <div class="caixa-form">
+          <h2>Detalhes</h2>
+          <div class="linha">Investimento no sensor: <b>${moeda(investimentoInicial)}</b></div>
+          <div class="linha">Tempo para o sensor se pagar: <b>${paybackTxt}</b></div>
+          <div class="linha">Economia média por mês: <b>${moeda(economiaMes)}</b></div>
+          <div class="linha">GLP por mês (hoje → com Anzen): <b>${moeda(glpMes)} → ${moeda(glpAnzenMes)}</b></div>
+          <div class="linha">Manutenção por mês (hoje → com Anzen): <b>${moeda(manutMes)} → ${moeda(manutAnzenMes)}</b></div>
+          <div class="linha">Custo mensal de energia do sistema: <b>${moeda(energiaMes)}</b></div>
+          <p class="nota">Simulação estimativa, baseada nos dados informados e em médias de desempenho do produto. Os resultados reais podem variar.</p>
+        </div>`;
+            }
+        }
+        </script>
+    </body>
+    </html>
