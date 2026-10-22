@@ -20,10 +20,6 @@
   <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" alt="Status">
 </p>
 
-<p align="center">
-  <img src="docs/images/visao_negocio.png" alt="Visão de negócio do Anzen Tech: da instalação do sensor à ação do cliente" width="100%">
-</p>
-
 ---
 
 ## Sumário
