@@ -1,4 +1,3 @@
-
 <p align="center">
   <img width="1280" height="300" alt="Vamos com Tudo!(2)" src="https://github.com/user-attachments/assets/529106f6-48f6-4144-b581-234ee30f9213" />
 </p>
@@ -66,7 +65,7 @@ A solução usa um **Arduino UNO** com um **sensor MQ-2** para medir continuamen
 
 O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados, grava no MySQL e os expõe para a interface web, que consome a API via requisições HTTP.
 
-![Diagrama de arquitetura]()
+<img width="2560" height="1420" alt="diagrama" src="https://github.com/user-attachments/assets/6d697aa1-ddd2-4c54-992d-c160e12e8df7" />
 
 ---
 
