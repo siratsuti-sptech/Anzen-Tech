@@ -1,104 +1,162 @@
+-- CRIANDO O BANCO DE DADOS
 CREATE DATABASE anzen_glp;
+
+
+-- SELECIONANDO O BANCO DE DADOS PARA USO
 USE anzen_glp;
-drop database anzen_glp;
--- empresa: agora guarda tudo o que o cadastro (cadastro.html) pede no passo 2 e 3
---   nome_empresa       <- "Nome da empresa"
---   segmento           <- "Segmento"
---   faixa_funcionarios <- "Número de funcionários"
---   qtd_cozinhas       <- "Quantas cozinhas deseja monitorar?"
---   email              <- "E-mail para receber alertas"
-CREATE TABLE empresa (
-    id_empresa INT AUTO_INCREMENT PRIMARY KEY,
-    nome_empresa VARCHAR(120) NOT NULL,
-    cnpj VARCHAR(18) NULL UNIQUE,
-    email VARCHAR(120) NULL,
-    telefone VARCHAR(25) NULL,
-    segmento VARCHAR(60) NULL,
-    faixa_funcionarios VARCHAR(30) NULL,
-    qtd_cozinhas INT NULL
+
+
+/*
+CRIANDO A TABELA endereco
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR OS ENDEREÇOS DOS ESTABELECIMENTOS
+
+idEndreço -> Chave Primária da tabela endereco
+cep -> Cep do endereço
+logradouro -> Logradouro do endereço
+bairro -> Bairro do endereço
+numero -> Número do endereço
+cidade -> Cidade do endereço
+uf -> UF do endereço
+complemento -> Complementos do endereço
+*/
+CREATE TABLE endereco(
+	idEndereco INT PRIMARY KEY AUTO_INCREMENT,
+    cep CHAR(8),
+    logradouro VARCHAR(90),
+    bairro VARCHAR(90),
+    numero VARCHAR(10),
+    cidade VARCHAR(45),
+    uf CHAR(2),
+    complemento VARCHAR(45)
 );
 
--- cadastro: o usuário que se cadastra no passo 1 (nome, e-mail e senha)
--- A senha NUNCA é salva em texto puro: a API grava o hash em senha_hash.
-CREATE TABLE cadastro (
-    id_cadastro INT AUTO_INCREMENT PRIMARY KEY,
-    id_empresa INT NOT NULL,
-    nome VARCHAR(120) NOT NULL,
-    email VARCHAR(120) NOT NULL UNIQUE,
-    senha_hash VARCHAR(255) NOT NULL,
-    perfil VARCHAR(30) NOT NULL,   -- quem cria a empresa no cadastro recebe 'ADMIN'
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id_empresa)
+
+/*
+CRIANDO A TABELA empresa
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR OS PRINCIPAIS DADOS DAS EMPRESAS
+
+idEmpresa -> chave primária da tabela empresa
+razaoSocial -> Razão Social da empresa
+nomeFantasia -> Nome Fantasia da empresa
+cnpjMatriz -> CNPJ da Matriz da empresa
+telefoneContato -> Telefone para contato da empresa
+emailContato -> Email para contato da empresa
+fkEndereco -> Chave Estrangeira que liga a tabela empresa à tabela endereco
+*/
+CREATE TABLE empresa(
+	idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+    razaoSocial VARCHAR(90),
+    nomeFantasia VARCHAR(90),
+    cnpjMatriz CHAR(14),
+    telefoneContato VARCHAR(20),
+    emailContato VARCHAR(90),
+    fkEndereco INT,
+    FOREIGN KEY (fkEndereco)
+		REFERENCES endereco(idEndereco)
 );
 
--- ambiente = cozinha. A API cria "Cozinha 1", "Cozinha 2"... conforme qtd_cozinhas
-CREATE TABLE ambiente (
-    id_ambiente INT AUTO_INCREMENT PRIMARY KEY,
-    id_empresa INT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    descricao VARCHAR(255) NULL,
-    localizacao VARCHAR(255) NULL,
-    observacao_ventilacao VARCHAR(255) NULL,
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id_empresa)
+
+/*
+CRIANDO A TABELA estabelecimento
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR OS PRINCIPAIS DADOS DOS ESTABELECIMENTOS
+
+idEstabelecimento -> chave primária da tabela estabelecimento
+nome -> nome do estabelecimento
+segmento -> segmento de mercado do estabelecimento
+cnpjFilial -> CNPJ da Filial
+fkEmpresa -> chave estrangeira que liga a tabela estabelecimento à tabela empresa
+fkEndereco -> chave estrangeira que liga a tabela estabelecimento à tabela endereco
+*/
+CREATE TABLE estabelecimento(
+	idEstabelecimento INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(45),
+    segmento VARCHAR(45),
+    cnpjFilial CHAR(14),
+    fkEmpresa INT,
+    fkEndereco INT,
+    FOREIGN KEY (fkEmpresa)
+		REFERENCES empresa (idEmpresa),
+	FOREIGN KEY (fkEndereco)
+		REFERENCES endereco(idEndereco)
 );
 
-CREATE TABLE sensor (
-    id_sensor INT AUTO_INCREMENT PRIMARY KEY,
-    id_ambiente INT NOT NULL,
-    identificador VARCHAR(60) NOT NULL UNIQUE,
-    modelo VARCHAR(60) NOT NULL DEFAULT 'MQ-2',
-    altura_instalacao_cm DECIMAL(5,2) NULL,
-    limite_alerta_ppm DECIMAL(10,2) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'ATIVO',
-    data_instalacao DATE NULL,
-    FOREIGN KEY (id_ambiente) REFERENCES ambiente(id_ambiente)
+
+/*
+CRIANDO A TABELA usuario
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR OS PRINCIPAIS DADOS DOS USUÁRIOS
+
+idUsuario -> Chave Primária da tabela usuario
+nome -> Nome do usuário
+telefone -> Telefone do usuário
+dataCadastro -> Data do Cadastro do usuário no site
+email -> E-mail utilizado pelo usuário
+senha -> Senha do usuário
+fkEstabelecimento -> Chave Estrangeira que liga a tabela usuario à tabela estabelecimento
+*/
+CREATE TABLE usuario(
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(40),
+    dataCadastro DATE,
+    email VARCHAR(90),
+    senha VARCHAR(45),
+    fkEstabelecimento INT,
+	FOREIGN KEY (fkEstabelecimento) 
+		REFERENCES estabelecimento (idUsuario)
 );
 
-CREATE TABLE leitura_sensor (
-    id_sensor INT NOT NULL,
-    numero_leitura BIGINT UNSIGNED NOT NULL,
-    data_hora DATETIME(3) NOT NULL,
-    valor_ppm DECIMAL(10,2) NOT NULL,
-    limite_utilizado_ppm DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (id_sensor, numero_leitura),
-    FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+
+/*
+CRIANDO A TABELA sensor
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR TODOS OS DADOS DE CADA SENSOR INSTALADO
+
+idSensor -> Chave Primária da tabela sensor
+modeloSensor -> Modelo do sensor instalado
+localInstalacao -> Localização do sensor
+dataInstalacao -> Data em que o sensor foi instalado
+statusSensor -> Status do sensor (0 ou 1 - Inativo ou Ativo)
+ultimaManutencao -> Data da última manutenção do sensor
+fkEstabelecimento -> Chave Estrangeira que liga a tabela sensor à tabela estabelecimento
+*/
+CREATE TABLE sensor(
+	idSensor INT PRIMARY KEY AUTO_INCREMENT,
+    modeloSensor VARCHAR(30),
+    localInstalacao VARCHAR(50),
+    dataInstalacao DATE,
+    statusSensor TINYINT,
+    ultimaManutencao DATE,
+    fkEstabelecimento INT,
+    FOREIGN KEY (fkEstabelecimento)
+		REFERENCES estabelecimento (idEstabelecimento)
 );
 
-CREATE TABLE alerta (
-    id_alerta INT AUTO_INCREMENT PRIMARY KEY,
-    id_sensor INT NOT NULL,
-    numero_leitura BIGINT UNSIGNED NOT NULL,
-    id_cadastro_responsavel INT NULL,
-    data_hora_alerta DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    status VARCHAR(25) NOT NULL DEFAULT 'ABERTO',
-    mensagem VARCHAR(255) NOT NULL,
-    acao_tomada TEXT NULL,
-    data_hora_atendimento DATETIME(3) NULL,
-    UNIQUE (id_sensor, numero_leitura),
-    FOREIGN KEY (id_sensor, numero_leitura)
-        REFERENCES leitura_sensor(id_sensor, numero_leitura),
-    FOREIGN KEY (id_cadastro_responsavel)
-        REFERENCES cadastro(id_cadastro)
+
+/*
+CRIANDO A TABELA leituraSensor
+
+ESSA TABELA É RESPONSÁVEL POR ARMAZENAR TODAS AS LEITURAS REALIZADAS PELO SENSOR
+
+idLeitura -> Chave Primária da tabela leituraSensor
+ppm -> Leitura do nível de ppm do ambiente
+dataHora -> Data e Hora em que a leitura foi realizada
+situacao -> Estado em que o ambiente se encontra (Normal, Risco ou Crítico)
+fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
+*/
+CREATE TABLE leituraSensor(
+	idLeitura INT NOT NULL,
+    ppm DECIMAL(7,2),
+    dataHora DATETIME,
+    situacao VARCHAR(20),
+    CONSTRAINT chkSituacao CHECK(
+		(ppm <= 300 AND situacao = 'Normal')
+        OR (ppm > 300 AND ppm < 1000 AND situacao = 'Risco')
+        OR (ppm >= 1000 AND situacao = 'Crítico')),
+    fkSensor INT NOT NULL,
+    FOREIGN KEY (fkSensor)
+		REFERENCES sensor (idSensor),
+	PRIMARY KEY (IdLeitura, fkSensor)
 );
-
--- NOVA: formulário "Fale com a AnzenTech" da página inicial (index.html)
-CREATE TABLE contato (
-    id_contato INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(120) NOT NULL,
-    whatsapp VARCHAR(15) NOT NULL,
-    data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
--- ---------------------------------------------------------------------------
--- EXEMPLO (opcional, para simulação): criar um sensor numa cozinha da empresa 1
--- e depois testar a API de leituras. Descomente e ajuste os ids.
--- INSERT INTO sensor (id_ambiente, identificador, limite_alerta_ppm)
---     VALUES (1, 'MQ2-COZINHA-01', 1000);
--- ---------------------------------------------------------------------------
-
-
-
-select * from cadastro;
-select * from empresa;
-select * from contato;
-
-
