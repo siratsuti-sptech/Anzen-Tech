@@ -9,7 +9,7 @@
 
   <script src="./js/sessao.js"></script>
 
-  <link rel="stylesheet" href="./css/simulador-style.css">
+  <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" href="./assets/icon/favicon2.ico">
 </head>
 
@@ -71,12 +71,18 @@
           <h2>Manutenção da instalação de gás</h2>
           <div class="campos">
             <label class="campo">
-              Quantas manutenções/inspeções por ano?
-              <input type="number" id="ipt_qtd_manutencao" min="0" placeholder="Ex: 2">
+              Quanto custa uma manutenção/inspeção? (R$)
+              <input type="number" id="ipt_manutencao" min="0" placeholder="Ex: 800">
             </label>
             <label class="campo">
-              Custo médio de cada manutenção (R$)
-              <input type="number" id="ipt_manutencao" min="0" placeholder="Ex: 800">
+              De quanto em quanto tempo ela é feita?
+              <select id="ipt_intervalo">
+                <option value="1">A cada 1 ano</option>
+                <option value="2">A cada 2 anos</option>
+                <option value="3">A cada 3 anos</option>
+                <option value="5" selected>A cada 5 anos (comum)</option>
+                <option value="10">A cada 10 anos</option>
+              </select>
             </label>
           </div>
         </section>
@@ -119,21 +125,24 @@
   <script>
     /*
      PARÂMETROS DO PRODUTO (definidos pela Anzen, não pelo cliente)
-     quando a documentação estiver 100% deve retornar para essa parte e ajustar conforme as necessidades
-     Os valores abaixo são PLACEHOLDERS.
+     Os valores abaixo são PLACEHOLDERS: ajustar quando a documentação estiver 100%.
      */
-    let reducaoGLP = 0.1; // % de redução no gasto de GLP
+    let perdaVazamento = 0.05; // % do gás perdido em micro vazamentos (até 5%); o sensor evita essa perda
     let reducaoManutencao = 0.2; // % de redução no custo de manutenção
-    let potenciaW = 50; // potência do sistema Anzen W
-    let tarifaKWh = 0.9; // tarifa de energia padrão R$/kWh
-    let investimentoInicial = 3000; // aquisição + instalação R$
-    let mensalidade = 0; // assinatura/monitoramento mensal R$
+    let potenciaW = 50; // potência do sistema Anzen [W]
+    let tarifaKWh = 0.9; // tarifa de energia padrão [R$/kWh]
+    let investimentoInicial = 3000; // valor do sensor + instalação [R$]
+    let mensalidade = 0; // assinatura/monitoramento mensal [R$]
+
+    function moeda(valor) {
+      return "R$ " + valor.toFixed(2).replace(".", ",");
+    }
 
     function simular() {
       let trocas = Number(ipt_trocas.value);
       let preco = Number(ipt_preco.value);
-      let manutAno = Number(ipt_qtd_manutencao.value);
       let manutCusto = Number(ipt_manutencao.value);
+      let intervaloAnos = Number(ipt_intervalo.value);
       let periodo = Number(ipt_periodo.value);
 
       if (!(trocas > 0) || !(preco > 0)) {
@@ -145,12 +154,16 @@
 
         // Cenário atual (sem Anzen)
         let glpMes = trocas * preco;
-        let manutMes = (manutAno * manutCusto) / 12;
+        let manutMes = manutCusto / (intervaloAnos * 12);
         let atualMes = glpMes + manutMes;
         let atualPeriodo = atualMes * periodo;
 
-        // Cenário com Anzen
-        let glpAnzenMes = glpMes * (1 - reducaoGLP);
+        // Dinheiro perdido por micro vazamento (sem Anzen)
+        let vazamentoMes = glpMes * perdaVazamento;
+        let vazamentoAno = vazamentoMes * 12;
+
+        // Cenário com Anzen (o sensor evita a perda por vazamento)
+        let glpAnzenMes = glpMes - vazamentoMes;
         let manutAnzenMes = manutMes * (1 - reducaoManutencao);
         let energiaMes = (potenciaW / 1000) * 24 * 30 * tarifaKWh;
         let anzenMes = glpAnzenMes + manutAnzenMes + energiaMes + mensalidade;
@@ -167,6 +180,7 @@
           economiaValor = economiaValor * -1;
         }
 
+        // Retorno sobre o investimento (payback do sensor)
         let paybackTxt = "";
         if (economiaMes <= 0) {
           paybackTxt = "Sem retorno com os dados informados";
@@ -174,47 +188,44 @@
           let payback = investimentoInicial / economiaMes;
           if (payback <= 1) {
             paybackTxt = "Menos de 1 mês";
+          } else if (payback < 24) {
+            paybackTxt = payback.toFixed(0).replace(".", ",") + " meses";
           } else {
-            paybackTxt = payback.toFixed(1).replace(".", ",") + " meses";
+            paybackTxt = (payback / 12).toFixed(0).replace(".", ",") + " anos";
           }
         }
 
         let tituloEconomia = "Diferença no período";
-        let textoPct = "Neste período o investimento ainda não se paga";
+        let textoPct = "";
         if (economiaPeriodo >= 0) {
           tituloEconomia = "Você economiza";
           textoPct = pct.toFixed(1).replace(".", ",") + "% a menos que hoje";
         }
 
-        // Textos formatados em R$
-        let fAtualPeriodo = "R$ " + atualPeriodo.toFixed(2).replace(".", ",");
-        let fAnzenPeriodo = "R$ " + anzenPeriodo.toFixed(2).replace(".", ",");
-        let fEconomiaValor = "R$ " + economiaValor.toFixed(2).replace(".", ",");
-        let fEconomiaMes = "R$ " + economiaMes.toFixed(2).replace(".", ",");
-        let fGlpMes = "R$ " + glpMes.toFixed(2).replace(".", ",");
-        let fGlpAnzenMes = "R$ " + glpAnzenMes.toFixed(2).replace(".", ",");
-        let fManutMes = "R$ " + manutMes.toFixed(2).replace(".", ",");
-        let fManutAnzenMes = "R$ " + manutAnzenMes.toFixed(2).replace(".", ",");
-        let fEnergiaMes = "R$ " + energiaMes.toFixed(2).replace(".", ",");
-
         div_exibir.innerHTML = `
           <div class="caixa">
+            <h2>Quanto gás você pode estar perdendo</h2>
+            <div class="linha">Micro vazamentos podem desperdiçar até ${(perdaVazamento * 100).toFixed(0)}% do seu gás sem que você perceba.</div>
+            <div class="linha">Desperdício por mês: <b>${moeda(vazamentoMes)}</b></div>
+            <div class="linha">Desperdício por ano: <b>${moeda(vazamentoAno)}</b></div>
+          </div>
+          <div class="caixa">
             <h2>Resultado em ${periodo} meses</h2>
-            <div class="linha">Gasto atual (sem Anzen): <b>${fAtualPeriodo}</b></div>
-            <div class="linha">Gasto com Anzen (já inclui investimento e energia): <b>${fAnzenPeriodo}</b></div>
+            <div class="linha">Gasto atual (sem Anzen): <b>${moeda(atualPeriodo)}</b></div>
+            <div class="linha">Gasto com Anzen (já inclui investimento e energia): <b>${moeda(anzenPeriodo)}</b></div>
             <div class="destaque">
               ${tituloEconomia}<br />
-              <b>${fEconomiaValor}</b><br />
-              ${textoPct}
+              <b>${moeda(economiaValor)}</b><br />
             </div>
           </div>
           <div class="caixa">
             <h2>Detalhes</h2>
-            <div class="linha">Economia média por mês: <b>${fEconomiaMes}</b></div>
-            <div class="linha">Tempo para o investimento se pagar: <b>${paybackTxt}</b></div>
-            <div class="linha">GLP por mês (hoje → com Anzen): <b>${fGlpMes} → ${fGlpAnzenMes}</b></div>
-            <div class="linha">Manutenção por mês (hoje → com Anzen): <b>${fManutMes} → ${fManutAnzenMes}</b></div>
-            <div class="linha">Custo mensal de energia do sistema: <b>${fEnergiaMes}</b></div>
+            <div class="linha">Investimento no sensor: <b>${moeda(investimentoInicial)}</b></div>
+            <div class="linha">Tempo para o sensor se pagar: <b>${paybackTxt}</b></div>
+            <div class="linha">Economia média por mês: <b>${moeda(economiaMes)}</b></div>
+            <div class="linha">GLP por mês (hoje → com Anzen): <b>${moeda(glpMes)} → ${moeda(glpAnzenMes)}</b></div>
+            <div class="linha">Manutenção por mês (hoje → com Anzen): <b>${moeda(manutMes)} → ${moeda(manutAnzenMes)}</b></div>
+            <div class="linha">Custo mensal de energia do sistema: <b>${moeda(energiaMes)}</b></div>
             <div class="nota">Simulação estimativa, baseada nos dados informados e em médias de desempenho do produto. Os resultados reais podem variar.</div>
           </div>`;
       }
