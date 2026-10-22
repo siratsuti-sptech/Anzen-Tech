@@ -56,6 +56,10 @@ body.login-page .navbar .agora { color: #22d66b; }
 body.login-page .login {
   padding: 50px 0;
   background-color: #0f2341;
+  background-image: url('../assets/icon/bg-cozinha-japonesa.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 body.login-page .login .container { justify-content: center; }
 body.login-page .card-login {
@@ -83,6 +87,13 @@ body.login-page .campo span {
   margin-bottom: 6px;
   font-weight: bold;
 }
+
+body.login-page .campo input:focus,
+body.login-page .campo select:focus {
+  outline: none;
+  border-color: #22d66b;
+}
+
 body.login-page input {
   width: 100%;
   padding: 11px;
@@ -123,10 +134,11 @@ body.login-page .loading-div img {
 }
 body.login-page #div_erros_login { display: none; }
 body.login-page .footer {
-  padding: 20px;
-  color: #687386;
-  background-color: white;
+  padding: 20px 0;
+  color: #ffffff;
+  background-color: #0f2341;
   text-align: center;
+  justify-content: center;
 }
 @media (max-width: 620px) {
   body.login-page .container { width: 90%; }

@@ -3,7 +3,7 @@ body.home-page {
   margin: 0;
   color: #17263e;
   background-color: #f3f5f9;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 body.home-page .container {
   display: flex;
@@ -59,8 +59,13 @@ body.home-page .navbar .agora {
 }
 body.home-page .banner {
   min-height: 500px;
-  color: white;
+  color: rgb(255, 255, 255);
+  text-shadow: black 0 1px 10px;
   background-color: #0f2341;
+  background-image:url('../assets/icon/bg-cozinha-japonesa.svg');
+  background-size: cover;
+ background-position: center;
+  background-repeat: no-repeat;
 }
 body.home-page .banner .container {
   min-height: 500px;
@@ -89,8 +94,8 @@ body.home-page .boxes {
 body.home-page .box {
   width: 28%;
   padding: 16px;
-  border: 1px solid #e2e7ef;
-  border-radius: 16px;
+  border: 1px solid #1e9c39;
+  border-radius: 20px;
   background-color: #f3f5f9;
 }
 body.home-page .box img {
@@ -102,12 +107,12 @@ body.home-page .box h4 {
   font-size: 20px;
 }
 body.home-page .box p {
-  color: #687386;
+  color:rgb(0, 0, 0);
   font-size: 15px;
   line-height: 1.6;
 }
 body.home-page .footer {
-  padding: 25px 0;
+  padding: 30px 0;
   color: white;
   background-color: #0b1a30;
   text-align: center;

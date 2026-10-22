@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Chamas azuis de GLP em queimadores de fogão">
+  <title>Chamas AnzenTech</title>
+  <defs>
+    <clipPath id="round"><rect width="800" height="600" rx="28"/></clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1429"/>
+      <stop offset="1" stop-color="#132240"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0.55" stop-color="#0a1429" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0a1429" stop-opacity="0.7"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3a9bff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#3a9bff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="blurSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+
+    <!-- queimador com chama azul -->
+    <g id="burner">
+      <circle r="150" fill="url(#glow)"/>
+      <circle r="58" fill="#0a1224" stroke="#243a66" stroke-width="4"/>
+      <circle r="84" fill="none" stroke="#2f7ee0" stroke-opacity="0.55" stroke-width="14" stroke-dasharray="3 11" filter="url(#blur)"/>
+      <circle r="84" fill="none" stroke="#3a9bff" stroke-width="10" stroke-dasharray="4 9" filter="url(#blur)"/>
+      <circle r="84" fill="none" stroke="#cfe8ff" stroke-width="4" stroke-dasharray="4 9"/>
+    </g>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <!-- fundo -->
+    <rect width="800" height="600" fill="url(#bg)"/>
+
+    <!-- grades do fogao -->
+    <g transform="rotate(-8 400 300)" stroke-linecap="round">
+      <g stroke="#070e1f" stroke-opacity="0.9" stroke-width="16">
+        <line x1="-80" y1="60" x2="880" y2="60"/>
+        <line x1="-80" y1="300" x2="880" y2="300"/>
+        <line x1="-80" y1="560" x2="880" y2="560"/>
+        <line x1="60" y1="-80" x2="60" y2="680"/>
+        <line x1="400" y1="-80" x2="400" y2="680"/>
+        <line x1="760" y1="-80" x2="760" y2="680"/>
+      </g>
+      <g stroke="#3a5a94" stroke-opacity="0.35" stroke-width="2">
+        <line x1="-80" y1="52" x2="880" y2="52"/>
+        <line x1="-80" y1="292" x2="880" y2="292"/>
+        <line x1="-80" y1="552" x2="880" y2="552"/>
+      </g>
+    </g>
+
+    <!-- queimadores -->
+    <use href="#burner" transform="translate(580,170) scale(1.05)"/>
+    <use href="#burner" transform="translate(210,180) scale(0.9)"/>
+    <use href="#burner" transform="translate(230,450) scale(0.95)"/>
+    <use href="#burner" transform="translate(590,450) scale(0.85)" opacity="0.9"/>
+    <g filter="url(#blurSoft)" opacity="0.6"><use href="#burner" transform="translate(410,320) scale(0.7)"/></g>
+
+    <!-- vinheta -->
+    <rect width="800" height="600" fill="url(#vignette)"/>
+  </g>
+</svg>

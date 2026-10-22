@@ -56,6 +56,10 @@ body.cadastro-page .navbar .agora { color: #22d66b; }
 body.cadastro-page .login {
   padding: 45px 0;
   background-color: #0f2341;
+  background-image: url('../assets/icon/bg-cozinha-japonesa.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 body.cadastro-page .login .container { justify-content: center; }
 body.cadastro-page .card-cadastro {
@@ -73,6 +77,12 @@ body.cadastro-page .card-cadastro h2 {
 body.cadastro-page .formulario {
   display: flex;
   flex-direction: column;
+}
+
+body.cadastro-page .campo input:focus,
+body.cadastro-page .campo select:focus {
+  outline: none;
+  border-color: #22d66b;
 }
 body.cadastro-page .campo {
   display: flex;
