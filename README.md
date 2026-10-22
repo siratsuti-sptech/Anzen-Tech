@@ -115,9 +115,6 @@ O Arduino envia as leituras pela porta serial. A API em Node.js lê esses dados,
 | GND | GND |
 | A0 (saída analógica) | A0 |
 
-> Confira a pinagem do seu módulo MQ-2 e atualize esta tabela caso utilize outros pinos (por exemplo, a saída digital D0).
-
-![Esquema do circuito](docs/images/circuito.png)
 
 ---
 
@@ -176,7 +173,6 @@ SERIAL_PORT=COM3        # Linux/macOS: /dev/ttyUSB0 ou /dev/ttyACM0
 SERIAL_BAUD_RATE=9600
 ```
 
-> A porta serial é a mesma selecionada na Arduino IDE. Feche o Monitor Serial da IDE antes de iniciar a API, pois só um programa pode usar a porta por vez.
 
 **6. Iniciar a API**
 
@@ -190,7 +186,6 @@ A API ficará disponível em `http://localhost:3000`.
 
 Abra o arquivo `web/index.html` no navegador (ou use a extensão *Live Server* do VS Code).
 
-> Ajuste os nomes de scripts, variáveis e configurações conforme o código real do projeto.
 
 ---
 
