@@ -91,7 +91,6 @@ ESSA TABELA É RESPONSÁVEL POR ARMAZENAR OS PRINCIPAIS DADOS DOS USUÁRIOS
 
 idUsuario -> Chave Primária da tabela usuario
 nome -> Nome do usuário
-telefone -> Telefone do usuário
 dataCadastro -> Data do Cadastro do usuário no site
 email -> E-mail utilizado pelo usuário
 senha -> Senha do usuário
