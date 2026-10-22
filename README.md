@@ -218,8 +218,6 @@ Abra o arquivo `web/index.html` no navegador (ou use a extensão *Live Server* d
 3. Acompanhe a leitura em tempo real no painel.
 4. Se a concentração de gás ultrapassar o limite configurado, o sistema exibe o alerta.
 
-![Dashboard](docs/images/dashboard.png)
-![Tela de alerta](docs/images/alerta.png)
 
 ---
 
