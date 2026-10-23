@@ -500,6 +500,76 @@ body .social h2 {
   .simulador-page .campos { flex-direction: column; }
 }
 
+.botao-escuro {
+	background-color: #0f2341;
+	color: #ffffff;
+	font-weight: bold;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	display: inline-block;
+  text-decoration: none;
+}
+
+/* ---------- SEÇÃO TECNOLOGIA MQ-2 (2 colunas) ---------- */
+
+.duas-colunas {
+	display: flex;
+	align-items: center;
+	text-align: left;
+}
+
+.coluna {
+	flex: 1;
+	padding: 0 30px;
+}
+
+.coluna h2 {
+	font-size: 34px;
+}
+
+.coluna p {
+	color: #6b7280;
+	font-size: 17px;
+	line-height: 1.6;
+}
+
+.lista {
+	list-style: none;                  /* tira as bolinhas da lista */
+	padding: 0;
+	margin-bottom: 30px;
+}
+
+.lista li {
+	margin-bottom: 15px;
+	color: #374151;
+}
+
+/* ---------- SEÇÕES DA PÁGINA INICIAL ---------- */
+
+.secao {
+	padding: 60px 80px;
+	text-align: center;
+}
+
+.secao-branca {
+	background-color: #ffffff;
+}
+
+.secao h2 {
+	font-size: 36px;
+	margin-bottom: 15px;
+}
+
+.subtitulo {
+	color: #6b7280;
+	font-size: 18px;
+	width: 700px;
+	margin: 0 auto 40px auto;
+}
+
 
 /* ---------- 5. PÁGINAS DO PAINEL ---------- */
 
