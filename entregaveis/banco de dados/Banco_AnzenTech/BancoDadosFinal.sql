@@ -145,8 +145,8 @@ situacao -> Estado em que o ambiente se encontra (Normal, Risco ou Crítico)
 fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
 */
 CREATE TABLE leituraSensor(
-	idLeitura INT primary key  NULL auto_increment,
-    ppm DECIMAL(7,2),
+	idLeitura INT primary key NOT NULL auto_increment,
+    ppm DECIMAL(9,2),
     situacao VARCHAR(20),
     dataHora DATETIME default current_timestamp
     /*CONSTRAINT chkSituacao CHECK(
