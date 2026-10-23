@@ -486,7 +486,7 @@ body .social h2 {
   padding: 24px;
   border-radius: 12px;
   background-color: var(--navy);
-  color: #fff;
+  color: #ffffff;
   text-align: center;
   line-height: 1.6;
 }
@@ -513,6 +513,49 @@ body .social h2 {
   text-decoration: none;
 }
 
+/* secao de escolher (final do index) */
+.escolher {
+	background-color: #0f2341;
+	color: #ffffff;
+	display: flex;
+}
+
+.escolher-texto {
+	flex: 1;
+	padding: 60px 80px;
+}
+
+.escolher-texto h2 {
+	font-size: 34px;
+}
+
+.escolher-texto li {
+	color: #18c964;
+	margin-bottom: 15px;
+}
+
+.escolher-imagem {
+	flex: 1;
+	background-color: #1e3a8a;
+	padding: 60px;
+	text-align: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+
+.botao-verde {
+	background-color: #22d66b;
+	color: #0f2341;
+	font-weight: bold;
+	padding: 14px 24px;
+	border-radius: 8px;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;                   /* mãozinha ao passar o mouse */
+	display: inline-block;
+  text-decoration: none;
+}
 /* ---------- SEÇÃO TECNOLOGIA MQ-2 (2 colunas) ---------- */
 
 .duas-colunas {
@@ -544,7 +587,7 @@ body .social h2 {
 
 .lista li {
 	margin-bottom: 15px;
-	color: #374151;
+	color: #ffffff;
 }
 
 /* ---------- SEÇÕES DA PÁGINA INICIAL ---------- */
