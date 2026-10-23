@@ -145,16 +145,16 @@ situacao -> Estado em que o ambiente se encontra (Normal, Risco ou Crítico)
 fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
 */
 CREATE TABLE leituraSensor(
-	idLeitura INT NOT NULL auto_increment,
+	idLeitura INT primary key  NULL auto_increment,
     ppm DECIMAL(7,2),
-    dataHora DATETIME default current_timestamp,
     situacao VARCHAR(20),
-    CONSTRAINT chkSituacao CHECK(
+    dataHora DATETIME default current_timestamp
+    /*CONSTRAINT chkSituacao CHECK(
 		(ppm <= 300 AND situacao = 'NORMAL')
         OR (ppm > 300 AND ppm < 1000 AND situacao = 'RISCO')
         OR (ppm >= 1000 AND situacao = 'CRITICO')),
     fkSensor INT NOT NULL,
     FOREIGN KEY (fkSensor)
 		REFERENCES sensor (idSensor),
-	PRIMARY KEY (IdLeitura, fkSensor)
+	PRIMARY KEY (IdLeitura, fkSensor)*/
 );
