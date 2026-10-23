@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Grafico</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="header">
+ <!-- ADICIONAR SLOGAN DA MARCA-->
+		<!-- aqui no src a gente colocar o caminho do png da nossa logo -->
+		<div class="logo">
+			<img class="logo-img" src="logo.png" alt="Logo AnzenTech">
+			<span class="logo-texto">Anzen<span>Tech</span></span>
+		</div>
+
+		<!-- a classe ativo serve pra ficar colorido onde ta selecionado -->
+		<div class="menu">
+			<h1 href="index.html" style="color:#22d66b;">Grafico em tempo real</h1>
+			<!-- aqui colocaremos o link pra html da dashboard e do simulador que estamos finalizando -->
+		</div>
+	</div>
+
+ 
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div style="width: 50%;">
+            <canvas id="sensorGas"></canvas>
+        </div>
+    </div>
+
+    <script>
+
+        var sensorGas = new Chart(document.getElementById('sensorGas').getContext('2d'), {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Gás',
+                    borderColor: '#63B1BC',
+                    backgroundColor: '#22d66b'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '(PPM)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var paginacao = {};
+        var tempo = {};
+
+        function obterDados(grafico, endpoint) {
+            fetch('http://localhost:3300/sensores/' + endpoint)
+                .then(response => response.json())
+                .then(valores => {
+                    if (paginacao[endpoint] == null) {
+                        paginacao[endpoint] = 0;
+                    }
+                    if (tempo[endpoint] == null) {
+                        tempo[endpoint] = 0;
+                    }
+
+                    var ultimaPaginacao = paginacao[endpoint];
+                    paginacao[endpoint] = valores.length;
+                    valores = valores.slice(ultimaPaginacao);
+
+                    valores.forEach((valor) => {
+                        if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
+                            grafico.data.labels.shift();
+                            grafico.data.datasets[0].data.shift();
+                        }
+
+                        grafico.data.labels.push(tempo[endpoint]++);
+                        grafico.data.datasets[0].data.push(parseFloat(valor));
+                        grafico.update();
+                    });
+                })
+                .catch(error => console.error('Erro ao obter dados:', error));
+        }
+
+        setInterval(() => {
+            obterDados(sensorGas, 'gas');
+        }, 1000);
+
+    </script>
+
+    <div class="footer">
+		<div class="logo">
+			<img class="logo-img" src="logo.png" alt="Logo AnzenTech">
+			<span class="logo-texto">Anzen<span>Tech</span></span>
+		</div>
+
+		<div class="footer-centro">
+			<p>© 2026 AnzenTech. Todos os direitos reservados.</p>
+			<p>安全 = Segurança · 安 = Custo-benefício</p>
+		</div>
+
+		
+	</div>
+
+</body>
+
+</html>
