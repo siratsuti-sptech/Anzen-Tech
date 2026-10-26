@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/banner-anzentech.png" alt="AnzenTech - Vamos com Tudo!" width="100%">
+<img src="docs/images/banner-anzentech.png" alt="AnzenTech - Vamos com Tudo!" width="100%">
 
 # AnzenTech
 
