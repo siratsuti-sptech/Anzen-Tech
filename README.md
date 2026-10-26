@@ -2,8 +2,6 @@
 
 <img src="docs/images/banner-anzentech.png" alt="AnzenTech - Vamos com Tudo!" width="100%">
 
-# AnzenTech
-
 **Sistema de Monitoramento e Detecção de Vazamento de Gás GLP**
 
 *Vamos com tudo!*
@@ -67,7 +65,7 @@ O painel também ajuda o gestor a agir: mostra o procedimento a seguir quando o 
 
 <div align="center">
 
-![Diagrama de visão de negócio](entregaveis/visao_negocio_anzen.png)
+![Diagrama de visão de negócio](docs/images/visao_negocio_anzen.png)
 
 </div>
 
@@ -79,7 +77,7 @@ O diagrama mostra a jornada em 6 passos: instalação do sensor, vazamento de g�
 
 <div align="center">
 
-![Diagrama da solução técnica](entregaveis/diagrama-solucao-tecnica.svg)
+![Diagrama da solução técnica](docs/images/diagrama-solucao-tecnica.svg)
 
 </div>
 
