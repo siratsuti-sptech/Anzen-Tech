@@ -77,7 +77,7 @@ O diagrama mostra a jornada em 6 passos: instalação do sensor, vazamento de g�
 
 <div align="center">
 
-![Diagrama da solução técnica](docs/images/diagrama-solucao-tecnica.svg)
+![Diagrama da solução técnica](docs/images/diagrama-solucao-tecnica.png)
 
 </div>
 
