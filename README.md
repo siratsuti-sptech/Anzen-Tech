@@ -1,7 +1,6 @@
 <div align="center">
 
-<!-- Ajuste o caminho do banner conforme o seu repositório -->
-<!-- <img src="entregaveis/banner-anzentech.png" alt="AnzenTech - Vamos com Tudo!" width="100%"> -->
+<img src="entregaveis/banner-anzentech.svg" alt="AnzenTech - Vamos com Tudo!" width="100%">
 
 # AnzenTech
 
@@ -26,6 +25,7 @@
 
 - [Sobre o projeto](#sobre-o-projeto)
 - [Funcionalidades](#funcionalidades)
+- [Visão de negócio](#visão-de-negócio)
 - [Arquitetura](#arquitetura)
 - [Tecnologias](#tecnologias)
 - [Hardware](#hardware)
@@ -60,6 +60,18 @@ A **AnzenTech** é um protótipo acadêmico que monitora continuamente a presen�
 | Alerta | Aviso quando o limite do protótipo é ultrapassado |
 
 O painel também ajuda o gestor a agir: mostra o procedimento a seguir quando o alerta dispara e permite consultar o histórico para identificar vazamentos pequenos e recorrentes (sinal de desgaste de mangueira, regulador ou conexão).
+
+---
+
+## Visão de negócio
+
+<div align="center">
+
+![Diagrama de visão de negócio](entregaveis/visao_negocio_anzen.png)
+
+</div>
+
+O diagrama mostra a jornada em 6 passos: instalação do sensor, vazamento de gás, detecção pelo sensor, emissão do alerta, exibição na web e ação do cliente.
 
 ---
 
@@ -135,7 +147,6 @@ O MQ-2 também reage à fumaça e a vapores (como álcool), o que pode gerar fal
 ---
 
 ## Instalação
-
 
 ### Pré-requisitos
 
