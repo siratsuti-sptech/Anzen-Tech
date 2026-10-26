@@ -36,7 +36,7 @@
 
 ---
 
-## Sobre o projeto
+## Sobre o Projeto
 
 O GLP é muito usado em cozinhas industriais, e um vazamento pode passar despercebido: a percepção pelo cheiro depende de haver alguém no local, da ventilação e da intensidade do vazamento. Como o gás é mais pesado que o ar, ele tende a se acumular perto do piso e, havendo uma fonte de ignição, pode causar incêndio ou explosão.
 
@@ -61,7 +61,7 @@ O painel também ajuda o gestor a agir: mostra o procedimento a seguir quando o 
 
 ---
 
-## Visão de negócio
+## Visão de Negócio
 
 <div align="center">
 
@@ -127,7 +127,7 @@ O MQ-2 é um sensor semicondutor de baixo custo para gases inflamáveis e fumaç
 
 Como referência técnica, o limite inferior de explosividade (LEL) do propano é de cerca de 2,1% em volume, o equivalente a **21.000 ppm** (1% = 10.000 ppm). Esse valor é só uma referência: o limite de alerta do protótipo é **experimental** e definido nos testes.
 
-### Posicionamento do sensor
+### Posicionamento do Sensor
 
 O GLP é mais pesado que o ar, então o sensor fica **embaixo, perto do piso**.
 
@@ -168,7 +168,7 @@ cd Anzen-Tech
 2. Abra o sketch da pasta `arduino/` na Arduino IDE.
 3. Selecione a placa **Arduino UNO** e a porta USB, e faça o upload.
 
-**3. Preparar o banco na VM**
+**3. Preparar o Banco na VM**
 
 1. Na VM Lubuntu, instale e inicie o MySQL.
 2. Crie o banco e as tabelas de leituras e eventos.
@@ -192,7 +192,7 @@ npm install
 npm start
 ```
 
-**6. Abrir o site**
+**6. Abrir o Site**
 
 Abra o site da pasta `AnzenTech-Site/` no navegador (por exemplo, o `index.html`).
 
@@ -212,7 +212,7 @@ Abra o site da pasta `AnzenTech-Site/` no navegador (por exemplo, o `index.html`
 
 ---
 
-## Escopo e limitações
+## Escopo e Limitações
 
 **Faz parte do projeto:** leitura contínua do sensor, processamento, comparação com o limite, armazenamento do histórico, painel web, alerta com registro do evento e testes em condições controladas.
 
@@ -224,7 +224,7 @@ Abra o site da pasta `AnzenTech-Site/` no navegador (por exemplo, o `index.html`
 - Certificação como equipamento de segurança profissional.
 - Testes com grandes vazamentos reais.
 
-**Limitações do protótipo**
+**Limitações do Protótipo**
 
 - O MQ-2 responde a vários gases, então a leitura não identifica só o GLP.
 - Os valores em ppm dependem de calibração e das condições do ambiente (ventilação, temperatura, umidade, outros gases).
@@ -233,7 +233,7 @@ Abra o site da pasta `AnzenTech-Site/` no navegador (por exemplo, o `index.html`
 
 ---
 
-## Estrutura do repositório
+## Estrutura do Repositório
 
 ```text
 Anzen-Tech/
