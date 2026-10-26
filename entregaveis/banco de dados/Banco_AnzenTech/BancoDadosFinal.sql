@@ -29,6 +29,10 @@ CREATE TABLE endereco(
     uf CHAR(2),
     complemento VARCHAR(45)
 );
+INSERT INTO endereco (cep, logradouro, bairro, numero, cidade, uf, complemento) VALUES
+('01310100', 'Avenida Paulista', 'Bela Vista', '1000', 'São Paulo', 'SP', 'Conjunto 101'),
+('13010000', 'Rua das Flores', 'Centro', '250', 'Campinas', 'SP', NULL),
+('20040020', 'Avenida Brasil', 'Centro', '4500', 'Rio de Janeiro', 'RJ', 'Loja 2');
 
 
 /*
@@ -55,6 +59,10 @@ CREATE TABLE empresa(
     FOREIGN KEY (fkEndereco)
 		REFERENCES endereco(idEndereco)
 );
+INSERT INTO empresa (razaoSocial, nomeFantasia, cnpjMatriz, telefoneContato, emailContato, fkEndereco) VALUES
+('Sabor Industrial Refeições Coletivas LTDA', 'Sabor Industrial', '12345678000190', '(11) 3000-1000', 'contato@saborindustrial.com.br', 1),
+('NutriMassa Alimentação Corporativa S.A.', 'NutriMassa', '98765432000155', '(19) 3200-2000', 'contato@nutrimassa.com.br', 2),
+('Chef Express Catering e Eventos LTDA', 'Chef Express', '11222333000144', '(21) 3100-3000', 'contato@chefexpress.com.br', 3);
 
 
 /*
@@ -81,6 +89,10 @@ CREATE TABLE estabelecimento(
 	FOREIGN KEY (fkEndereco)
 		REFERENCES endereco(idEndereco)
 );
+INSERT INTO estabelecimento (nome, segmento, cnpjFilial, fkEmpresa, fkEndereco) VALUES
+('Sabor Industrial - Cozinha Central Paulista', 'Cozinha industrial', '12345678000271', 1, 1),
+('NutriMassa - Refeitório Campinas', 'Refeitório corporativo', '98765432000236', 2, 2),
+('Chef Express - Unidade de Catering Rio', 'Catering e eventos', '11222333000225', 3, 3);
 
 
 /*
@@ -105,6 +117,8 @@ CREATE TABLE usuario(
 	FOREIGN KEY (fkEstabelecimento) 
 		REFERENCES estabelecimento (idEstabelecimento)
 );
+
+
 
 
 /*
@@ -158,3 +172,5 @@ CREATE TABLE leituraSensor(
 		REFERENCES sensor (idSensor),
 	PRIMARY KEY (IdLeitura, fkSensor)*/
 );
+select * from estabelecimento;
+select * from usuario;
