@@ -1,4 +1,3 @@
-// importa os bibliotecas necessários
 const serialport = require('serialport');
 const express = require('express');
 const mysql = require('mysql2');
@@ -9,6 +8,29 @@ const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
+
+// sensores simulados: cada objeto representa um sensor que usa o valor do sensor real multiplicado por um fator
+const SENSORES_SIMULADOS = [
+    { fkSensor: 2, fator: 0.8 },
+    { fkSensor: 3, fator: 1.15 }
+];
+
+// limites de estado (ppm) - mesmas regras do Arduino
+const PPM_NORMAL_MAXIMO = 300;
+const PPM_CRITICO = 1000;
+const PPM_MAXIMO = 2000;
+
+// classifica o estado do ambiente a partir do ppm (igual ao Arduino)
+const classificarEstado = (ppm) => {
+    if (ppm >= PPM_CRITICO) return 'CRITICO';
+    if (ppm > PPM_NORMAL_MAXIMO) return 'RISCO';
+    return 'NORMAL';
+};
+
+// arrays dos sensores simulados, indexados pelo fkSensor (ex.: { 2: [], 3: [] })
+const valoresSimulados = Object.fromEntries(
+    SENSORES_SIMULADOS.map((sensor) => [sensor.fkSensor, []])
+);
 
 // função para comunicação serial
 const serial = async (
@@ -77,6 +99,29 @@ const serial = async (
             //console.error('Erro ao inserir no banco:', erro.message);
         //}
     }
+
+        // gera os valores dos sensores simulados a partir do valor real
+        const leiturasSimuladas = SENSORES_SIMULADOS.map((sensor) => {
+            const ppm = Math.min(sensorGas * sensor.fator, PPM_MAXIMO);
+            return {
+                fkSensor: sensor.fkSensor,
+                ppm: parseFloat(ppm.toFixed(2)),
+                situacao: classificarEstado(ppm)
+            };
+        });
+
+        // guarda nos arrays e insere no banco (se habilitado)
+        await Promise.all(leiturasSimuladas.map(async (leitura) => {
+            valoresSimulados[leitura.fkSensor].push(leitura.ppm);
+
+            if (HABILITAR_OPERACAO_INSERIR) {
+                await poolBancoDados.execute(
+                    'INSERT INTO leituraSensor (ppm, situacao, dataHora, fkSensor) VALUES (?, ?, current_timestamp(), ?)',
+                    [leitura.ppm, leitura.situacao, leitura.fkSensor]
+                );
+                console.log(`valores simulados inseridos (sensor ${leitura.fkSensor}):`, leitura.ppm, leitura.situacao);
+            }
+        }));
 });
 
     // evento para lidar com erros na comunicação serial
@@ -106,6 +151,13 @@ const servidor = (
     // define os endpoints da API para cada tipo de sensor
     app.get('/sensores/gas', (_, response) => {
         return response.json(valoresSensorGas);
+    });
+
+    // endpoints dos sensores simulados: /sensores/gas2 e /sensores/gas3
+    SENSORES_SIMULADOS.forEach((sensor) => {
+        app.get(`/sensores/gas${sensor.fkSensor}`, (_, response) => {
+            return response.json(valoresSimulados[sensor.fkSensor]);
+        });
     });
 }
 
