@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Monitoramento de GLP</title>
-    <link rel="stylesheet" href="/public/css/dashboard-style.css">
+    <link rel="stylesheet" href="dashboard-style.css">
     <script src="../js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -25,13 +25,9 @@
                 <div class="btn-logout" onclick="limparSessao()"><h3>Sair</h3></div>
             </div>
         </div>
-
-        <header class="dashboard-intro">
-            <h1>Dashboard de monitoramento</h1>
-            <p>Acompanhe a leitura do sensor e os alertas.</p>
-        </header>
-
         <main class="dashboard-conteudo">
+            <h1>Dashboard de monitoramento</h1>
+            <p>Acompanhe a leitura do sensor e os alertas.</p>  
                 <div class="kpis" aria-label="Indicadores principais">
                     <article class="kpi-card kpi-critico">
                         <p class="kpi-label">Concentração Atual de GLP</p>
@@ -51,7 +47,6 @@
                         <strong class="kpi-status">Alertas hoje</strong>
                     </article>
                 </div>
-
 
                 <div class="graficos">
                     <section class="card-grafico">
