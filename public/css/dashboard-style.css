@@ -430,3 +430,97 @@ body.dashboard-page .area-pizza {
     height: 260px;
   }
 }
+
+/* ===== Cole este conteúdo no seu style.css ===== */
+
+/* Medidas a serem tomadas */
+.medidas {
+    margin-top: 16px;
+    background: white;
+    border: 1px solid #e3e8ef;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.faixa {
+    font-size: 12px;
+    color: #6b7a90;
+}
+
+.niveis {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.nivel {
+    flex: 1;
+    border: 1px solid #e3e8ef;
+    border-top: 4px solid #e3e8ef;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.nivel-alerta {
+    flex: 1.5;
+}
+
+.nivel-normal  { border-top-color: green; }
+.nivel-atencao { border-top-color: orange; }
+.nivel-alerta  { border-top-color: red; }
+
+.nivel ol {
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ativo {
+    background: #fff0ee;
+    border-color: red;
+}
+
+.nivel-atual {
+    background: #0f2542;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 10px;
+}
+
+.emergencia {
+    font-weight: bold;
+}
+
+/* Histórico de eventos */
+.historico {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.historico th {
+    text-align: left;
+    color: #6b7a90;
+    padding: 6px;
+    border-bottom: 1px solid #e3e8ef;
+}
+
+.historico td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.ev-ativo {
+    background: #fff0ee;
+}
+
+.dica {
+    margin-top: 10px;
+    font-size: 12px;
+    background: #fff7e6;
+    color: #7a4a00;
+    border-radius: 8px;
+    padding: 8px 10px;
+}

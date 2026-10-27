@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Monitoramento de GLP</title>
-    <link rel="stylesheet" href="../css/dashboard-style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <script src="../js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -28,7 +28,7 @@
 
         <header class="dashboard-intro">
             <h1>Dashboard de monitoramento</h1>
-            <p>Acompanhe os níveis de GLP e os indicadores de risco.</p>
+            <p>Acompanhe a leitura do sensor, os alertas e o histórico de eventos.</p>
         </header>
 
         <main class="dashboard-conteudo">
@@ -40,15 +40,15 @@
 
                 <p class="monitoramento-banner">
                     <span aria-hidden="true">●</span>
-                    Monitoramento demonstrativo dos níveis de GLP.
+                    Monitoramento demonstrativo. Protótipo complementar: não substitui detector certificado nem inspeção profissional. Os pontos de atenção e de alerta são parâmetros experimentais, não limites oficiais de segurança.
                 </p>
 
                 <div class="kpis" aria-label="Indicadores principais">
                     <article class="kpi-card kpi-critico">
                         <p class="kpi-label">Concentração Atual de GLP</p>
                         <p class="kpi-valor">1.100 <span>PPM</span></p>
-                        <strong class="kpi-status">Crítico</strong>
-                        <p class="kpi-detalhe">Nível de GLP acima do limite de segurança</p>
+                        <strong class="kpi-status">Alerta</strong>
+                        <p class="kpi-detalhe">Acima do ponto de alerta (1000 PPM)</p>
                     </article>
 
                     <article class="kpi-card kpi-online">
@@ -66,21 +66,89 @@
                     </article>
                 </div>
 
+                <!-- MEDIDAS A SEREM TOMADAS -->
+                <div class="medidas">
+                    <h2>Medidas a serem tomadas</h2>
+                    <p class="faixa">O que fazer em cada nível de leitura. O nível atual está em destaque.</p>
+
+                    <div class="niveis">
+                        <div class="nivel nivel-normal">
+                            <h3>Normal</h3>
+                            <p class="faixa">Abaixo de 400 PPM</p>
+                            <p>Sem ação imediata. Mantenha o registro fechado após o uso e inspecione mangueira e regulador periodicamente.</p>
+                        </div>
+
+                        <div class="nivel nivel-atencao">
+                            <h3>Atenção</h3>
+                            <p class="faixa">De 400 a 999 PPM · algo está errado</p>
+                            <ol>
+                                <li>Ventile o ambiente.</li>
+                                <li>Não acenda chamas nem faíscas.</li>
+                                <li>Verifique mangueira, regulador e conexões com água e sabão.</li>
+                                <li>Se a leitura subir, siga as medidas de alerta. Se não achar a causa, chame um técnico habilitado.</li>
+                            </ol>
+                        </div>
+
+                        <div class="nivel nivel-alerta ativo">
+                            <h3>Alerta · ação imediata <span class="nivel-atual">Nível atual</span></h3>
+                            <p class="faixa">1000 PPM ou mais</p>
+                            <ol>
+                                <li>Feche o registro do botijão ou da central de GLP.</li>
+                                <li>Não acione interruptores nem equipamentos elétricos.</li>
+                                <li>Ventile o ambiente abrindo portas e janelas.</li>
+                                <li>Evacue o local e só volte com liberação de um profissional.</li>
+                                <li class="emergencia">Ligue para o Corpo de Bombeiros: 193</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="graficos">
                     <section class="card-grafico">
                         <h2>Concentração de GLP ao longo do tempo</h2>
-                        <p>Acompanhamento da concentração e do limite de perigo.</p>
+                        <p>Acompanhamento da concentração e dos pontos de atenção e de alerta.</p>
                         <div class="area-grafico">
                             <canvas id="myChart"></canvas>
                         </div>
                     </section>
 
+                    <!-- HISTÓRICO DE EVENTOS (no lugar do gráfico de pizza) -->
                     <section class="card-grafico">
-                        <h2>Distribuição por faixa de risco</h2>
-                        <p>Percentual de leituras em cada categoria.</p>
-                        <div class="area-pizza">
-                            <canvas id="myChart2"></canvas>
-                        </div>
+                        <h2>Histórico de eventos</h2>
+                        <p>Registros com data, hora e valor, para manutenção preventiva e auditoria.</p>
+                        <table class="historico">
+                            <tr>
+                                <th>Data e hora</th>
+                                <th>Leitura</th>
+                                <th>Evento</th>
+                                <th>Situação</th>
+                            </tr>
+                            <tr class="ev-ativo">
+                                <td>26/10/2026 · 17:00</td>
+                                <td>1.100 PPM</td>
+                                <td>Acima do ponto de alerta</td>
+                                <td>Ativo</td>
+                            </tr>
+                            <tr>
+                                <td>26/10/2026 · 14:00</td>
+                                <td>410 PPM</td>
+                                <td>Acima do ponto de atenção</td>
+                                <td>Evoluiu para alerta</td>
+                            </tr>
+                            <tr>
+                                <td>22/10/2026 · 10:05</td>
+                                <td>1.040 PPM</td>
+                                <td>Acima do ponto de alerta</td>
+                                <td>Normalizou em 4 min</td>
+                            </tr>
+                            <tr>
+                                <td>14/10/2026 · 15:32</td>
+                                <td>1.015 PPM</td>
+                                <td>Acima do ponto de alerta</td>
+                                <td>Normalizou em 2 min</td>
+                            </tr>
+                        </table>
+                        <p class="dica">Alertas curtos e repetidos podem indicar desgaste de mangueira, regulador ou conexão. Considere uma inspeção preventiva.</p>
                     </section>
                 </div>
             </section>
@@ -94,13 +162,21 @@
                 labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
                 datasets: [{
                     label: 'Concentração de GLP (PPM)',
-                    data: [100, 150, 250, 400, 700, 1100],
+                    data: [320, 340, 410, 520, 760, 1100],
                     backgroundColor: 'rgb(0, 0, 255)',
                     borderColor: 'rgb(0, 0, 255)',
                     borderWidth: 1
                 },
                 {
-                    label: 'Limite de perigo (1000 PPM)',
+                    label: 'Ponto de atenção (400 PPM)',
+                    data: [400, 400, 400, 400, 400, 400],
+                    backgroundColor: 'rgb(255, 200, 0)',
+                    borderColor: 'rgb(255, 200, 0)',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
+                },
+                {
+                    label: 'Ponto de alerta (1000 PPM)',
                     data: [1000, 1000, 1000, 1000, 1000, 1000],
                     backgroundColor: 'rgb(255, 0, 0)',
                     borderColor: 'rgb(255, 0, 0)',
@@ -115,32 +191,6 @@
                         beginAtZero: true
                     }
                 }
-            }
-        });
-        const ctx2 = document.getElementById('myChart2');
-
-        new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: ['Normal', 'Atenção', 'Crítico'],
-                datasets: [{
-                    label: 'Distribuição por faixa de risco',
-                    data: [92, 7, 1],
-                    backgroundColor: [
-                        'rgb(0, 180, 0)',
-                        'rgb(255, 200, 0)',
-                        'rgb(255, 0, 0)'
-                    ],
-                    borderColor: [
-                        'rgb(0, 180, 0)',
-                        'rgb(255, 200, 0)',
-                        'rgb(255, 0, 0)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                maintainAspectRatio: false
             }
         });
     </script>
