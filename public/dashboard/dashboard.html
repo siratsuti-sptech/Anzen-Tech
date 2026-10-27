@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Monitoramento de GLP</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="/public/css/dashboard-style.css">
     <script src="../js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -28,85 +28,35 @@
 
         <header class="dashboard-intro">
             <h1>Dashboard de monitoramento</h1>
-            <p>Acompanhe a leitura do sensor, os alertas e o histórico de eventos.</p>
+            <p>Acompanhe a leitura do sensor e os alertas.</p>
         </header>
 
         <main class="dashboard-conteudo">
-            <section class="dashboard-visao-geral" aria-labelledby="titulo-visao-geral">
-                <div class="dashboard-secao-titulo">
-                    <h2 id="titulo-visao-geral">Visão geral</h2>
-                    <p>Dados de monitoramento do ambiente.</p>
-                </div>
-
-                <p class="monitoramento-banner">
-                    <span aria-hidden="true">●</span>
-                    Monitoramento demonstrativo. Protótipo complementar: não substitui detector certificado nem inspeção profissional. Os pontos de atenção e de alerta são parâmetros experimentais, não limites oficiais de segurança.
-                </p>
-
                 <div class="kpis" aria-label="Indicadores principais">
                     <article class="kpi-card kpi-critico">
                         <p class="kpi-label">Concentração Atual de GLP</p>
                         <p class="kpi-valor">1.100 <span>PPM</span></p>
                         <strong class="kpi-status">Alerta</strong>
-                        <p class="kpi-detalhe">Acima do ponto de alerta (1000 PPM)</p>
                     </article>
 
                     <article class="kpi-card kpi-online">
-                        <p class="kpi-label">Status Operacional do Sistema</p>
+                        <p class="kpi-label">Status do Sistema</p>
                         <p class="kpi-valor">Online</p>
                         <strong class="kpi-status">● Sistema ativo</strong>
-                        <p class="kpi-detalhe">Status demonstrativo</p>
                     </article>
 
                     <article class="kpi-card kpi-alertas">
-                        <p class="kpi-label">Total de Alertas Disparados</p>
+                        <p class="kpi-label">Alertas Disparados</p>
                         <p class="kpi-valor">1</p>
                         <strong class="kpi-status">Alertas hoje</strong>
-                        <p class="kpi-detalhe">Contagem demonstrativa</p>
                     </article>
                 </div>
 
-                <!-- MEDIDAS A SEREM TOMADAS -->
-                <div class="medidas">
-                    <h2>Medidas a serem tomadas</h2>
-                    <p class="faixa">O que fazer em cada nível de leitura. O nível atual está em destaque.</p>
-
-                    <div class="niveis">
-                        <div class="nivel nivel-normal">
-                            <h3>Normal</h3>
-                            <p class="faixa">Abaixo de 400 PPM</p>
-                            <p>Sem ação imediata. Mantenha o registro fechado após o uso e inspecione mangueira e regulador periodicamente.</p>
-                        </div>
-
-                        <div class="nivel nivel-atencao">
-                            <h3>Atenção</h3>
-                            <p class="faixa">De 400 a 999 PPM · algo está errado</p>
-                            <ol>
-                                <li>Ventile o ambiente.</li>
-                                <li>Não acenda chamas nem faíscas.</li>
-                                <li>Verifique mangueira, regulador e conexões com água e sabão.</li>
-                                <li>Se a leitura subir, siga as medidas de alerta. Se não achar a causa, chame um técnico habilitado.</li>
-                            </ol>
-                        </div>
-
-                        <div class="nivel nivel-alerta ativo">
-                            <h3>Alerta · ação imediata <span class="nivel-atual">Nível atual</span></h3>
-                            <p class="faixa">1000 PPM ou mais</p>
-                            <ol>
-                                <li>Feche o registro do botijão ou da central de GLP.</li>
-                                <li>Não acione interruptores nem equipamentos elétricos.</li>
-                                <li>Ventile o ambiente abrindo portas e janelas.</li>
-                                <li>Evacue o local e só volte com liberação de um profissional.</li>
-                                <li class="emergencia">Ligue para o Corpo de Bombeiros: 193</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="graficos">
                     <section class="card-grafico">
                         <h2>Concentração de GLP ao longo do tempo</h2>
-                        <p>Acompanhamento da concentração e dos pontos de atenção e de alerta.</p>
+                        <p>Zonas de atenção (amarela) e alerta (vermelha).</p>
                         <div class="area-grafico">
                             <canvas id="myChart"></canvas>
                         </div>
@@ -115,43 +65,54 @@
                     <!-- HISTÓRICO DE EVENTOS (no lugar do gráfico de pizza) -->
                     <section class="card-grafico">
                         <h2>Histórico de eventos</h2>
-                        <p>Registros com data, hora e valor, para manutenção preventiva e auditoria.</p>
+                        <p>Últimas ocorrências.</p>
                         <table class="historico">
                             <tr>
-                                <th>Data e hora</th>
+                                <th>Quando</th>
                                 <th>Leitura</th>
-                                <th>Evento</th>
-                                <th>Situação</th>
+                                <th>Nível</th>
                             </tr>
                             <tr class="ev-ativo">
-                                <td>26/10/2026 · 17:00</td>
+                                <td>Hoje, 17:00</td>
                                 <td>1.100 PPM</td>
-                                <td>Acima do ponto de alerta</td>
-                                <td>Ativo</td>
+                                <td><span class="selo selo-alerta">Alerta</span></td>
                             </tr>
                             <tr>
-                                <td>26/10/2026 · 14:00</td>
+                                <td>Hoje, 14:00</td>
                                 <td>410 PPM</td>
-                                <td>Acima do ponto de atenção</td>
-                                <td>Evoluiu para alerta</td>
+                                <td><span class="selo selo-atencao">Atenção</span></td>
                             </tr>
                             <tr>
-                                <td>22/10/2026 · 10:05</td>
+                                <td>22/10, 10:05</td>
                                 <td>1.040 PPM</td>
-                                <td>Acima do ponto de alerta</td>
-                                <td>Normalizou em 4 min</td>
+                                <td><span class="selo selo-alerta">Alerta</span></td>
                             </tr>
                             <tr>
-                                <td>14/10/2026 · 15:32</td>
+                                <td>14/10, 15:32</td>
                                 <td>1.015 PPM</td>
-                                <td>Acima do ponto de alerta</td>
-                                <td>Normalizou em 2 min</td>
+                                <td><span class="selo selo-alerta">Alerta</span></td>
                             </tr>
                         </table>
-                        <p class="dica">Alertas curtos e repetidos podem indicar desgaste de mangueira, regulador ou conexão. Considere uma inspeção preventiva.</p>
                     </section>
                 </div>
             </section>
+            <!-- MEDIDAS A SEREM TOMADAS -->
+                <div class="medidas">
+                    <div class="nivel nivel-normal">
+                        <h3>Normal <span class="faixa">abaixo de 400 PPM</span></h3>
+                        <p>Sem ação. Rotina normal.</p>
+                    </div>
+
+                    <div class="nivel nivel-atencao">
+                        <h3>Atenção <span class="faixa">400 a 999 PPM</span></h3>
+                        <p>Ventile e verifique mangueira e regulador.</p>
+                    </div>
+
+                    <div class="nivel nivel-alerta ativo">
+                        <h3>Alerta <span class="faixa">1000 PPM ou mais</span> <span class="nivel-atual">Nível atual</span></h3>
+                        <p>Feche o registro · Ventile · Evacue · <strong>Ligue 193</strong></p>
+                    </div>
+                </div>
         </main>
     </div>
 <script>
@@ -161,34 +122,52 @@
             data: {
                 labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
                 datasets: [{
-                    label: 'Concentração de GLP (PPM)',
+                    label: 'Concentração',
                     data: [320, 340, 410, 520, 760, 1100],
-                    backgroundColor: 'rgb(0, 0, 255)',
                     borderColor: 'rgb(0, 0, 255)',
-                    borderWidth: 1
+                    backgroundColor: 'rgb(0, 0, 255)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    pointRadius: [3, 3, 3, 3, 3, 8],
+                    pointBackgroundColor: ['blue', 'blue', 'blue', 'blue', 'blue', 'red']
                 },
                 {
-                    label: 'Ponto de atenção (400 PPM)',
+                    label: 'Atenção (400)',
                     data: [400, 400, 400, 400, 400, 400],
-                    backgroundColor: 'rgb(255, 200, 0)',
-                    borderColor: 'rgb(255, 200, 0)',
-                    borderWidth: 1,
-                    borderDash: [5, 5]
+                    borderColor: 'rgb(255, 170, 0)',
+                    backgroundColor: 'rgba(255, 200, 0, 0.2)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: '+1'
                 },
                 {
-                    label: 'Ponto de alerta (1000 PPM)',
+                    label: 'Alerta (1000)',
                     data: [1000, 1000, 1000, 1000, 1000, 1000],
-                    backgroundColor: 'rgb(255, 0, 0)',
                     borderColor: 'rgb(255, 0, 0)',
-                    borderWidth: 1,
-                    borderDash: [5, 5]
+                    backgroundColor: 'rgba(255, 0, 0, 0.12)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: 'end'
                 }]
             },
             options: {
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { usePointStyle: true, pointStyle: 'line' }
+                    }
+                },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        max: 1200,
+                        title: { display: true, text: 'PPM' }
+                    },
+                    x: {
+                        grid: { display: false }
                     }
                 }
             }

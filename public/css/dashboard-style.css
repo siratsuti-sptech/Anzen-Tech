@@ -522,3 +522,103 @@ body.dashboard-page .area-pizza {
     border-radius: 8px;
     padding: 8px 10px;
 }
+
+/* Altura do gráfico (ajustar se precisar) */
+.area-grafico {
+    height: 230px;
+}
+
+/* Medidas a serem tomadas: 3 faixas lado a lado */
+.medidas {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.nivel {
+    flex: 1;
+    background: white;
+    border: 1px solid #e3e8ef;
+    border-left: 6px solid #e3e8ef;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.nivel-alerta {
+    flex: 1.6;
+}
+
+.nivel-normal  { border-left-color: green; }
+.nivel-atencao { border-left-color: orange; }
+.nivel-alerta  { border-left-color: red; }
+
+.nivel h3 {
+    font-size: 15px;
+}
+
+.nivel p {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.faixa {
+    font-size: 12px;
+    font-weight: normal;
+    color: #6b7a90;
+}
+
+.ativo {
+    background: #fff0ee;
+    border-color: red;
+}
+
+.nivel-atual {
+    background: #0f2542;
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* Histórico de eventos */
+.historico {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.historico th {
+    text-align: left;
+    font-size: 12px;
+    color: #6b7a90;
+    padding: 6px;
+    border-bottom: 1px solid #e3e8ef;
+}
+
+.historico td {
+    padding: 9px 6px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.ev-ativo {
+    background: #fff0ee;
+    font-weight: bold;
+}
+
+.selo {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 12px;
+    border-radius: 10px;
+}
+
+.selo-alerta {
+    background: red;
+    color: white;
+}
+
+.selo-atencao {
+    background: #ffc800;
+    color: #5a4000;
+}
