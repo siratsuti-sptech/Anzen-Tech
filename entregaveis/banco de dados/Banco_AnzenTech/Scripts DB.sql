@@ -101,6 +101,7 @@ fkEstabelecimento -> Chave Estrangeira que liga a tabela usuario à tabela estab
 CREATE TABLE usuario(
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(40),
+    sobrenome VARCHAR(40),
     dataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(90),
     senha VARCHAR(45),
