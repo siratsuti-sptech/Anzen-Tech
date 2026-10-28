@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Monitoramento de GLP</title>
-    <link rel="stylesheet" href="../css/dashboard-style.css">
+    <link rel="stylesheet" href="../css/dashboard-styles.css">
     <script src="../js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -15,156 +15,318 @@
                 <img src="../assets/icon/安.png" alt="">
                 <span>Anzen<span>Tech</span></span>
             </a>
+
             <ul class="navbar" aria-label="Navegação principal">
                 <li><a href="../index.html">Início</a></li>
                 <li class="agora"><a href="./dashboard.html">Dashboard</a></li>
                 <li><a href="../simulador.html">Simulador</a></li>
             </ul>
+
             <div class="nav-actions">
                 <div class="hello"><h3>Olá, <span id="b_usuario">usuário</span>!</h3></div>
                 <div class="btn-logout" onclick="limparSessao()"><h3>Sair</h3></div>
             </div>
         </div>
-        <main class="dashboard-conteudo">
+
+        <header class="dashboard-intro">
             <h1>Dashboard de monitoramento</h1>
-            <p>Acompanhe a leitura do sensor e os alertas.</p>  
+        </header>
+
+        <main class="dashboard-conteudo">
+            <section class="dashboard-visao-geral">
+                <!-- Indicadores principais -->
                 <div class="kpis" aria-label="Indicadores principais">
                     <article class="kpi-card kpi-critico">
-                        <p class="kpi-label">Concentração Atual de GLP</p>
+                        <p class="kpi-label">Concentração atual de GLP</p>
                         <p class="kpi-valor">1.100 <span>PPM</span></p>
-                        <strong class="kpi-status">Alerta</strong>
+                        <div class="kpi-rodape">
+                            <strong class="kpi-status">Alerta</strong>
+                            <span class="kpi-detalhe">Pico: 1.350 PPM (hoje, 16:00)</span>
+                        </div>
                     </article>
 
                     <article class="kpi-card kpi-online">
-                        <p class="kpi-label">Status do Sistema</p>
-                        <p class="kpi-valor">Online</p>
-                        <strong class="kpi-status">● Sistema ativo</strong>
+                        <p class="kpi-label">Última leitura</p>
+                        <p class="kpi-valor">17:00 <span>hoje</span></p>
+                        <strong class="kpi-status"><span class="status-ponto">●</span> Sensor online</strong>
                     </article>
 
-                    <article class="kpi-card kpi-alertas">
-                        <p class="kpi-label">Alertas Disparados</p>
-                        <p class="kpi-valor">1</p>
-                        <strong class="kpi-status">Alertas hoje</strong>
+                    <article class="kpi-card kpi-eventos">
+                        <p class="kpi-label">Eventos registrados</p>
+                        <p class="kpi-valor">2 <span>hoje</span></p>
+                        <strong class="kpi-status">4 no histórico</strong>
                     </article>
                 </div>
 
+                <!-- Orientações compactas por faixa -->
+                <section class="medidas-secao" aria-labelledby="medidas-titulo">
+                    <h2 class="medidas-titulo" id="medidas-titulo">Medidas a serem tomadas</h2>
+                    <div class="medidas">
+                        <article class="nivel nivel-normal">
+                            <h3>Normal <span class="faixa">Abaixo de 300 PPM</span></h3>
+                            <p>Sem ação. Rotina normal.</p>
+                        </article>
+
+                        <article class="nivel nivel-atencao">
+                            <h3>Atenção <span class="faixa">300 a 999 PPM</span></h3>
+                            <p>Ventile e verifique mangueira e regulador.</p>
+                        </article>
+
+                        <article class="nivel nivel-alerta ativo">
+                            <h3>Alerta <span class="faixa">1.000 PPM ou mais</span> <span class="nivel-atual">Nível atual</span></h3>
+                            <p>Feche o registro · Ventile · Evacue · <strong>Ligue 193</strong></p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Gráfico e histórico -->
                 <div class="graficos">
-                    <section class="card-grafico">
-                        <h2>Concentração de GLP ao longo do tempo</h2>
-                        <p>Zonas de atenção (amarela) e alerta (vermelha).</p>
+                    <section class="card card-grafico">
+                        <div class="card-cabecalho">
+                            <div>
+                                <h2>Concentração de GLP ao longo do tempo</h2>
+                                <p class="card-subtitulo">Leituras registradas hoje</p>
+                            </div>
+                        </div>
                         <div class="area-grafico">
-                            <canvas id="myChart"></canvas>
+                            <canvas id="myChart" aria-label="Gráfico de concentração de GLP por horário" role="img"></canvas>
                         </div>
                     </section>
 
-                    <!-- HISTÓRICO DE EVENTOS (no lugar do gráfico de pizza) -->
-                    <section class="card-grafico">
-                        <h2>Histórico de eventos</h2>
-                        <p>Últimas ocorrências.</p>
-                        <table class="historico">
-                            <tr>
-                                <th>Quando</th>
-                                <th>Leitura</th>
-                                <th>Nível</th>
-                            </tr>
-                            <tr class="ev-ativo">
-                                <td>Hoje, 17:00</td>
-                                <td>1.100 PPM</td>
-                                <td><span class="selo selo-alerta">Alerta</span></td>
-                            </tr>
-                            <tr>
-                                <td>Hoje, 14:00</td>
-                                <td>410 PPM</td>
-                                <td><span class="selo selo-atencao">Atenção</span></td>
-                            </tr>
-                            <tr>
-                                <td>22/10, 10:05</td>
-                                <td>1.040 PPM</td>
-                                <td><span class="selo selo-alerta">Alerta</span></td>
-                            </tr>
-                            <tr>
-                                <td>14/10, 15:32</td>
-                                <td>1.015 PPM</td>
-                                <td><span class="selo selo-alerta">Alerta</span></td>
-                            </tr>
-                        </table>
+                    <section class="card card-historico" aria-labelledby="historico-titulo">
+                        <div class="historico-cabecalho">
+                            <div>
+                                <h2 id="historico-titulo">Histórico de eventos</h2>
+                                <p class="card-subtitulo">Eventos recentes registrados</p>
+                            </div>
+
+                            <div class="filtro-wrap">
+                                <button class="btn-filtro" id="btn-filtro" type="button"
+                                        aria-expanded="false" aria-controls="menu-filtro">
+                                    <span aria-hidden="true">☷</span> Filtrar
+                                </button>
+                                <div class="menu-filtro" id="menu-filtro" role="group" aria-label="Filtrar eventos" hidden>
+                                    <button type="button" class="opcao-filtro selecionado" data-filtro="todos">Todos os eventos</button>
+                                    <button type="button" class="opcao-filtro" data-filtro="alerta">Somente alertas</button>
+                                    <button type="button" class="opcao-filtro" data-filtro="atencao">Somente atenção</button>
+                                    <button type="button" class="opcao-filtro" data-filtro="ativo">Somente ativos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="historico" id="lista-historico">
+                            <li class="item item-alerta item-ativo" data-tipo="alerta" data-ativo="true">
+                                <span class="sinal" aria-hidden="true">!</span>
+                                <div class="item-texto">
+                                    <strong>Alerta · 1.350 PPM</strong>
+                                    <time datetime="2026-10-28T16:00">Hoje, 16:00</time>
+                                </div>
+                                <span class="selo-ativo">Ativo</span>
+                            </li>
+                            <li class="item item-atencao" data-tipo="atencao" data-ativo="false">
+                                <span class="sinal" aria-hidden="true">!</span>
+                                <div class="item-texto">
+                                    <strong>Atenção · 320 PPM</strong>
+                                    <time datetime="2026-10-28T12:00">Hoje, 12:00</time>
+                                </div>
+                            </li>
+                            <li class="item item-alerta" data-tipo="alerta" data-ativo="false">
+                                <span class="sinal" aria-hidden="true">!</span>
+                                <div class="item-texto">
+                                    <strong>Alerta · 1.040 PPM</strong>
+                                    <time datetime="2026-10-22T10:05">22/10/2026, 10:05</time>
+                                </div>
+                            </li>
+                            <li class="item item-alerta" data-tipo="alerta" data-ativo="false">
+                                <span class="sinal" aria-hidden="true">!</span>
+                                <div class="item-texto">
+                                    <strong>Alerta · 1.015 PPM</strong>
+                                    <time datetime="2026-10-14T15:32">14/10/2026, 15:32</time>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="historico-vazio" id="historico-vazio" hidden>Nenhum evento encontrado para este filtro.</p>
                     </section>
                 </div>
             </section>
-            <!-- MEDIDAS A SEREM TOMADAS -->
-                <div class="medidas">
-                    <div class="nivel nivel-normal">
-                        <h3>Normal <span class="faixa">abaixo de 400 PPM</span></h3>
-                        <p>Sem ação. Rotina normal.</p>
-                    </div>
-
-                    <div class="nivel nivel-atencao">
-                        <h3>Atenção <span class="faixa">400 a 999 PPM</span></h3>
-                        <p>Ventile e verifique mangueira e regulador.</p>
-                    </div>
-
-                    <div class="nivel nivel-alerta ativo">
-                        <h3>Alerta <span class="faixa">1000 PPM ou mais</span> <span class="nivel-atual">Nível atual</span></h3>
-                        <p>Feche o registro · Ventile · Evacue · <strong>Ligue 193</strong></p>
-                    </div>
-                </div>
         </main>
     </div>
-<script>
+
+    <script>
         const ctx = document.getElementById('myChart');
+
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
                 datasets: [{
-                    label: 'Concentração',
-                    data: [320, 340, 410, 520, 760, 1100],
-                    borderColor: 'rgb(0, 0, 255)',
-                    backgroundColor: 'rgb(0, 0, 255)',
-                    borderWidth: 3,
+                    label: 'Concentração de GLP',
+                    data: [320, 380, 520, 900, 1350, 1100],
+                    borderColor: '#2f6798',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2.5,
                     tension: 0.3,
-                    pointRadius: [3, 3, 3, 3, 3, 8],
-                    pointBackgroundColor: ['blue', 'blue', 'blue', 'blue', 'blue', 'red']
-                },
-                {
-                    label: 'Atenção (400)',
-                    data: [400, 400, 400, 400, 400, 400],
-                    borderColor: 'rgb(255, 170, 0)',
-                    backgroundColor: 'rgba(255, 200, 0, 0.2)',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
+                    pointRadius: [3, 3, 3, 3, 3, 5],
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#2f6798',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 1.5,
+                    order: 0
+                }, {
+                    // Faixa normal: do zero até o limite de atenção (300 PPM).
+                    label: 'Limite de atenção (300 PPM)',
+                    data: [300, 300, 300, 300, 300, 300],
+                    borderColor: 'rgba(49, 145, 91, 0.65)',
+                    backgroundColor: 'rgba(91, 190, 127, 0.13)',
+                    borderWidth: 1.5,
+                    borderDash: [4, 5],
                     pointRadius: 0,
-                    fill: '+1'
-                },
-                {
-                    label: 'Alerta (1000)',
+                    fill: 'origin',
+                    order: 3
+                }, {
+                    // Faixa de atenção: entre 300 e 1.000 PPM.
+                    label: 'Limite de alerta (1.000 PPM)',
                     data: [1000, 1000, 1000, 1000, 1000, 1000],
-                    borderColor: 'rgb(255, 0, 0)',
-                    backgroundColor: 'rgba(255, 0, 0, 0.12)',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
+                    borderColor: 'rgba(217, 145, 0, 0.72)',
+                    backgroundColor: 'rgba(245, 198, 83, 0.13)',
+                    borderWidth: 1.5,
+                    borderDash: [4, 5],
                     pointRadius: 0,
-                    fill: 'end'
+                    fill: '-1',
+                    order: 2
+                }, {
+                    // Faixa de alerta: da linha de 1.000 até o topo de 1.400 PPM.
+                    label: '',
+                    data: [1400, 1400, 1400, 1400, 1400, 1400],
+                    borderColor: 'transparent',
+                    backgroundColor: 'rgba(217, 45, 32, 0.10)',
+                    pointRadius: 0,
+                    fill: '-1',
+                    order: 4
                 }]
             },
             options: {
+                responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { usePointStyle: true, pointStyle: 'line' }
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'line',
+                            boxWidth: 22,
+                            padding: 12,
+                            color: '#536178',
+                            font: { size: 10 },
+                            filter: function (item) {
+                                return item.text !== '';
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                if (context.dataset.label === '') return null;
+                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString('pt-BR') + ' PPM';
+                            }
+                        }
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 1200,
-                        title: { display: true, text: 'PPM' }
+                        min: 0,
+                        max: 1400,
+                        afterBuildTicks: function (axis) {
+                            // Exibe os valores úteis e os dois limites operacionais de forma explícita.
+                            axis.ticks = [0, 300, 500, 1000, 1400].map(function (value) {
+                                return { value: value };
+                            });
+                        },
+                        ticks: {
+                            padding: 8,
+                            color: '#6b7a90',
+                            font: { size: 10 },
+                            callback: function (value) {
+                                return Number(value).toLocaleString('pt-BR');
+                            }
+                        },
+                        grid: {
+                            color: function (context) {
+                                return context.tick.value === 300 || context.tick.value === 1000
+                                    ? 'rgba(15, 37, 66, 0.13)'
+                                    : 'rgba(15, 37, 66, 0.055)';
+                            }
+                        },
+                        border: { display: false }
                     },
                     x: {
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: {
+                            maxRotation: 0,
+                            padding: 5,
+                            color: '#6b7a90',
+                            font: { size: 10 }
+                        },
+                        border: { display: false }
                     }
                 }
+            }
+        });
+
+        // Filtro local do histórico: não altera os dados nem navega para outra página.
+        const botaoFiltro = document.getElementById('btn-filtro');
+        const menuFiltro = document.getElementById('menu-filtro');
+        const opcoesFiltro = document.querySelectorAll('.opcao-filtro');
+        const eventos = document.querySelectorAll('#lista-historico .item');
+        const mensagemVazia = document.getElementById('historico-vazio');
+        const filtroWrap = document.querySelector('.filtro-wrap');
+
+        botaoFiltro.addEventListener('click', function () {
+            const vaiAbrir = menuFiltro.hidden;
+            menuFiltro.hidden = !vaiAbrir;
+            botaoFiltro.setAttribute('aria-expanded', String(vaiAbrir));
+        });
+
+        opcoesFiltro.forEach(function (opcao) {
+            opcao.addEventListener('click', function () {
+                const filtro = opcao.dataset.filtro;
+                let visiveis = 0;
+
+                eventos.forEach(function (evento) {
+                    const corresponde = filtro === 'todos'
+                        || evento.dataset.tipo === filtro
+                        || (filtro === 'ativo' && evento.dataset.ativo === 'true');
+                    evento.hidden = !corresponde;
+                    if (corresponde) visiveis++;
+                });
+
+                opcoesFiltro.forEach(function (item) {
+                    item.classList.toggle('selecionado', item === opcao);
+                });
+
+                mensagemVazia.hidden = visiveis !== 0;
+                menuFiltro.hidden = true;
+                botaoFiltro.setAttribute('aria-expanded', 'false');
+                botaoFiltro.classList.toggle('filtro-aplicado', filtro !== 'todos');
+            });
+        });
+
+        document.addEventListener('click', function (evento) {
+            if (!filtroWrap.contains(evento.target)) {
+                menuFiltro.hidden = true;
+                botaoFiltro.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', function (evento) {
+            if (evento.key === 'Escape') {
+                menuFiltro.hidden = true;
+                botaoFiltro.setAttribute('aria-expanded', 'false');
             }
         });
     </script>
