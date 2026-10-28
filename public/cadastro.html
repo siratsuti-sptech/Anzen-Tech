@@ -65,7 +65,8 @@
           </div>
           <div class="campo">
             <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
+            <input id="senha_input" type="password" placeholder="******" oninput="mostrarRequisitosSenha()" />
+            <div id="requisitos_senha" style="font-size: 13px; margin-top: 6px;"></div>
           </div>
           <div class="campo">
             <span>Confirmação da Senha:</span>
@@ -103,26 +104,107 @@
 
   function limparFormulario() {
     document.getElementById("nome_input").value = "";
+    document.getElementById("sobrenome_input").value = "";
     document.getElementById("email_input").value = "";
     document.getElementById("senha_input").value = "";
     document.getElementById("confirmacao_senha_input").value = "";
+  }
+
+  // confere cada requisito da senha e devolve um objeto com true/false para cada um
+  function analisarSenha(senha) {
+    var resultado = {
+      tamanho: senha.length >= 8,
+      minuscula: false,
+      maiuscula: false,
+      numero: false,
+      especial: false
+    };
+
+    for (var i = 0; i < senha.length; i++) {
+      var letra = senha[i];
+
+      if (letra >= "a" && letra <= "z") {
+        resultado.minuscula = true;
+      } else if (letra >= "A" && letra <= "Z") {
+        resultado.maiuscula = true;
+      } else if (letra >= "0" && letra <= "9") {
+        resultado.numero = true;
+      } else {
+        resultado.especial = true;
+      }
+    }
+
+    return resultado;
+  }
+
+  // monta uma linha do checklist: verde com ✔ se cumprido, vermelho com ✖ se não
+  //function linhaRequisito(cumprido, texto) {
+   // var cor = cumprido ? "#2e9e5b" : "#d9534f";
+   // var icone = cumprido ? "✔" : "✖";
+   // return '<span style="color:' + cor + '">' + icone + ' ' + texto + '</span><br>';
+  //}
+
+  // chamada a cada letra digitada no campo de senha (oninput)
+  function mostrarRequisitosSenha() {
+    var senha = senha_input.value;
+
+    if (senha == "") {
+      requisitos_senha.innerHTML = "";
+      return;
+    }
+
+    var r = analisarSenha(senha);
+
+    requisitos_senha.innerHTML =
+      linhaRequisito(r.tamanho, "Mínimo de 8 caracteres") +
+      linhaRequisito(r.minuscula, "Uma letra minúscula") +
+      linhaRequisito(r.maiuscula, "Uma letra maiúscula") +
+      linhaRequisito(r.numero, "Um número") +
+      linhaRequisito(r.especial, "Um caractere especial (ex.: @, #, !)");
   }
 
   async function cadastrar() {
     aguardar();
 
     var nomeVar = nome_input.value.trim();
+    var sobrenomeVar = sobrenome_input.value.trim();
     var emailVar = email_input.value.trim();
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
     if (
       nomeVar == "" ||
+      sobrenomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == ""
     ) {
       mostrarErroCadastro("Preencha todos os campos.");
+      finalizarAguardar();
+      return false;
+    }
+
+    // validando se o email tem @ e "."
+    if (!emailVar.includes("@") || !emailVar.includes(".")) {
+      mostrarErroCadastro("E-mail inválido. email deve conter @ e '.'");
+      setInterval(sumirMensagem, 5000);
+      finalizarAguardar();
+      return false;
+    }
+
+    // validando se a senha tem no minimo 8 caracteres letra minuscula, maiuscula, numero e carater especial
+    var senhaAnalisada = analisarSenha(senhaVar);
+
+    if (!senhaAnalisada.tamanho || !senhaAnalisada.minuscula || !senhaAnalisada.maiuscula || !senhaAnalisada.numero || !senhaAnalisada.especial) {
+      mostrarErroCadastro("A senha deve ter no mínimo 8 caracteres, com letra maiúscula, letra minúscula, número e caractere especial.");
+      setInterval(sumirMensagem, 5000);
+      finalizarAguardar();
+      return false;
+    }
+
+    if (senhaVar !== confirmacaoSenhaVar) {
+      mostrarErroCadastro("A confirmação da senha não confere com a senha.");
+      setInterval(sumirMensagem, 5000);
       finalizarAguardar();
       return false;
     }
@@ -137,6 +219,7 @@
         },
         body: JSON.stringify({
           nomeServer: nomeVar,
+          sobrenomeServer: sobrenomeVar,
           emailServer: emailVar,
           senhaServer: senhaVar,
           idEmpresaVincularServer: ID_EMPRESA_PARA_TESTE
@@ -167,6 +250,3 @@
     cardErro.style.display = "none";
   }
 </script>
-
-
-
