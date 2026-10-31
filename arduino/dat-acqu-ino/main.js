@@ -12,7 +12,7 @@ const HABILITAR_OPERACAO_INSERIR = true;
 // sensores simulados: cada objeto representa um sensor que usa o valor do sensor real multiplicado por um fator
 const SENSORES_SIMULADOS = [
     { fkSensor: 2, fator: 0.8 },
-    { fkSensor: 3, fator: 1.15 }
+    { fkSensor: 3, fator: 1.50 }
 ];
 
 // limites de estado (ppm) - mesmas regras do Arduino
@@ -41,10 +41,10 @@ const serial = async (
     let poolBancoDados = mysql.createPool(
         {
             host: 'localhost',
-            user: 'user_insert',
-            password: 'Urubu100',
+            user: 'aluno',
+            password: 'Sptech#2024',
             database: 'anzen_glp',
-            port: 3306
+            port: 3307
         }
     ).promise();
 
