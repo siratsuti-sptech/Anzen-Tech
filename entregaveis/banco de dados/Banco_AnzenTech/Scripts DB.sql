@@ -1,3 +1,19 @@
+/*
+ANZENTECH 2026
+*/
+
+select * from sensor;
+select * from usuario;
+select * from leituraSensor;
+select * from estabelecimento;
+show tables;
+
+-- drop database anzen_glp;
+-- truncate table usuario;
+-- truncate table leituraSensor;
+-- drop table usuario;
+
+
 -- SCRIPTS NO WINDOWS ABAIXO
 
 -- CRIANDO O BANCO DE DADOS
@@ -61,6 +77,9 @@ CREATE TABLE estabelecimento(
 );
 
 
+
+
+
 /*
 CRIANDO A TABELA contato
 
@@ -71,14 +90,6 @@ email -> e-mail de contato
 telefone -> telefone de contato
 fkEstabelecimento -> Chave Estrangeira que liga a tabela contato à tabela estabelecimento
 */
-CREATE TABLE contato (
-	idContato INT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(90),
-    telefone VARCHAR(15),
-    fkEstabelecimento INT,
-    FOREIGN KEY(fkEstabelecimento)
-		REFERENCES estabelecimento(idEstabelecimento)
-);
 
 
 /*
@@ -104,6 +115,7 @@ CREATE TABLE usuario(
 	FOREIGN KEY (fkEstabelecimento) 
 		REFERENCES estabelecimento (idEstabelecimento)
 );
+-- tabela modificada consultar logs
 
 
 /*
@@ -144,10 +156,13 @@ situacao -> Estado em que o ambiente se encontra (Normal, Risco ou Crítico)
 fkSensor -> Chave Estrangeira que liga a tabela leituraSensor à tabela Sensor
 */
 CREATE TABLE leituraSensor(
-	idLeitura INT NOT NULL,
+	idLeitura INT primary key auto_increment,
     ppm DECIMAL(9,2),
     dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
-    situacao VARCHAR(20)
+    situacao VARCHAR(20),
+    fkSensor INT,
+    foreign key (fkSensor)
+		references sensor(idSensor)
 );
 
 
@@ -291,3 +306,36 @@ SELECT em.idEmpresa, em.razaoSocial, es.nome, en.cep, en.logradouro, en.bairro F
   
   
 SELECT u.nome, u.sobrenome, u.email, u.dataCadastro, e.nome, e.segmento FROM usuario AS u JOIN estabelecimento AS e ON e.idEstabelecimento = u.fkEstabelecimento;
+
+
+/*log 16/11/2026
+Pietro Giuliani - Time Anzen  
+Removi a tabela contato pois não fazia sentido dado a nossa regra de negócio
+Criei a Tabela associativa usuarioEstabelecimento para que a criação de um relacionamento n:n funcione em nosso projeto
+Para isso tive que remover a fkEstabelecimento da tabela usuario 
+Alterei tanto no banco local e tanto no banco da VM que ta na minha máquina
+Vamos com Tudo!
+*/
+
+create table usuarioEstabelecimento (
+fkUsuario int,
+fkEstabelecimento int,
+primary key (fkUsuario, fkEstabelecimento),
+foreign key (fkUsuario) references usuario (idUsuario),
+foreign key (fkEstabelecimento) references estabelecimento (idEstabelecimento)
+);
+-- tabela associativa
+
+alter table usuario drop foreign key usuario_ibfk_1;
+alter table usuario drop column fkEstabelecimento;
+
+describe usuario;
+
+-- o join da linha 302 deixou de funcionar pq usava a fkEstabelecimento, irei colocar abaixo um comando equivalente
+
+SELECT u.nome, u.sobrenome, u.email, e.nomeFantasia
+FROM usuario AS u
+JOIN usuarioEstabelecimento AS ue ON ue.fkUsuario = u.idUsuario
+JOIN estabelecimento AS e ON e.idEstabelecimento = ue.fkEstabelecimento;
+
+/*Fim log 16/11/2026*/
