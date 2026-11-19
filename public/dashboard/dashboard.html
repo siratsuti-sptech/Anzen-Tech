@@ -36,18 +36,18 @@
             <section class="dashboard-visao-geral">
                 <!-- Indicadores principais -->
                 <div class="kpis" aria-label="Indicadores principais">
-                    <article class="kpi-card kpi-critico">
+                    <article class="kpi-card kpi-critico" id="kpi-concentracao">
                         <p class="kpi-label">Concentração atual de GLP</p>
-                        <p class="kpi-valor">1.100 <span>PPM</span></p>
+                        <p class="kpi-valor"><span id="kpi-atual">—</span> <span>PPM</span></p>
                         <div class="kpi-rodape">
-                            <strong class="kpi-status">Alerta</strong>
-                            <span class="kpi-detalhe">Pico: 1.350 PPM (hoje, 16:00)</span>
+                            <strong class="kpi-status" id="kpi-status">—</strong>
+                            <span class="kpi-detalhe" id="kpi-pico">Pico: —</span>
                         </div>
                     </article>
 
                     <article class="kpi-card kpi-online">
                         <p class="kpi-label">Última leitura</p>
-                        <p class="kpi-valor">17:00 <span>hoje</span></p>
+                        <p class="kpi-valor"><span id="kpi-horario">—</span> <span>hoje</span></p>
                         <strong class="kpi-status"><span class="status-ponto">●</span> Sensor online</strong>
                     </article>
 
@@ -62,18 +62,18 @@
                 <section class="medidas-secao" aria-labelledby="medidas-titulo">
                     <h2 class="medidas-titulo" id="medidas-titulo">Medidas a serem tomadas</h2>
                     <div class="medidas">
-                        <article class="nivel nivel-normal">
-                            <h3>Normal <span class="faixa">Abaixo de 300 PPM</span></h3>
+                        <article class="nivel nivel-normal" id="nivel-normal">
+                            <h3>Normal <span class="faixa">Abaixo de 300 PPM</span> <span class="nivel-atual" hidden>Nível atual</span></h3>
                             <p>Sem ação. Rotina normal.</p>
                         </article>
 
-                        <article class="nivel nivel-atencao">
-                            <h3>Atenção <span class="faixa">301 a 999 PPM</span></h3>
+                        <article class="nivel nivel-atencao" id="nivel-atencao">
+                            <h3>Atenção <span class="faixa">301 a 999 PPM</span> <span class="nivel-atual" hidden>Nível atual</span></h3>
                             <p>Ventile e verifique mangueira e regulador.</p>
                         </article>
 
-                        <article class="nivel nivel-alerta ativo">
-                            <h3>Alerta <span class="faixa">1.000 PPM ou mais</span> <span class="nivel-atual">Nível atual</span></h3>
+                        <article class="nivel nivel-alerta" id="nivel-alerta">
+                            <h3>Alerta <span class="faixa">1.000 PPM ou mais</span> <span class="nivel-atual" hidden>Nível atual</span></h3>
                             <p>Feche o registro · Ventile · Evacue · <strong>Ligue 193</strong></p>
                         </article>
                     </div>
@@ -153,20 +153,31 @@
     </div>
 
     <script>
+        // ===== Configuração do monitoramento em tempo real =====
+        const ID_SENSOR = 1;                 // sensor cujas leituras serão plotadas (fkSensor em leituraSensor)
+        const LIMITE_LEITURAS = 20;          // quantidade de pontos exibidos no gráfico
+        const INTERVALO_ATUALIZACAO = 5000;  // intervalo, em ms, entre as consultas à API
+        const LIMITE_NORMAL = 300;           // fim da faixa normal (PPM)
+        const LIMITE_ALERTA = 1000;          // início da faixa de alerta (PPM)
+        const TOPO_PADRAO = 1400;            // topo do gráfico quando as leituras são menores
+
         const ctx = document.getElementById('myChart');
 
-        new Chart(ctx, {
+        // Os dados começam vazios e são preenchidos pelas leituras vindas do banco.
+        const grafico = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                labels: [],
                 datasets: [{
                     label: 'Concentração de GLP',
-                    data: [320, 380, 520, 900, 1350, 1100],
+                    data: [],
                     borderColor: '#2f6798',
                     backgroundColor: 'transparent',
                     borderWidth: 2.5,
                     tension: 0.3,
-                    pointRadius: [3, 3, 3, 3, 3, 5],
+                    pointRadius: function (contexto) {
+                        return contexto.dataIndex === contexto.dataset.data.length - 1 ? 5 : 3;
+                    },
                     pointHoverRadius: 6,
                     pointBackgroundColor: '#2f6798',
                     pointBorderColor: '#ffffff',
@@ -175,7 +186,7 @@
                 }, {
                     // Faixa normal: do zero até o limite de atenção (300 PPM).
                     label: '',
-                    data: [300, 300, 300, 300, 300, 300],
+                    data: [],
                     borderColor: 'rgba(49, 145, 91, 0.65)',
                     backgroundColor: 'rgba(91, 190, 127, 0.13)',
                     borderWidth: 1.5,
@@ -186,7 +197,7 @@
                 }, {
                     // Faixa de atenção: entre 300 e 1.000 PPM.
                     label: '',
-                    data: [1000, 1000, 1000, 1000, 1000, 1000],
+                    data: [],
                     borderColor: 'rgba(217, 145, 0, 0.72)',
                     backgroundColor: 'rgba(245, 198, 83, 0.13)',
                     borderWidth: 1.5,
@@ -195,9 +206,9 @@
                     fill: '-1',
                     order: 2
                 }, {
-                    // Faixa de alerta: da linha de 1.000 até o topo de 1.400 PPM.
+                    // Faixa de alerta: da linha de 1.000 até o topo do gráfico.
                     label: '',
-                    data: [1400, 1400, 1400, 1400, 1400, 1400],
+                    data: [],
                     borderColor: 'transparent',
                     backgroundColor: 'rgba(217, 45, 32, 0.10)',
                     pointRadius: 0,
@@ -208,6 +219,7 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: false,
                 interaction: {
                     intersect: false,
                     mode: 'index'
@@ -240,10 +252,12 @@
                     y: {
                         beginAtZero: true,
                         min: 0,
-                        max: 1400,
+                        max: TOPO_PADRAO,
                         afterBuildTicks: function (axis) {
                             // Exibe os valores úteis e os dois limites operacionais de forma explícita.
-                            axis.ticks = [0, 300, 500, 1000, 1400].map(function (value) {
+                            var valores = [0, 300, 500, 1000, 1400];
+                            if (axis.max > TOPO_PADRAO) valores.push(axis.max);
+                            axis.ticks = valores.map(function (value) {
                                 return { value: value };
                             });
                         },
@@ -277,6 +291,81 @@
                 }
             }
         });
+
+        // Atualiza os rótulos, os valores e as faixas do gráfico sem recriá-lo.
+        function atualizarGrafico(leituras) {
+            // A API envia da leitura mais recente para a mais antiga; o gráfico precisa do tempo crescente.
+            const pontos = leituras.slice().reverse();
+            const valores = pontos.map(function (leitura) {
+                return Number(leitura.ppm); // ppm é DECIMAL: o mysql2 entrega como texto
+            });
+            const quantidade = valores.length;
+            const topo = Math.max(TOPO_PADRAO, Math.ceil(Math.max(...valores) * 1.1));
+
+            grafico.data.labels = pontos.map(function (leitura) {
+                return leitura.horario;
+            });
+            grafico.data.datasets[0].data = valores;
+            grafico.data.datasets[1].data = new Array(quantidade).fill(LIMITE_NORMAL);
+            grafico.data.datasets[2].data = new Array(quantidade).fill(LIMITE_ALERTA);
+            grafico.data.datasets[3].data = new Array(quantidade).fill(topo);
+            grafico.options.scales.y.max = topo;
+            grafico.update();
+        }
+
+        // Atualiza os indicadores (KPIs) e o nível atual com base nas leituras.
+        function atualizarIndicadores(pontos) {
+            const formatar = function (valor) {
+                return Math.round(valor).toLocaleString('pt-BR');
+            };
+            const ultimo = pontos[pontos.length - 1];
+            const atual = Number(ultimo.ppm);
+            const pico = pontos.reduce(function (maior, leitura) {
+                return Number(leitura.ppm) > Number(maior.ppm) ? leitura : maior;
+            });
+
+            let nivel;
+            if (atual >= LIMITE_ALERTA) nivel = 'alerta';
+            else if (atual > LIMITE_NORMAL) nivel = 'atencao';
+            else nivel = 'normal';
+
+            const textosStatus = { normal: 'Normal', atencao: 'Atenção', alerta: 'Alerta' };
+
+            document.getElementById('kpi-atual').textContent = formatar(atual);
+            document.getElementById('kpi-status').textContent = textosStatus[nivel];
+            document.getElementById('kpi-pico').textContent =
+                'Pico: ' + formatar(Number(pico.ppm)) + ' PPM (hoje, ' + pico.horario.slice(0, 5) + ')';
+            document.getElementById('kpi-horario').textContent = ultimo.horario.slice(0, 5);
+            document.getElementById('kpi-concentracao').classList.toggle('kpi-critico', nivel === 'alerta');
+
+            ['normal', 'atencao', 'alerta'].forEach(function (chave) {
+                const cartao = document.getElementById('nivel-' + chave);
+                const ativo = chave === nivel;
+                cartao.classList.toggle('ativo', ativo);
+                cartao.querySelector('.nivel-atual').hidden = !ativo;
+            });
+        }
+
+        // Consulta as leituras mais recentes no banco de dados via API.
+        async function obterDados() {
+            try {
+                const resposta = await fetch(`/leituras/ultimas/${ID_SENSOR}?limite=${LIMITE_LEITURAS}`);
+
+                if (resposta.status === 200) {
+                    const leituras = await resposta.json();
+                    atualizarGrafico(leituras);
+                    atualizarIndicadores(leituras.slice().reverse());
+                } else if (resposta.status !== 204) {
+                    // 204 = ainda não há leituras: mantém o último gráfico exibido.
+                    console.error(`Erro ao buscar leituras (status ${resposta.status})`);
+                }
+            } catch (erro) {
+                console.error(`Falha na comunicação com a API: ${erro.message}`);
+            }
+        }
+
+        obterDados();
+        setInterval(obterDados, INTERVALO_ATUALIZACAO);
 
         // Filtro local do histórico: não altera os dados nem navega para outra página.
         const botaoFiltro = document.getElementById('btn-filtro');
