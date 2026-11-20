@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozinhas · Dashboard de Monitoramento de GLP</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <script src="../js/sessao.js"></script>
+    <script src="./cozinhas-store.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body class="dashboard-page page-cozinhas" onload="validarSessao()">
+    <div class="janela com-sidebar">
+        <div class="layout-lateral">
+            <aside class="sidebar" aria-label="Navegação principal">
+                <a class="brand sidebar-brand" href="../index.html" aria-label="AnzenTech - Início">
+                    <img src="../assets/icon/安.png" alt="">
+                    <span>Anzen<span>Tech</span></span>
+                </a>
+
+                <nav class="sidebar-nav" aria-label="Páginas">
+                    <a class="side-link" href="../index.html">Início</a>
+                    <a class="side-link" href="./dashboard.html">Visão geral</a>
+                    <a class="side-link" href="./configuracoes.html">Configurações</a>
+                </nav>
+
+                <p class="sidebar-subtitulo">Cozinhas</p>
+                <nav class="side-abas" id="abas-cozinhas" aria-label="Cozinhas"></nav>
+
+                <div class="sidebar-footer">
+                    <p class="sidebar-user">Olá, <span id="b_usuario">usuário</span></p>
+                    <button class="btn-logout" type="button" onclick="limparSessao()">Sair</button>
+                </div>
+            </aside>
+
+                <main class="dashboard-conteudo">
+                    <section class="view" id="view-cozinha" aria-labelledby="cz-nome">
+                        <div class="cozinha-topo">
+                            <h2 id="cz-nome">Cozinha</h2>
+                            <span class="selo" id="cz-selo"></span>
+                            <p class="card-subtitulo" id="cz-leitura"></p>
+                        </div>
+
+                        <div class="kpis" id="kpis-sensores" aria-label="Leitura atual dos sensores"></div>
+
+                        <div class="graficos">
+                            <section class="card card-grafico">
+                                <div class="card-cabecalho">
+                                    <div>
+                                        <h2>Concentração de GLP ao longo do tempo</h2>
+                                        <p class="card-subtitulo" id="grafico-subtitulo"></p>
+                                    </div>
+                                </div>
+                                <div class="area-grafico">
+                                    <canvas id="myChart" role="img" aria-label="Gráfico de linhas da concentração de GLP por sensor"></canvas>
+                                </div>
+                            </section>
+
+                            <section class="card card-historico" aria-labelledby="historico-titulo">
+                                <div class="historico-cabecalho">
+                                    <div>
+                                        <h2 id="historico-titulo">Histórico de eventos</h2>
+                                        <p class="card-subtitulo" id="historico-subtitulo">Eventos no período selecionado</p>
+                                    </div>
+
+                                </div>
+
+                                <ul class="historico" id="lista-historico"></ul>
+                                <p class="historico-vazio" id="historico-vazio" hidden>Nenhum evento encontrado no período.</p>
+                            </section>
+                        </div>
+
+                        <section class="medidas-secao" aria-labelledby="medidas-titulo">
+                            <h2 class="medidas-titulo" id="medidas-titulo">Medidas a serem tomadas</h2>
+                            <div class="medidas">
+                                <article class="nivel nivel-normal" data-nivel="normal">
+                                    <h3>Normal <span class="faixa">Até 300 PPM</span> <span class="nivel-atual">Nível atual</span></h3>
+                                    <p>Sem ação. Rotina normal.</p>
+                                </article>
+                                <article class="nivel nivel-atencao" data-nivel="atencao">
+                                    <h3>Atenção <span class="faixa">301 a 999 PPM</span> <span class="nivel-atual">Nível atual</span></h3>
+                                    <p>Ventile e verifique mangueira e regulador.</p>
+                                </article>
+                                <article class="nivel nivel-critico" data-nivel="critico">
+                                    <h3>Crítico <span class="faixa">1.000 PPM ou mais</span> <span class="nivel-atual">Nível atual</span></h3>
+                                    <p>Feche o registro · Ventile · Evacue · <strong>Ligue 193</strong></p>
+                                </article>
+                            </div>
+                        </section>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const LIMITE_ATENCAO = 300;
+        const LIMITE_CRITICO = 1000;
+        const DIAS_HISTORICO = 45;
+        const HORA = 3600000;
+
+        const NIVEIS = {
+            normal:  { rotulo: 'Normal',  selo: 'NORMAL',  acao: 'Sem ação. Rotina normal.' },
+            atencao: { rotulo: 'Atenção', selo: 'ATENÇÃO', acao: 'Ventile e verifique mangueira e regulador.' },
+            critico: { rotulo: 'Crítico', selo: 'CRÍTICO', acao: 'Feche o registro · Ventile · Evacue · Ligue 193' }
+        };
+        const PESO = { normal: 0, atencao: 1, critico: 2 };
+
+        const COZINHAS = CozinhasStore.listar();
+        function buscarCozinha(id) {
+            return COZINHAS.filter(function (c) { return c.id === Number(id); })[0] || COZINHAS[0];
+        }
+        const SENSORES = [
+            { id: 1, nome: 'Fogão',          cor: '#1d4ed8' },
+            { id: 2, nome: 'Central de GLP', cor: '#c026d3' },
+            { id: 3, nome: 'Forno',          cor: '#475569' }
+        ];
+
+        function nivelDe(ppm) {
+            if (ppm >= LIMITE_CRITICO) return 'critico';
+            if (ppm > LIMITE_ATENCAO) return 'atencao';
+            return 'normal';
+        }
+        function nomeSensor(s) { return 'Sensor ' + SENSORES[s].id + ' · ' + SENSORES[s].nome; }
+
+        function mulberry32(semente) {
+            return function () {
+                semente |= 0; semente = (semente + 0x6D2B79F5) | 0;
+                let t = Math.imul(semente ^ (semente >>> 15), 1 | semente);
+                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            };
+        }
+
+        const agora = new Date(); agora.setMinutes(0, 0, 0);
+        const inicioHoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+        const inicioDados = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() - (DIAS_HISTORICO - 1));
+        const N = Math.round((agora - inicioDados) / HORA) + 1;
+        const ULTIMO = N - 1;
+
+        function horaDoIndice(i) { return new Date(inicioDados.getTime() + i * HORA); }
+        function indiceDaData(d) { return Math.round((d - inicioDados) / HORA); }
+
+        const leituras = {};
+        COZINHAS.forEach(function (c) {
+            leituras[c.id] = SENSORES.map(function (sensor, s) {
+                const rnd = mulberry32(c.id * 100 + s * 7 + 13);
+                const base = 45 + rnd() * 40;
+                const picoAlmoco = 50 + rnd() * 55;
+                const picoJantar = 50 + rnd() * 55;
+                const serie = [];
+                for (let i = 0; i < N; i++) {
+                    const h = horaDoIndice(i).getHours();
+                    const v = base
+                        + picoAlmoco * Math.exp(-Math.pow(h - 12, 2) / (2 * 1.6 * 1.6))
+                        + picoJantar * Math.exp(-Math.pow(h - 19, 2) / (2 * 1.8 * 1.8))
+                        + (rnd() - 0.5) * 40;
+                    serie.push(Math.max(20, Math.round(v)));
+                }
+                return serie;
+            });
+        });
+
+        const INCIDENTES = [
+            [1, 0, 2, 13, 330], [1, 1, 9, 15, 420],
+            [2, 2, 3, 12, 1080], [2, 0, 12, 19, 540],
+            [3, 1, 1, 18, 1210], [3, 0, 6, 10, 780], [3, 2, 16, 14, 1040],
+            [4, 2, 5, 14, 350], [4, 0, 20, 11, 1020]
+        ];
+        const FORMA_INCIDENTE = [0.35, 0.7, 1, 0.6, 0.3];
+        INCIDENTES.forEach(function (inc) {
+            const dia = new Date(inicioHoje.getFullYear(), inicioHoje.getMonth(), inicioHoje.getDate() - inc[2], inc[3]);
+            const centro = indiceDaData(dia);
+            FORMA_INCIDENTE.forEach(function (f, j) {
+                const i = centro - 2 + j;
+                if (i < 0 || i > ULTIMO) return;
+                if (!leituras[inc[0]] || !leituras[inc[0]][inc[1]]) return;
+                const serie = leituras[inc[0]][inc[1]];
+                serie[i] = Math.max(serie[i], Math.round(inc[4] * f));
+            });
+        });
+
+        const SITUACAO_ATUAL = [
+            [2, 0, [190, 230, 280, 330, 360, 380]],
+            [3, 1, [320, 380, 520, 900, 1350, 1100]],
+            [3, 2, [150, 190, 260, 350, 420, 450]]
+        ];
+        SITUACAO_ATUAL.forEach(function (x) {
+            if (!leituras[x[0]] || !leituras[x[0]][x[1]]) return;
+            x[2].forEach(function (v, j) { leituras[x[0]][x[1]][N - 6 + j] = v; });
+        });
+
+        function atuais(c) { return leituras[c].map(function (serie) { return serie[ULTIMO]; }); }
+
+        function statusCozinha(c) {
+            const valores = atuais(c);
+            let nivel = 'normal', maior = 0;
+            valores.forEach(function (ppm, s) {
+                if (PESO[nivelDe(ppm)] > PESO[nivel]) nivel = nivelDe(ppm);
+                if (ppm > valores[maior]) maior = s;
+            });
+            return { nivel: nivel, maior: maior, ppm: valores[maior], valores: valores };
+        }
+
+        function cozinhasOrdenadas() {
+            return COZINHAS.slice().sort(function (a, b) {
+                const sa = statusCozinha(a.id), sb = statusCozinha(b.id);
+                return PESO[sb.nivel] - PESO[sa.nivel] || sb.ppm - sa.ppm || a.id - b.id;
+            });
+        }
+
+        const cacheEventos = {};
+        function eventosDa(c) {
+            if (cacheEventos[c]) return cacheEventos[c];
+            const lista = [];
+            leituras[c].forEach(function (serie, s) {
+                let i = 0;
+                while (i < N) {
+                    if (serie[i] > LIMITE_ATENCAO) {
+                        let j = i, pico = serie[i], ip = i;
+                        while (j + 1 < N && serie[j + 1] > LIMITE_ATENCAO) {
+                            j++;
+                            if (serie[j] > pico) { pico = serie[j]; ip = j; }
+                        }
+                        lista.push({ sensor: s, pico: pico, idx: ip, nivel: nivelDe(pico), ativo: j === ULTIMO });
+                        i = j + 1;
+                    } else { i++; }
+                }
+            });
+            lista.sort(function (a, b) { return b.idx - a.idx; });
+            return (cacheEventos[c] = lista);
+        }
+
+        const estado = {
+            cozinha: 1,
+            periodo: '24h',
+            de: '', ate: '',
+            sensor: 'todos',
+            filtroHistorico: 'todos'
+        };
+
+        const pad = function (n) { return String(n).padStart(2, '0'); };
+        const fmtDM = function (d) { return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); };
+        const fmtDMA = function (d) { return fmtDM(d) + '/' + d.getFullYear(); };
+        const fmtHora = function (d) { return pad(d.getHours()) + ':00'; };
+        const fmtISO = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+        const fmtPPM = function (n) { return Number(n).toLocaleString('pt-BR'); };
+        function lerData(texto) { const p = texto.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+        function dia(offset) { return new Date(inicioHoje.getFullYear(), inicioHoje.getMonth(), inicioHoje.getDate() + offset); }
+
+        function fmtEvento(d) {
+            const dm = fmtDM(d);
+            if (dm === fmtDM(inicioHoje) && d.getFullYear() === inicioHoje.getFullYear()) return 'Hoje, ' + fmtHora(d);
+            if (fmtISO(d) === fmtISO(dia(-1))) return 'Ontem, ' + fmtHora(d);
+            return fmtDMA(d) + ', ' + fmtHora(d);
+        }
+
+        function obterPeriodo() {
+            let ini, fim, rotulo;
+            switch (estado.periodo) {
+                case 'hoje':   ini = inicioHoje; fim = agora; rotulo = 'Hoje, ' + fmtDM(inicioHoje); break;
+                case 'ontem':  ini = dia(-1); fim = new Date(inicioHoje.getTime() - HORA); rotulo = 'Ontem, ' + fmtDM(dia(-1)); break;
+                case '7d':     ini = dia(-6); fim = agora; rotulo = 'Últimos 7 dias'; break;
+                case '30d':    ini = dia(-29); fim = agora; rotulo = 'Últimos 30 dias'; break;
+                case 'personalizado': {
+                    ini = lerData(estado.de);
+                    const ateFim = new Date(lerData(estado.ate).getTime() + 23 * HORA);
+                    fim = ateFim > agora ? agora : ateFim;
+                    rotulo = estado.de === estado.ate ? fmtDMA(ini) : fmtDMA(ini) + ' a ' + fmtDMA(lerData(estado.ate));
+                    break;
+                }
+                default:       ini = new Date(agora.getTime() - 23 * HORA); fim = agora; rotulo = 'Últimas 24 horas';
+            }
+            const iIni = Math.max(0, indiceDaData(ini));
+            const iFim = Math.min(ULTIMO, indiceDaData(fim));
+            const horas = iFim - iIni + 1;
+            const passo = horas <= 48 ? 1 : (horas <= 200 ? 4 : 24);
+            return { iIni: iIni, iFim: iFim, horas: horas, passo: passo, rotulo: rotulo };
+        }
+
+        function sensoresVisiveis() {
+            return estado.sensor === 'todos' ? [0, 1, 2] : [Number(estado.sensor)];
+        }
+
+        function montarPontos(c, p) {
+            const pontos = [];
+            for (let b = p.iIni; b <= p.iFim; b += p.passo) {
+                const fimB = Math.min(b + p.passo - 1, p.iFim);
+                const d = horaDoIndice(b);
+                let rotulo, titulo;
+                if (p.passo === 1) {
+                    rotulo = p.horas > 24 ? fmtDM(d) + ' ' + fmtHora(d) : fmtHora(d);
+                    titulo = fmtDMA(d) + ', ' + fmtHora(d);
+                } else if (p.passo === 4) {
+                    rotulo = fmtDM(d) + ' ' + pad(d.getHours()) + 'h';
+                    titulo = fmtDMA(d) + ', ' + fmtHora(d) + ' a ' + pad(horaDoIndice(fimB).getHours()) + ':59 (máximo)';
+                } else {
+                    rotulo = fmtDM(d);
+                    titulo = fmtDMA(d) + ' (máximo do dia)';
+                }
+                pontos.push({
+                    rotulo: rotulo,
+                    titulo: titulo,
+                    valores: leituras[c].map(function (serie) { return Math.max.apply(null, serie.slice(b, fimB + 1)); })
+                });
+            }
+            return pontos;
+        }
+
+        const abas = document.getElementById('abas-cozinhas');
+        const ultimaLeituraTexto = 'Última leitura hoje, ' + fmtHora(agora);
+
+        function renderAbas() {
+            abas.innerHTML = cozinhasOrdenadas().map(function (c) {
+                const st = statusCozinha(c.id);
+                return '<a class="side-link side-cozinha" href="#cozinha-' + c.id + '" data-view="' + c.id + '">'
+                    + '<span class="ponto ponto-' + st.nivel + '" aria-hidden="true"></span>'
+                    + '<span>' + CozinhasStore.escapar(c.nome) + '</span>'
+                    + '<span class="sr-only">, status ' + NIVEIS[st.nivel].rotulo.toLowerCase() + '</span></a>';
+            }).join('');
+        }
+
+        const el = {
+            nome: document.getElementById('cz-nome'),
+            selo: document.getElementById('cz-selo'),
+            leitura: document.getElementById('cz-leitura'),
+            kpis: document.getElementById('kpis-sensores'),
+            niveis: document.querySelectorAll('.nivel'),
+            graficoSub: document.getElementById('grafico-subtitulo'),
+            canvas: document.getElementById('myChart'),
+            lista: document.getElementById('lista-historico'),
+            vazio: document.getElementById('historico-vazio'),
+            histSub: document.getElementById('historico-subtitulo')
+        };
+
+        function renderSensores(c, p) {
+            const visiveis = sensoresVisiveis();
+            const atual = atuais(c);
+            el.kpis.innerHTML = SENSORES.map(function (sensor, s) {
+                const nivel = nivelDe(atual[s]);
+                const pico = Math.max.apply(null, leituras[c][s].slice(p.iIni, p.iFim + 1));
+                return '<article class="kpi-card kpi-' + nivel + (visiveis.indexOf(s) === -1 ? ' kpi-fora-filtro' : '') + '">'
+                    + '<p class="kpi-label"><span class="cor-sensor" style="background:' + sensor.cor + '"></span>' + nomeSensor(s) + '</p>'
+                    + '<p class="kpi-valor">' + fmtPPM(atual[s]) + ' <span>PPM agora</span></p>'
+                    + '<div class="kpi-rodape"><strong class="kpi-status">' + NIVEIS[nivel].rotulo + '</strong>'
+                    + '<span class="kpi-detalhe">Pico no período: ' + fmtPPM(pico) + ' PPM</span></div>'
+                    + '</article>';
+            }).join('');
+        }
+
+        function renderHistorico(c, p) {
+            const eventos = eventosDa(c).filter(function (e) {
+                return e.idx >= p.iIni && e.idx <= p.iFim;
+            });
+            el.lista.innerHTML = eventos.map(function (e) {
+                const d = horaDoIndice(e.idx);
+                const iso = fmtISO(d) + 'T' + pad(d.getHours()) + ':00';
+                return '<li class="item item-' + e.nivel + (e.ativo ? ' item-ativo' : '') + '">'
+                    + '<span class="sinal" aria-hidden="true">!</span>'
+                    + '<div class="item-texto"><strong>' + NIVEIS[e.nivel].rotulo + ' · ' + fmtPPM(e.pico) + ' PPM</strong>'
+                    + '<time datetime="' + iso + '">' + nomeSensor(e.sensor) + ' · ' + fmtEvento(d) + '</time></div>'
+                    + (e.ativo ? '<span class="selo-ativo">Ativo</span>' : '')
+                    + '</li>';
+            }).join('');
+            el.vazio.hidden = eventos.length !== 0;
+            el.histSub.textContent = eventos.length === 1 ? '1 evento no período' : eventos.length + ' eventos no período';
+        }
+
+        let grafico = null;
+        const reduzMovimento = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let pontosAtuais = [];
+
+        const pluginFaixas = {
+            id: 'faixasGlp',
+            beforeDraw: function (chart) {
+                const ctx = chart.ctx, a = chart.chartArea, y = chart.scales.y;
+                if (!a || !y) return;
+                const py = function (v) { return y.getPixelForValue(v); };
+                ctx.save();
+                ctx.beginPath(); ctx.rect(a.left, a.top, a.right - a.left, a.bottom - a.top); ctx.clip();
+                [[0, LIMITE_ATENCAO, 'rgba(91, 190, 127, 0.13)'],
+                 [LIMITE_ATENCAO, LIMITE_CRITICO, 'rgba(245, 198, 83, 0.14)'],
+                 [LIMITE_CRITICO, y.max, 'rgba(217, 45, 32, 0.09)']].forEach(function (f) {
+                    ctx.fillStyle = f[2];
+                    ctx.fillRect(a.left, py(f[1]), a.right - a.left, py(f[0]) - py(f[1]));
+                });
+                ctx.setLineDash([4, 5]); ctx.lineWidth = 1.5;
+                [[LIMITE_ATENCAO, 'rgba(49, 145, 91, 0.65)'], [LIMITE_CRITICO, 'rgba(217, 145, 0, 0.72)']].forEach(function (l) {
+                    ctx.strokeStyle = l[1];
+                    ctx.beginPath(); ctx.moveTo(a.left, py(l[0])); ctx.lineTo(a.right, py(l[0])); ctx.stroke();
+                });
+                ctx.restore();
+            }
+        };
+
+        function criarGrafico() {
+            grafico = new Chart(el.canvas, {
+                type: 'line',
+                data: { labels: [], datasets: [] },
+                plugins: [pluginFaixas],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: reduzMovimento ? false : { duration: 250 },
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: false, boxWidth: 24, boxHeight: 3, padding: 14, color: '#536178', font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function (itens) {
+                                    const p = pontosAtuais[itens[0].dataIndex];
+                                    return p ? p.titulo : itens[0].label;
+                                },
+                                label: function (ctx) {
+                                    return ctx.dataset.label + ': ' + fmtPPM(ctx.parsed.y) + ' PPM · ' + NIVEIS[nivelDe(ctx.parsed.y)].rotulo;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 1400,
+                            afterBuildTicks: function (axis) {
+                                const v = [0, 300, 500, 1000];
+                                if (axis.max > 1000) v.push(axis.max);
+                                axis.ticks = v.map(function (value) { return { value: value }; });
+                            },
+                            ticks: { padding: 8, color: '#6b7a90', font: { size: 10 }, callback: function (value) { return fmtPPM(value); } },
+                            grid: {
+                                color: function (context) {
+                                    return context.tick.value === 300 || context.tick.value === 1000
+                                        ? 'rgba(15, 37, 66, 0.13)' : 'rgba(15, 37, 66, 0.055)';
+                                }
+                            },
+                            border: { display: false },
+                            title: { display: true, text: 'PPM', color: '#6b7a90', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 12, padding: 5, color: '#6b7a90', font: { size: 10 } },
+                            border: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderGrafico(c, p) {
+            if (typeof Chart === 'undefined') {
+                el.canvas.parentNode.innerHTML = '<p class="grafico-aviso">Não foi possível carregar a biblioteca do gráfico. Verifique a conexão e recarregue a página.</p>';
+                return;
+            }
+            if (!grafico) criarGrafico();
+
+            const visiveis = sensoresVisiveis();
+            pontosAtuais = montarPontos(c, p);
+            let maior = 0;
+            pontosAtuais.forEach(function (pt) { visiveis.forEach(function (s) { maior = Math.max(maior, pt.valores[s]); }); });
+
+            grafico.data.labels = pontosAtuais.map(function (pt) { return pt.rotulo; });
+            grafico.data.datasets = visiveis.map(function (s) {
+                const sensor = SENSORES[s];
+                return {
+                    label: nomeSensor(s),
+                    data: pontosAtuais.map(function (pt) { return pt.valores[s]; }),
+                    borderColor: sensor.cor,
+                    backgroundColor: sensor.cor,
+                    borderWidth: 2.5,
+                    tension: 0.25,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHitRadius: 12,
+                    pointBackgroundColor: sensor.cor,
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 1.5
+                };
+            });
+            grafico.options.scales.y.max = Math.max(1400, Math.ceil(maior * 1.08 / 200) * 200);
+            grafico.update();
+            grafico.resize();
+
+            const nota = p.passo === 4 ? ' · máximo a cada 4 horas' : (p.passo === 24 ? ' · máximo por dia' : '');
+            el.graficoSub.textContent = buscarCozinha(c).nome + ' · ' + p.rotulo + nota;
+            el.canvas.setAttribute('aria-label', 'Gráfico de linhas da concentração de GLP, ' + buscarCozinha(c).nome + ', ' + p.rotulo
+                + ', sensores: ' + visiveis.map(nomeSensor).join(', '));
+        }
+
+        function renderCozinha() {
+            const c = estado.cozinha;
+            const st = statusCozinha(c);
+            const p = obterPeriodo();
+
+            el.nome.textContent = buscarCozinha(c).nome;
+            el.selo.className = 'selo selo-' + st.nivel;
+            el.selo.textContent = NIVEIS[st.nivel].selo;
+            el.leitura.textContent = ultimaLeituraTexto + ' · ' + SENSORES.length + ' sensores online';
+            el.niveis.forEach(function (n) { n.classList.toggle('ativo', n.dataset.nivel === st.nivel); });
+
+            renderSensores(c, p);
+            renderHistorico(c, p);
+            renderGrafico(c, p);
+        }
+
+        function rotear() {
+            const m = /^#cozinha-(\d+)$/.exec(location.hash);
+            const padrao = COZINHAS.length ? COZINHAS[0].id : 1;
+            const id = m ? Number(m[1]) : padrao;
+            estado.cozinha = COZINHAS.some(function (c) { return c.id === id; }) ? id : padrao;
+            if (!m || Number(m[1]) !== estado.cozinha) {
+                history.replaceState(null, '', '#cozinha-' + estado.cozinha);
+            }
+
+            Array.prototype.forEach.call(abas.children, function (a) {
+                const ativa = a.dataset.view === String(estado.cozinha);
+                if (ativa) { a.setAttribute('aria-current', 'page'); }
+                else { a.removeAttribute('aria-current'); }
+            });
+            document.title = buscarCozinha(estado.cozinha).nome + ' · Dashboard de Monitoramento de GLP';
+            renderCozinha();
+        }
+
+
+        renderAbas();
+        window.addEventListener('hashchange', rotear);
+        rotear();
+    })();
+    </script>
+</body>
+</html>

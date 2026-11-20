@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações · Dashboard de Monitoramento de GLP</title>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <script src="../js/sessao.js"></script>
+    <script src="./cozinhas-store.js"></script>
+</head>
+<body class="dashboard-page page-configuracoes" onload="validarSessao()">
+    <div class="janela com-sidebar">
+        <div class="layout-lateral">
+            <aside class="sidebar" aria-label="Navegação principal">
+                <a class="brand sidebar-brand" href="../index.html" aria-label="AnzenTech - Início">
+                    <img src="../assets/icon/安.png" alt="">
+                    <span>Anzen<span>Tech</span></span>
+                </a>
+
+                <nav class="sidebar-nav" aria-label="Páginas">
+                    <a class="side-link" href="../index.html">Início</a>
+                    <a class="side-link" href="./dashboard.html">Visão geral</a>
+                    <a class="side-link ativo" href="./configuracoes.html" aria-current="page">Configurações</a>
+                </nav>
+
+                <p class="sidebar-subtitulo">Cozinhas</p>
+                <nav class="side-abas" id="abas-cozinhas" aria-label="Cozinhas"></nav>
+
+                <div class="sidebar-footer">
+                    <p class="sidebar-user">Olá, <span id="b_usuario">usuário</span></p>
+                    <button class="btn-logout" type="button" onclick="limparSessao()">Sair</button>
+                </div>
+            </aside>
+
+            <div class="conteudo-lateral">
+                <header class="dashboard-intro">
+                    <h1>Configurações</h1>
+                </header>
+
+                <main class="dashboard-conteudo">
+                    <section class="view" aria-label="Configurações das cozinhas">
+                        <form class="card config-card" id="form-adicionar">
+                            <div class="card-cabecalho">
+                                <div>
+                                    <h2>Adicionar cozinha</h2>
+                                    <p class="card-subtitulo">Cadastre uma nova cozinha para acompanhar o monitoramento.</p>
+                                </div>
+                            </div>
+                            <div class="config-form-linha">
+                                <div class="campo">
+                                    <label for="config-nova">Nome da cozinha</label>
+                                    <input type="text" id="config-nova" maxlength="40" required placeholder="Ex.: Cozinha 5" autocomplete="off">
+                                </div>
+                                <button class="btn-config btn-primario" type="submit">Adicionar cozinha</button>
+                            </div>
+                        </form>
+
+                        <section class="card config-card" aria-labelledby="config-titulo">
+                            <div class="card-cabecalho">
+                                <div>
+                                    <h2 id="config-titulo">Cozinhas cadastradas</h2>
+                                    <p class="card-subtitulo">Renomeie ou remova as cozinhas monitoradas.</p>
+                                </div>
+                                <span class="config-contador" id="config-contador"></span>
+                            </div>
+                            <p class="config-aviso" id="config-aviso" hidden></p>
+                            <ul class="config-lista" id="config-lista"></ul>
+                            <p class="config-vazio" id="config-vazio" hidden>Nenhuma cozinha cadastrada.</p>
+                        </section>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const abas = document.getElementById('abas-cozinhas');
+        const lista = document.getElementById('config-lista');
+        const vazio = document.getElementById('config-vazio');
+        const contador = document.getElementById('config-contador');
+        const aviso = document.getElementById('config-aviso');
+        const formAdicionar = document.getElementById('form-adicionar');
+        const campoNovo = document.getElementById('config-nova');
+
+        function mostrarAviso(texto, sucesso) {
+            aviso.textContent = texto;
+            aviso.className = 'config-aviso ' + (sucesso ? 'sucesso' : 'erro');
+            aviso.hidden = false;
+        }
+
+        function renderAbas() {
+            abas.innerHTML = CozinhasStore.listar().map(function (c) {
+                return '<a class="side-link side-cozinha" href="./cozinhas.html#cozinha-' + c.id + '">'
+                    + '<span class="ponto" aria-hidden="true"></span>'
+                    + '<span>' + CozinhasStore.escapar(c.nome) + '</span></a>';
+            }).join('');
+        }
+
+        function renderLista() {
+            const cozinhas = CozinhasStore.listar();
+            contador.textContent = cozinhas.length + (cozinhas.length === 1 ? ' cozinha' : ' cozinhas');
+            vazio.hidden = cozinhas.length !== 0;
+            lista.innerHTML = cozinhas.map(function (c) {
+                const nome = CozinhasStore.escapar(c.nome);
+                return '<li class="config-item" data-id="' + c.id + '">'
+                    + '<div class="config-item-info">'
+                    + '<span class="config-id">#' + c.id + '</span>'
+                    + '<strong>' + nome + '</strong>'
+                    + '<a class="config-link" href="./cozinhas.html#cozinha-' + c.id + '">Abrir painel &rarr;</a>'
+                    + '</div>'
+                    + '<form class="config-editar" data-acao="renomear">'
+                    + '<label class="sr-only" for="editar-' + c.id + '">Novo nome para ' + nome + '</label>'
+                    + '<input type="text" id="editar-' + c.id + '" maxlength="40" value="' + nome + '" required>'
+                    + '<button class="btn-config" type="submit">Salvar</button>'
+                    + '</form>'
+                    + '<button class="btn-config btn-perigo" type="button" data-acao="remover">Remover</button>'
+                    + '</li>';
+            }).join('');
+        }
+
+        formAdicionar.addEventListener('submit', function (evento) {
+            evento.preventDefault();
+            if (!CozinhasStore.adicionar(campoNovo.value)) {
+                mostrarAviso('Informe um nome válido para a cozinha.', false);
+                return;
+            }
+            campoNovo.value = '';
+            mostrarAviso('Cozinha adicionada com sucesso.', true);
+            renderAbas();
+            renderLista();
+        });
+
+        lista.addEventListener('submit', function (evento) {
+            if (!evento.target.matches('[data-acao="renomear"]')) return;
+            evento.preventDefault();
+            const item = evento.target.closest('.config-item');
+            const id = Number(item.dataset.id);
+            const nome = evento.target.querySelector('input').value;
+            if (!CozinhasStore.renomear(id, nome)) {
+                mostrarAviso('Informe um nome válido para a cozinha.', false);
+                return;
+            }
+            mostrarAviso('Nome da cozinha atualizado.', true);
+            renderAbas();
+            renderLista();
+        });
+
+        lista.addEventListener('click', function (evento) {
+            const botao = evento.target.closest('[data-acao="remover"]');
+            if (!botao) return;
+            const item = botao.closest('.config-item');
+            const id = Number(item.dataset.id);
+            if (!window.confirm('Remover esta cozinha do monitoramento?')) return;
+            if (!CozinhasStore.remover(id)) {
+                mostrarAviso('Não foi possível remover a cozinha.', false);
+                return;
+            }
+            mostrarAviso('Cozinha removida.', true);
+            renderAbas();
+            renderLista();
+        });
+
+        renderAbas();
+        renderLista();
+    })();
+    </script>
+</body>
+</html>
